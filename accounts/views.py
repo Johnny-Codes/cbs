@@ -71,3 +71,10 @@ def business_detail_api(request, id):
             serializer.save()
             return JsonResponse(serializer.data, status=201)
         return JsonResponse(serializer.errors, status=400)
+
+
+@csrf_exempt
+def employees_of_business_api(request, id):
+    employees = User.objects.all().filter(business=id)
+    serializer = UserSerializer(employees, many=True)
+    return JsonResponse(serializer.data, safe=False)
