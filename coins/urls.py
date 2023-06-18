@@ -1,6 +1,6 @@
 from django.urls import path
-from coins.views import inventory_form_view
+from coins.views import add_inventory_api
 
 urlpatterns = [
-    path("inventory/", inventory_form_view, name="inventory_form"),
+    path("add/", add_inventory_api),
 ]
