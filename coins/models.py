@@ -149,7 +149,7 @@ class SilverDollars(models.Model):
     dollar_type = models.CharField(max_length=30, choices=SILVER_DOLLARS)
 
 
-class CoinInventory(CoinBaseModel, CreatedUpdated):
+class CoinInventory(CoinBaseModel, CreatedUpdated, models.Model):
     business = models.ForeignKey(
         Business,
         on_delete=models.CASCADE,

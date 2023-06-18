@@ -1,29 +1,24 @@
 from django.shortcuts import render
-from coins.forms import CoinBaseForm
+from coins.forms import CoinInventoryForm
 from coins.models import SilverDollars
 
 
 # Create your views here.
 def inventory_form_view(request):
     inventory_form = CoinInventoryForm()
-    coin_base_form = CoinBaseForm()
     if request.method == "POST":
         inventory_form = CoinInventoryForm(request.POST)
-        coin_base_form = CoinBaseForm(request.POST)
-        if inventory_form.is_valid() and coin_base_form.is_valid():
+        if inventory_form.is_valid():
             inventory_form.save()
-            coin_base_form.save()
             return render(
                 request,
                 "coins/inventory_form.html",
                 {
-                    # "inventory_form": inventory_form,
-                    "coin_base_form": coin_base_form,
+                    "inventory_form": inventory_form,
                 },
             )
     context = {
-        # "inventory_form": inventory_form,
-        "coin_base_form": coin_base_form,
+        "inventory_form": inventory_form,
     }
     return render(request, "coins/inventory_form.html", context)
 
