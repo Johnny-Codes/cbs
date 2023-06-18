@@ -16,8 +16,9 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class BusinessSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-
     class Meta:
         model = Business
-        fields = ["id", "name", "user"]
+        fields = [
+            "id",
+            "name",
+        ]

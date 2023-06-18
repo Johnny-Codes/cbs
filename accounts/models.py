@@ -15,9 +15,17 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    class Meta:
+        verbose_name_plural = "Users"
+        verbose_name = "User"
+
 
 class Business(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
+
+    class Meta:
+        verbose_name_plural = "Businesses"
+        verbose_name = "Business Name"
