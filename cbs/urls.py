@@ -23,4 +23,5 @@ urlpatterns = [
     path("coins/", include("coins.urls")),
     path("api-auth/", include("rest_framework.urls")),
     path("accounts/", include("accounts.urls")),
+    path("core/", include("core.urls")),
 ]

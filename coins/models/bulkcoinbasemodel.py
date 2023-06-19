@@ -10,6 +10,7 @@ class BulkCoinBaseModel(CreatedUpdated, SelectMints, models.Model):
         on_delete=models.CASCADE,
         related_name="bulk_coin_sku",
     )
+    pcgs_number = models.IntegerField(null=True, blank=True)
     year_1 = models.IntegerField()
     year_2 = models.IntegerField(blank=True, null=True)
     DENOM = (

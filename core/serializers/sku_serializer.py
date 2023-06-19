@@ -6,6 +6,7 @@ class SKUSerializer(serializers.ModelSerializer):
     class Meta:
         model = SKU
         fields = [
+            "id",
             "sku",
             "is_deleted",
         ]
