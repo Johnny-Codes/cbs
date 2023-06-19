@@ -1,20 +1,11 @@
 from django.db import models
 from core.models.createdupdated import CreatedUpdated
-from core.models.sku import SKU
 from coins.models.mints import SelectOneMint
 
 
 class CoinBaseModel(CreatedUpdated, SelectOneMint, models.Model):
-    sku = models.ForeignKey(
-        SKU,
-        on_delete=models.CASCADE,
-        related_name="coin_sku",
-        null=True,
-        blank=True,
-    )
     pcgs_number = models.IntegerField(null=True, blank=True)
     year = models.IntegerField()
-
     DENOM = (
         ("$50", "$50"),
         ("$25", "$25"),
@@ -122,6 +113,7 @@ class CoinBaseModel(CreatedUpdated, SelectOneMint, models.Model):
     )
     grade = models.CharField(max_length=3, choices=GRADES, default="70")
     cost = models.DecimalField(max_digits=11, decimal_places=2, default=0)
+    quantity = models.IntegerField(default=1)
     sale_price = models.DecimalField(
         max_digits=11,
         decimal_places=2,

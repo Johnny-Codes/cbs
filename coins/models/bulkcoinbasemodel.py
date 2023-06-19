@@ -1,15 +1,9 @@
 from django.db import models
 from core.models.createdupdated import CreatedUpdated
-from core.models.sku import SKU
 from .mints import SelectMints
 
 
 class BulkCoinBaseModel(CreatedUpdated, SelectMints, models.Model):
-    sku = models.ForeignKey(
-        SKU,
-        on_delete=models.CASCADE,
-        related_name="bulk_coin_sku",
-    )
     pcgs_number = models.IntegerField(null=True, blank=True)
     year_1 = models.IntegerField()
     year_2 = models.IntegerField(blank=True, null=True)

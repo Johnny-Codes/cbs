@@ -2,9 +2,16 @@ from django.db import models
 from accounts.models import Business
 from coins.models.coinbasemodel import CoinBaseModel
 from coins.models.bulkcoinbasemodel import BulkCoinBaseModel
+from core.models.sku import SKU
 
 
 class SilverDollars(CoinBaseModel, models.Model):
+    sku = models.ForeignKey(
+        SKU,
+        on_delete=models.CASCADE,
+        related_name="silver_dollar_sku",
+    )
+    denomination = models.CharField(max_length=2, default="$1")
     SILVER_DOLLARS = (
         ("Flowing Hair Dollar", "Flowing Hair Dollar"),
         ("Draped Bust Dollar", "Draped Bust Dollar"),
@@ -38,6 +45,12 @@ class SilverDollars(CoinBaseModel, models.Model):
 
 
 class BulkSilverDollars(BulkCoinBaseModel, models.Model):
+    sku = models.ForeignKey(
+        SKU,
+        on_delete=models.CASCADE,
+        related_name="bulk_silver_dollar_sku",
+    )
+    denomination = models.CharField(max_length=2, default="$1")
     SILVER_DOLLARS = (
         ("Flowing Hair Dollar", "Flowing Hair Dollar"),
         ("Draped Bust Dollar", "Draped Bust Dollar"),
