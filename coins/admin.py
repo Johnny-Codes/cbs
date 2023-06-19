@@ -1,5 +1,24 @@
 from django.contrib import admin
-from coins.models import CoinInventory
+from coins.models.silverdollars import SilverDollars, BulkSilverDollars
 
-# Register your models here.
-admin.site.register(CoinInventory)
+
+@admin.register(SilverDollars)
+class SilverDollarsAdmin(admin.ModelAdmin):
+    list_display = (
+        "sku",
+        "__str__",
+        "cost",
+        "sale_price",
+    )
+
+
+@admin.register(BulkSilverDollars)
+class BulkSilverDollarsAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "sku",
+        "__str__",
+        "cost",
+        "average_cost",
+        "sale_price",
+    )

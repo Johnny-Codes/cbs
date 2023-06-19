@@ -1,23 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
+
 # Create your models here.
-
-
-class User(AbstractUser):
-    business = models.ForeignKey(
-        "Business",
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True,
-    )
-
-    def __str__(self):
-        return self.username
-
-    class Meta:
-        verbose_name_plural = "Users"
-        verbose_name = "User"
 
 
 class Business(models.Model):
@@ -29,3 +14,19 @@ class Business(models.Model):
     class Meta:
         verbose_name_plural = "Businesses"
         verbose_name = "Business Name"
+
+
+class User(AbstractUser):
+    business = models.ForeignKey(
+        Business,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+    )
+
+    def __str__(self):
+        return self.username
+
+    class Meta:
+        verbose_name_plural = "Users"
+        verbose_name = "User"
