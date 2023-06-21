@@ -1,0 +1,49 @@
+:root {
+    --gold: #FFD700;
+    --gold-rgb: (255, 215, 0);
+    --jet: #323031;
+    --jet-rgb: (50, 48, 49);
+    --white: #FFFFFF;
+    --white-rgb: (255, 255, 255);
+    --slate: #7d8491;
+    --slate-rgb: (125, 132, 145);
+    --silver: #C0C0C0;
+    --silver-rgb: (192, 192, 192);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+    outline: solid 1px red;
+}
+
+.navigation-container, .footer {
+    background-color: var(--jet);
+}
+
+.navigation-container ul {
+    display: flex;
+    justify-content: right;
+}
+
+.navigation-container li {
+    list-style: none;
+    padding: 8px 16px;
+}
+
+.navigation-container a {
+    text-decoration: none;
+    color: var(--white);
+}
+
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    padding-top: 1px;
+    text-align: center;
+    color: var(--white);
+    font-size: 10px;
+}
