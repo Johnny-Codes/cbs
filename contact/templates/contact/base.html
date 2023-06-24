@@ -13,7 +13,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   </head>
   <body>
+    {% if messages %}
+    <ul class="messages {% if messages.tags %}slide-in{% endif %}">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+              {{ message }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <main class="main-container">{% block content %} {% include './contact.html' %} {% endblock content %}</main>
     {% block footer %}{% include './footer.html' %} {% endblock footer %}
+    <script>
+      function hideMessages() {
+        setTimeout(function() {
+          var messages = document.querySelectorAll('.messages');
+          messages.forEach(function(message) {
+            message.classList.add('slide-out');
+            setTimeout(function() {
+              message.style.display = 'none';
+            }, 500); // Adjust the delay as needed
+          });
+        }, 5000); // Adjust the delay as needed
+      }
+      
+      window.addEventListener('load', hideMessages);
+      </script>
   </body>
 </html>

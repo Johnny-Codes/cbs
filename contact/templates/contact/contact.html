@@ -1,79 +1,60 @@
-{% extends './base.html' %}
-{% load static %}
-
-{% block content %}
+{% extends './base.html' %} {% load static %} {% block content %}
 <div class="logo-container">
-    
-    <div class="sign-up-container">
-        <h1>Coin Box Sub</h1>
-        <hr>
-        <h2>COMING SOON  <i class="fa-regular fa-calendar-days"></i></h2>
-        <p>Embark on a Numismatic Journey with your Coin Box Sub!</p>    
-        <h3>Sign up below to get notified when we launch</h3>
-        <form method="post">
-            {% csrf_token %}
-            {{ form }}
-            <button>Sign Up</button>
-        </div>
-    
-
+  <div class="sign-up-container">
+    <h1>Coin Box Sub</h1>
+    <h2>A box of coins delivered straight to your door every month!</h2>
+    <hr />
+    <h2>COMING SOON <i class="fa-regular fa-calendar-days"></i></h2>
+    <p>Embark on a Numismatic Journey with your Coin Box Sub!</p>
+    <h3>Sign up below to get notified when we launch</h3>
+    <form method="post">
+      {% csrf_token %} {{ form }}
+      <button>Sign Up</button>
+    </form>
+  </div>
 </div>
 
 <div class="card-header">
-
-    <div><h2>Why choose Coin Box Sub?</h2></div>
-
+  <div><h2>Why choose Coin Box Sub?</h2></div>
 </div>
 
 <div class="card-container">
-
-    <div class="card">
-        <h2><i class="fa-solid fa-coins"></i>  Starting at $50</h2>
-        <hr>
-        <p>Immerse yourself in the world of numismatics with Coin Box Sub, your gateway to a meticulously curated collection of coins ranging from cents to dollars. For just $50 a month, embark on a journey of discovery as you explore a diverse selection from our extensive inventory. With Coin Box Sub, every month brings a fresh opportunity to uncover something new and exciting.</p>
-    </div>
-    <div class="card">
-        <h2><i class="fa-solid fa-box-open"></i>  <span id="graded">Graded Coins</span></h2>
-        <hr>
-        <p>Discover the hidden gems within every box: a guaranteed graded coin by PCGS, NGC, ANACS, or ICG awaits you. Delve into a diverse assortment of coins, ranging from classic Flying Eagle cents to iconic Morgan Dollars. Each shipment is an invitation to enhance your collection and share the joy of the hobby. Experience the thrill of new discoveries with every monthly delivery.</p>
-    </div>
-    <div class="card">
-        <h2><i class="fa-regular fa-face-smile"></i>  Satisfaction Guaranteed</h2>
-        <hr>
-        <p>At Coin Box Sub, your satisfaction is our top priority. Should you find any item in your monthly coin box subscription less than perfect, we're pleased to offer our buyback guarantee*. Within 1 month, we'll repurchase the item at 80% of its value, ensuring your complete peace of mind.</p>
-    </div>
+  <div class="card">
+    <h2><i class="fa-solid fa-coins"></i> Starting at $50</h2>
+    <hr />
+    <p>
+      Immerse yourself in the world of numismatics with Coin Box Sub, your
+      gateway to a meticulously curated collection of coins ranging from cents
+      to dollars. For just $50 a month, embark on a journey of discovery as you
+      explore a diverse selection from our extensive inventory. With Coin Box
+      Sub, every month brings a fresh opportunity to uncover something new and
+      exciting.
+    </p>
+  </div>
+  <div class="card">
+    <h2>
+      <i class="fa-solid fa-box-open"></i> <span id="graded">Graded Coins</span>
+    </h2>
+    <hr />
+    <p>
+      Discover the hidden gems within every box: a guaranteed graded coin by
+      PCGS, NGC, ANACS, or ICG awaits you. Delve into a diverse assortment of
+      coins, ranging from classic Flying Eagle cents to iconic Morgan Dollars.
+      Each shipment is an invitation to enhance your collection and share the
+      joy of the hobby. Experience the thrill of new discoveries with every
+      monthly delivery.
+    </p>
+  </div>
+  <div class="card">
+    <h2><i class="fa-regular fa-face-smile"></i> Satisfaction Guaranteed</h2>
+    <hr />
+    <p>
+      At Coin Box Sub, your satisfaction is our top priority. Should you find
+      any item in your monthly coin box subscription less than perfect, we're
+      pleased to offer our buyback guarantee*. Within 1 month, we'll repurchase
+      the item at 80% of its value, ensuring your complete peace of mind.
+    </p>
+  </div>
 </div>
 
-<div class="faq-container">
-    <div class="faq-header">
-        <h2>Frequently Asked Questions</h2>
-    </div>
-</div>
-
-<div class="faq-content">
-    <div></div>
-    <div class="faq">
-        <ul>
-            <li><strong>What are the different subscription tiers available?</strong><p>
-                We offer three subscription tiers to choose from: Basic, Premium, and Deluxe.
-            </p>
-            </li>
-            <li><strong>What can I expect to find in the subscription boxes?</strong>
-            <p>
-                Each subscription tier offers unique contents. In the Basic tier, priced at $50, you will find a guaranteed graded coin from reputable grading companies such as PCGS, NGC, ANACS, or ICG. The Premium tier, priced at $100, includes a graded coin and an additional silver dollar. The Deluxe tier, priced at $200, provides a graded coin, a silver dollar, and a 1 oz. 999 fine silver piece.
-            </p>
-            </li>
-            <li><strong>What are PCGS, NGC, ANACS, and ICG?</strong><p>
-                PCGS, NGC, ANACS, and ICG are widely recognized and respected coin grading companies. These organizations specialize in grading and authenticating coins to ensure their quality, protect consumers, and preserve the value of the coins.</p>
-            </li>
-            <li><strong>Who is behind Coin Box Sub?</strong><p>
-                Coin Box Sub is a Veteran Owned Small Business based in Texas. The owner, a third-generation coin dealer and a veteran of the US Army, brings extensive experience and knowledge to curate the best coins for our subscribers. With our vast inventory and a strong network of dealers, we are committed to delivering exceptional coins at a great value.</p>
-            </li>
-            <li><strong>What does your buyback guarantee entail?</strong><p>
-                Our buyback guarantee assures your satisfaction. If, for any reason, you are unsatisfied with an item in your subscription box, we offer a buyback option. Within one month of receiving your subscription box, we will repurchase the item at 80% of its value. Please note that the buyback guarantee excludes items whose value is solely based on the bullion market, such as 90% silver coins commonly known as "junk silver."</p>
-            </li>
-        </ul>
-    </div>
-    <div></div>
-</div>
-{% endblock content %}
+{% include './faq.html' %} {% endblock content %}
