@@ -18,6 +18,8 @@ services:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - DEBUG_ENV=development
+      - DEV_SECRET_KEY=${DEV_SECRET_KEY}
     depends_on:
       - db
   # frontend:
@@ -30,3 +32,5 @@ services:
   #     - "3000:3000"
   #   depends_on:
   #     - db
+
+  ## dev
