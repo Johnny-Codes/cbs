@@ -11,7 +11,16 @@ class Strike(models.Model):
         ("STN", "Satin"),
         ("BRN", "Burnished"),
     )
-    strike = models.CharField(max_length=4, choices=STRIKE, default="MS")
+    strike = models.CharField(
+        max_length=4,
+        choices=STRIKE,
+        default="MS",
+        unique=True,
+    )
+
+    def __str__(self):
+        return self.strike
 
     class Meta:
-        abstract = True
+        verbose_name_plural = "Strikes"
+        verbose_name = "Strike"

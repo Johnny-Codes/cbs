@@ -1,47 +1,91 @@
 from django.contrib import admin
-from coins.models.silverdollars import SilverDollars, BulkSilverDollars
-from coins.models.halfdollars import HalfDollars, BulkHalfDollars
+
+from coins.models.denominations import (
+    Denominations,
+    CoinFamily,
+    CoinTypeName,
+)
+from coins.models.coinbasemodel import CoinBaseModel
+from coins.models.mints import SelectOneMint, SelectMints
+from coins.models.strike import Strike
+from coins.models.grading import (
+    GradingServices,
+    CoinGrades,
+)
 
 
-@admin.register(SilverDollars)
-class SilverDollarsAdmin(admin.ModelAdmin):
+@admin.register(GradingServices)
+class GradingServicesAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+
+
+@admin.register(CoinGrades)
+class CoinGrades(admin.ModelAdmin):
     list_display = (
         "id",
-        "__str__",
-        "cost",
-        "sale_price",
+        "grade",
     )
 
 
-@admin.register(BulkSilverDollars)
-class BulkSilverDollarsAdmin(admin.ModelAdmin):
+@admin.register(Strike)
+class SelectStrikeAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "__str__",
-        "cost",
+    )
+
+
+@admin.register(SelectMints)
+class SelectMintsAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "__str__",
+    )
+
+
+@admin.register(SelectOneMint)
+class SelectMintAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "coin_mint",
+    )
+
+
+@admin.register(CoinBaseModel)
+class CoinBaseModel(admin.ModelAdmin):
+    list_display = (
+        "__str__",
         "quantity",
-        "average_cost",
-        "sale_price",
     )
 
 
-@admin.register(HalfDollars)
-class HalfDollarsAdmin(admin.ModelAdmin):
+@admin.register(CoinTypeName)
+class CoinTypeNameAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "__str__",
-        "cost",
-        "sale_price",
+        "coin_type",
+        "denomination",
     )
 
+    def denomination(self, obj):
+        return obj.denominations
 
-@admin.register(BulkHalfDollars)
-class BulkHalfDollarsAdmin(admin.ModelAdmin):
+
+@admin.register(Denominations)
+class DenominationAdmin(admin.ModelAdmin):
     list_display = (
         "id",
-        "__str__",
-        "cost",
-        "quantity",
-        "average_cost",
-        "sale_price",
+        "denomination_of_coin",
+        "family",
+    )
+
+    def family(self, obj):
+        return obj.family
+
+
+@admin.register(CoinFamily)
+class CoinFamilyAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "type",
     )

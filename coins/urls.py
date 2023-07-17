@@ -1,48 +1,42 @@
 from django.urls import path
-from .views.silverdollarserializerview import (
-    SilverDollarsSerializerView,
-    BulkSilverDollarsSerializerView,
-    SilverDollarsDetailSerializerView,
-    BulkSilverDollarsDetailSerializerView,
-)
-from .views.halfdollarviews import (
-    HalfDollarsSerializerView,
-    HalfDollarsDetailSerializerView,
-    BulkHalfDollarsSerializerView,
-    BulkHalfDollarsDetailSerializerView,
+from coins.views.coinbasemodelview import CoinBaseModelSerializerView
+from coins.views.voviews import (
+    CoinFamilySerializerView,
+    GradingServicesSerializerView,
+    CoinGradesSerializerView,
+    SelectMintsSerializerView,
+    CoinStrikeSerializer,
 )
 
 urlpatterns = [
     path(
-        "api/silverdollars/",
-        SilverDollarsSerializerView.as_view(),
+        "coins/",
+        CoinBaseModelSerializerView.as_view(),
+        name="coin_base_model_serializer",
     ),
     path(
-        "api/silverdollars/<int:id>/",
-        SilverDollarsDetailSerializerView.as_view(),
+        "coins/family/",
+        CoinFamilySerializerView.as_view(),
+        name="coin_family",
     ),
     path(
-        "api/bulksilverdollars/",
-        BulkSilverDollarsSerializerView.as_view(),
+        "coins/gradingservices/",
+        GradingServicesSerializerView.as_view(),
+        name="grading_services",
     ),
     path(
-        "api/bulksilverdollars/<int:id>/",
-        BulkSilverDollarsDetailSerializerView.as_view(),
+        "coins/coingrades/",
+        CoinGradesSerializerView.as_view(),
+        name="coin_grades",
     ),
     path(
-        "api/halfdollars/",
-        HalfDollarsSerializerView.as_view(),
+        "coins/mints/",
+        SelectMintsSerializerView.as_view(),
+        name="select_mints",
     ),
     path(
-        "api/halfdollars/<int:id>/",
-        HalfDollarsDetailSerializerView.as_view(),
-    ),
-    path(
-        "api/bulkhalfdollars/",
-        BulkHalfDollarsSerializerView.as_view(),
-    ),
-    path(
-        "api/bulkhalfdollars/<int:id>/",
-        BulkHalfDollarsDetailSerializerView.as_view(),
+        "coins/strike/",
+        CoinStrikeSerializer.as_view(),
+        name="coin_strike",
     ),
 ]

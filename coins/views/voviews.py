@@ -1,0 +1,78 @@
+from coins.models.denominations import (
+    CoinFamily,
+)
+from coins.models.grading import (
+    GradingServices,
+    CoinGrades,
+)
+from coins.models.mints import SelectOneMint
+from coins.models.strike import Strike
+from coins.serializers.voserializers import (
+    CoinFamilySerializer,
+    GradingServicesSerializer,
+    CoinGradesSerializer,
+    SelectMintSerializer,
+    CoinStrikeSerializer,
+)
+
+from rest_framework import mixins, generics
+
+
+class CoinStrikeSerializer(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView,
+):
+    queryset = Strike.objects.all()
+    serializer_class = CoinStrikeSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class CoinFamilySerializerView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView,
+):
+    queryset = CoinFamily.objects.all()
+    serializer_class = CoinFamilySerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class GradingServicesSerializerView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView,
+):
+    queryset = GradingServices.objects.all()
+    serializer_class = GradingServicesSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class CoinGradesSerializerView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView,
+):
+    queryset = CoinGrades.objects.all().order_by("grade").reverse()
+    serializer_class = CoinGradesSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class SelectMintsSerializerView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView,
+):
+    queryset = SelectOneMint.objects.all()
+    serializer_class = SelectMintSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
