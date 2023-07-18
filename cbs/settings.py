@@ -28,7 +28,10 @@ print(">>>>>>>>>>>>>>>>>>> debug", debug_env)
 if debug_env == "development":
     DEBUG = True
     SECRET_KEY = os.environ.get("DEV_SECRET_KEY")
-    ALLOWED_HOSTS = ["localhost"]
+    ALLOWED_HOSTS = [
+        "localhost",
+        "localhost:3000",
+    ]
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
@@ -42,7 +45,10 @@ if debug_env == "development":
 else:
     DEBUG = False
     SECRET_KEY = os.environ.get("PROD_SECRET_KEY")
-    ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = [
+        "localhost",
+        "localhost:3000",
+    ]
     CSRF_COOKIE_SECURE = True
     SECURE_HSTS_SECONDS = 31536000
     SECURE_SSL_REDIRECT = True

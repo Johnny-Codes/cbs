@@ -7,7 +7,7 @@ from coins.data.grades import (
 
 class GradingServices(models.Model):
     name = models.CharField(
-        max_length=15,
+        max_length=32,
         choices=GRADING_SERVICES,
         default="PCGS",
         unique=True,

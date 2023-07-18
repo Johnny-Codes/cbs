@@ -1,7 +1,11 @@
 from django.db import models
 from core.models.createdupdated import CreatedUpdated
 from core.models.softdelete import SoftDeleteModel
-from coins.models.mints import SelectOneMint
+from core.models.isbulk import IsBulk
+from coins.models.mints import (
+    SelectOneMint,
+    SelectMints,
+)
 from images.models import Images
 from .denominations import (
     Denominations,
@@ -18,6 +22,7 @@ from coins.models.grading import (
 class CoinBaseModel(
     CreatedUpdated,
     SoftDeleteModel,
+    IsBulk,
     models.Model,
 ):
     pcgs_number = models.IntegerField(
@@ -32,10 +37,10 @@ class CoinBaseModel(
         blank=True,
         null=True,
     )
-    mint = models.ForeignKey(
+    mint = models.ManyToManyField(
         SelectOneMint,
-        on_delete=models.CASCADE,
         related_name="mint",
+        blank=True,
     )
     description = models.TextField(null=True, blank=True)
     family_of_coin = models.ForeignKey(
@@ -53,9 +58,8 @@ class CoinBaseModel(
         on_delete=models.CASCADE,
         related_name="coin_type_name",
     )
-    grading = models.ForeignKey(
+    grading = models.ManyToManyField(
         GradingServices,
-        on_delete=models.CASCADE,
         related_name="grading_service",
     )
     grade = models.ForeignKey(

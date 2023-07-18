@@ -38,17 +38,17 @@ class SelectMints(models.Model):
 
 class SelectOneMint(models.Model):
     MINTS = (
-        ("P", "Philadelphia Mint"),
-        ("S", "San Francisco Mint"),
-        ("D", "Denver Mint"),
-        ("CC", "Carson City Mint"),
-        ("W", "West Point Mint"),
-        ("C", "Charlotte Mint"),
-        ("O", "New Orleans Mint"),
-        ("DL", "Dahlonega Mint"),
+        ("Philadelphia Mint", "Philadelphia Mint"),
+        ("San Francisco Mint", "San Francisco Mint"),
+        ("Denver Mint", "Denver Mint"),
+        ("Carson City Mint", "Carson City Mint"),
+        ("West Point Mint", "West Point Mint"),
+        ("Charlotte Mint", "Charlotte Mint"),
+        ("New Orleans Mint", "New Orleans Mint"),
+        ("Dahlonega Mint", "Dahlonega Mint"),
     )
     coin_mint = models.CharField(
-        max_length=2,
+        max_length=32,
         choices=MINTS,
         default="P",
         unique=True,

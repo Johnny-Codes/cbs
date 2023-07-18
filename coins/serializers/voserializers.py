@@ -9,6 +9,13 @@ from coins.models.grading import (
     CoinGrades,
 )
 from coins.models.mints import SelectOneMint
+from coins.models.strike import Strike
+
+
+class CoinStrikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Strike
+        fields = ("id", "strike")
 
 
 class CoinTypeNameSerializer(serializers.ModelSerializer):
