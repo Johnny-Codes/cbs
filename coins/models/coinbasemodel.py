@@ -1,7 +1,7 @@
 from django.db import models
 from core.models.createdupdated import CreatedUpdated
-from core.models.softdelete import SoftDeleteModel
 from core.models.isbulk import IsBulk
+from core.models.sku import SKU
 from coins.models.mints import (
     SelectOneMint,
     SelectMints,
@@ -20,8 +20,8 @@ from coins.models.grading import (
 
 
 class CoinBaseModel(
+    SKU,
     CreatedUpdated,
-    SoftDeleteModel,
     IsBulk,
     models.Model,
 ):
@@ -87,16 +87,14 @@ class CoinBaseModel(
         null=True,
     )
 
-    images = models.ForeignKey(
+    images = models.ManyToManyField(
         Images,
-        on_delete=models.CASCADE,
-        null=True,
         blank=True,
     )
     strike = models.ForeignKey(Strike, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.year}-{self.mint} {self.coin_type} {self.grading} {self.strike} {self.grade}"
+        return f"{self.year} {self.coin_type} {self.strike} {self.grade}"
 
     class Meta:
         verbose_name_plural = "Coin Base Models"

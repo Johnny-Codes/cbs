@@ -1,6 +1,11 @@
 from django.urls import path
-from .views import SKUSerializerView
+from .views import SKUSerializerView, random_sku
 
 urlpatterns = [
-    path("api/sku/", SKUSerializerView.as_view()),
+    path("sku/", SKUSerializerView.as_view()),
+    path(
+        "sku/random/",
+        random_sku,
+        name="random-sku",
+    ),
 ]

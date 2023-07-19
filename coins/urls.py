@@ -6,6 +6,7 @@ from coins.views.voviews import (
     CoinGradesSerializerView,
     SelectMintsSerializerView,
     CoinStrikeSerializer,
+    DenominationSerializerView,
 )
 
 urlpatterns = [
@@ -39,4 +40,5 @@ urlpatterns = [
         CoinStrikeSerializer.as_view(),
         name="coin_strike",
     ),
+    path("coins/denominations/", DenominationSerializerView.as_view(), name="denominations"),
 ]

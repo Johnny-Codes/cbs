@@ -70,3 +70,9 @@ class SelectMintSerializer(serializers.ModelSerializer):
     class Meta:
         model = SelectOneMint
         fields = "__all__"
+
+
+class DenominationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Denominations
+        fields = "__all__"

@@ -48,7 +48,6 @@ class Denominations(models.Model):
         max_length=4,
         choices=DENOM,
         default="$1",
-        unique=True,
     )
 
     family = models.ForeignKey(

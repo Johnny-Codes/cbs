@@ -29,8 +29,10 @@ if debug_env == "development":
     DEBUG = True
     SECRET_KEY = os.environ.get("DEV_SECRET_KEY")
     ALLOWED_HOSTS = [
+        "http://localhost",
+        "http://localhost:3000",
         "localhost",
-        "localhost:3000",
+        "*",
     ]
     DATABASES = {
         "default": {
@@ -42,6 +44,7 @@ if debug_env == "development":
             "PORT": 5432,
         }
     }
+
 else:
     DEBUG = False
     SECRET_KEY = os.environ.get("PROD_SECRET_KEY")
@@ -87,6 +90,12 @@ INSTALLED_APPS = [
     # 3rd Party
     "rest_framework",
     "corsheaders",
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost",
+    "http://localhost:3000",
+    "https://localhost:3000",
 ]
 
 MIDDLEWARE = [
@@ -183,6 +192,7 @@ CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:3000",
+    "localhost:3000",
 ]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
