@@ -1,0 +1,22 @@
+input[type="text"],
+input[type="number"],
+input[type="checkbox"],
+textarea,
+select {
+  margin: 1em;
+}
+
+form {
+  display: flex;
+  max-width: 500px;
+  align-items: center;
+  flex-wrap: wrap;
+  border: 1px black solid;
+  text-align: center;
+}
+
+form > * {
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+}

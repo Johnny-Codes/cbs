@@ -5,6 +5,8 @@ import GetCoinGrades from "./GetCoinGrades";
 import GetCoinStrikes from "./GetCoinStrikes";
 import GetCoinMints from "./GetCoinMints";
 import GetCoinGradingServices from "./GetCoinGradingServices";
+import SubmitButton from "../buttons/SubmitButton";
+import "./AddCoinForm.css";
 
 interface CoinFormData {
   is_bulk: boolean;
@@ -47,6 +49,25 @@ const AddCoinForm = () => {
     mint: [],
     grading: [],
   });
+  const initialFormData: CoinFormData = {
+    is_bulk: false,
+    sku: "",
+    pcgs_number: null,
+    title: "",
+    year: 0,
+    year2: null,
+    description: "",
+    cost: 0,
+    quantity: 0,
+    sale_price: 0,
+    family_of_coin: 0,
+    denomination_of_coin: 0,
+    coin_type_name: 0,
+    grade: 0,
+    grade2: null,
+    strike: 0,
+    mint: [],
+  };
   const [family, setFamily] = useState([]);
   const [denominations, setDenominations] = useState([]);
   const [coinName, setCoinName] = useState([]);
@@ -120,13 +141,31 @@ const AddCoinForm = () => {
     console.log("form data", formData);
   };
 
-  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submit form data", formData);
+    const json = JSON.stringify(formData);
+    console.log("json", json);
+    const url = "http://localhost:8000/api/coins/";
+    const fetchConfig = {
+      method: "post",
+      body: json,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    };
+    try {
+      const response = await fetch(url, fetchConfig);
+      if (response.ok) {
+        setFormData(initialFormData);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   return (
-    <div className="form-container">
+    <>
       <h1>Add New Coin Inventory</h1>
       <form onSubmit={handleFormSubmit}>
         <FormFields
@@ -250,7 +289,7 @@ const AddCoinForm = () => {
             required
             onChange={handleFormData}
             id="coin_name"
-            name="coin_type_name"
+            name="coin_type"
           >
             <option value="">Select Coin</option>
             {coinName &&
@@ -327,9 +366,9 @@ const AddCoinForm = () => {
               />
             ))}
         </div>
-        <button type="submit">Submit</button>
+        <SubmitButton />
       </form>
-    </div>
+    </>
   );
 };
 
