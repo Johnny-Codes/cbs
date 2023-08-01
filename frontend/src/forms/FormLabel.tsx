@@ -1,14 +1,10 @@
-import React from "react";
-import './formlabel.css';
-type FormInputProps = {
-  for: string;
-  text: string;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+type TextType = {
+    text: string
+    htmlFor: string
+}
 
-const FormLabel: React.FC<FormInputProps> = ({ htmlFor, text, ...rest }) => {
-  return (
-    <label htmlFor={htmlFor}>{text}</label>
-  );
-};
+const FormLabel = ({text, ...rest}:TextType) => {
+    return <label {...rest}>{text}</label>
+}
 
-export default FormLabel;
+export default FormLabel
