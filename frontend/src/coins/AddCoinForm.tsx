@@ -1,14 +1,19 @@
 import { useState, useEffect } from "react";
-import FormInput from "../forms/FormInput";
-import FormLabel from "../forms/FormLabel";
+import FormFields from "../forms/FormFields";
+import GetFamily from "./GetFamily";
 
 interface CoinFormData {
   is_bulk: boolean;
   sku: string;
-  pcgs_number: number | null;
+  pcgs_number?: number | null;
   title: string;
   year: number;
   year2?: number | null;
+  description: string;
+  cost: number;
+  quantity: number;
+  sale_price: number;
+  family_of_coin: number;
 }
 const AddCoinForm = () => {
   const [formData, setFormData] = useState<CoinFormData>({
@@ -18,6 +23,11 @@ const AddCoinForm = () => {
     title: "",
     year: 0,
     year2: null,
+    description: "",
+    cost: 0,
+    quantity: 0,
+    sale_price: 0,
+    family_of_coin: 0,
   });
 
   const getRandomSku = async () => {
@@ -33,8 +43,11 @@ const AddCoinForm = () => {
     }
   };
 
+  const [family, setFamily] = useState([]);
+
   useEffect(() => {
     getRandomSku();
+    GetFamily(setFamily);
   }, []);
 
   const handleFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,65 +68,90 @@ const AddCoinForm = () => {
     <div className="form-container">
       <h1>Add New Coin Inventory</h1>
       <form onSubmit={handleFormSubmit}>
+        <FormFields
+          labelText="Bulk?"
+          htmlFor="is_bulk"
+          value={formData.is_bulk}
+          type="checkbox"
+          name="is_bulk"
+          onChange={handleFormData}
+        />
+        <FormFields
+          labelText="SKU"
+          htmlFor="sku"
+          type="text"
+          name="sku"
+          onChange={handleFormData}
+          value={formData.sku}
+        />
+        <FormFields
+          labelText="PCGS Number"
+          htmlFor="pcgs_number"
+          type="number"
+          name="pcgs_number"
+          onChange={handleFormData}
+        />
+        <FormFields
+          required
+          labelText="Title"
+          htmlFor="title"
+          name="title"
+          onChange={handleFormData}
+        />
+        <FormFields
+          required
+          labelText="Year"
+          type="number"
+          htmlFor="year"
+          name="year"
+          onChange={handleFormData}
+        />
+        <FormFields
+          labelText="Year 2"
+          htmlFor="year2"
+          type="number"
+          name="year2"
+          onChange={handleFormData}
+        />
+        <FormFields
+          labelText="Description"
+          htmlFor="description"
+          type="textarea"
+          onChange={handleFormData}
+          name="description"
+        />
+        <FormFields
+          required
+          labelText="Cost"
+          htmlFor="cost"
+          type="number"
+          onChange={handleFormData}
+          name="cost"
+        />
+        <FormFields
+          required
+          labelText="Quantity"
+          htmlFor="quantity"
+          type="number"
+          name="quantity"
+          onChange={handleFormData}
+        />
+        <FormFields
+          labelText="Sale Price"
+          htmlFor="sale_price"
+          type="number"
+          name="sale_price"
+          onChange={handleFormData}
+        />
         <div>
-          <FormLabel text="Bulk?" htmlFor="is_bulk" />
-          <FormInput
-            value={formData.is_bulk}
-            type="checkbox"
-            name="is_bulk"
-            id="is_bulk"
-            onChange={handleFormData}
-          />
-        </div>
-        <div>
-          <FormLabel text="SKU" htmlFor="sku" />
-          <FormInput
-            required
-            id="sku"
-            type="string"
-            name="sku"
-            onChange={handleFormData}
-            value={formData.sku}
-          />
-        </div>
-        <div>
-          <FormLabel text="PCGS Number" htmlFor="pcgs_number" />
-          <FormInput
-            id="pcgs_number"
-            type="number"
-            name="pcgs_number"
-            onChange={handleFormData}
-          />
-        </div>
-        <div>
-          <FormLabel text="Title" htmlFor="title" />
-          <FormInput
-            required
-            id="title"
-            name="title"
-            value={formData.title}
-            type="text"
-            onChange={handleFormData}
-          />
-        </div>
-        <div>
-          <FormLabel text="Year" htmlFor="year" />
-          <FormInput
-            required
-            type="number"
-            id="year"
-            name="year"
-            onChange={handleFormData}
-          />
-        </div>
-        <div>
-          <FormLabel text="Year 2" htmlFor="year2" />
-          <FormInput
-            type="number"
-            id="year2"
-            name="year2"
-            onChange={handleFormData}
-          />
+          <select name="family_of_coin" onChange={handleFormData} required>
+            <option value="">Select Family</option>
+            {family.map((family) => (
+              <option key={family.id} value={family.id}>
+                {family.type}
+              </option>
+            ))}
+          </select>
         </div>
         <button type="submit">Submit</button>
       </form>
