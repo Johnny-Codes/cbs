@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class CoinFamily(models.Model):
@@ -74,6 +75,9 @@ class CoinTypeName(models.Model):
         on_delete=models.CASCADE,
         related_name="coin_type_name",
     )
+
+    def get_url(self):
+        return reverse("coins:coin_type_name", kwargs={"id": self.id})
 
     def __str__(self):
         return self.coin_type

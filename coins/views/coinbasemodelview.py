@@ -41,3 +41,22 @@ class OneCoinBaseModelSerializerView(
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CoinTypeSerializerView(
+    mixins.ListModelMixin,
+    generics.GenericAPIView,
+):
+    queryset = CoinBaseModel.objects.all()
+    serializer_class = CoinBaseModelSerializer
+    lookup_field = "coin_type"
+
+    def get(self, request, *args, **kwargs):
+        coin_types = kwargs.get("coin_type")
+        if coin_types is not None:
+            queryset = self.queryset.filter(coin_type=coin_types)
+        else:
+            queryset = self.queryset.all()
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

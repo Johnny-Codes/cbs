@@ -2,6 +2,7 @@ from django.urls import path
 from coins.views.coinbasemodelview import (
     CoinBaseModelSerializerView,
     OneCoinBaseModelSerializerView,
+    CoinTypeSerializerView,
 )
 from coins.views.voviews import (
     CoinFamilySerializerView,
@@ -52,5 +53,10 @@ urlpatterns = [
         "coins/denominations/",
         DenominationSerializerView.as_view(),
         name="denominations",
+    ),
+    path(
+        "coins/cointypes/<int:coin_type>/",
+        CoinTypeSerializerView.as_view(),
+        name="coin_type_name",
     ),
 ]

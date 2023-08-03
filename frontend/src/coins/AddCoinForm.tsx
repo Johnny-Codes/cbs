@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import FormFields from "../forms/FormFields";
-import GetFamily from "./GetFamily";
+import GetCoinFamily from "./GetCoinFamily";
 import GetCoinGrades from "./GetCoinGrades";
 import GetCoinStrikes from "./GetCoinStrikes";
 import GetCoinMints from "./GetCoinMints";
@@ -67,6 +67,7 @@ const AddCoinForm = () => {
     grade2: null,
     strike: 0,
     mint: [],
+    grading: [],
   };
   const [family, setFamily] = useState([]);
   const [denominations, setDenominations] = useState([]);
@@ -89,11 +90,25 @@ const AddCoinForm = () => {
     }
   };
 
+  const handleBulkCoins = () => {
+    const grade2 = document.getElementById("grade2");
+    const year2 = document.getElementById("year2");
+    // const bulkSelect = document.querySelectorAll(".bulk");
+    // bulkSelect.classList.toggle("hidden");
+    grade2?.classList.toggle("hidden");
+    year2?.classList.toggle("hidden");
+  };
+
   const handleFamilyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedFamilyId = parseInt(e.target.value, 10);
-    const selectedFamily = family.find((item) => item.id === selectedFamilyId);
 
-    if (selectedFamily) {
+    if (!selectedFamilyId) {
+      setDenominations(0);
+      setCoinName(0);
+    } else {
+      const selectedFamily = family.find(
+        (item) => item.id === selectedFamilyId
+      );
       setDenominations(selectedFamily.denominations);
     }
   };
@@ -102,16 +117,19 @@ const AddCoinForm = () => {
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const selectedDenominationId = parseInt(e.target.value, 10);
-    const selectedDenomination = denominations.find(
-      (item) => item.id === selectedDenominationId
-    );
-    if (selectedDenomination) {
+
+    if (!selectedDenominationId) {
+      setCoinName(0);
+    } else {
+      const selectedDenomination = denominations.find(
+        (item) => item.id === selectedDenominationId
+      );
       setCoinName(selectedDenomination.coin_type_name);
     }
   };
   useEffect(() => {
     getRandomSku();
-    GetFamily(setFamily);
+    GetCoinFamily(setFamily);
     GetCoinGrades(setCoinGrades);
     GetCoinStrikes(setCoinStrikes);
     GetCoinMints(setCoinMints);
@@ -143,9 +161,7 @@ const AddCoinForm = () => {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("submit form data", formData);
     const json = JSON.stringify(formData);
-    console.log("json", json);
     const url = "http://localhost:8000/api/coins/";
     const fetchConfig = {
       method: "post",
@@ -175,6 +191,7 @@ const AddCoinForm = () => {
           type="checkbox"
           name="is_bulk"
           onChange={handleFormData}
+          onClick={handleBulkCoins}
         />
         <FormFields
           labelText="SKU"
@@ -212,6 +229,7 @@ const AddCoinForm = () => {
           type="number"
           name="year2"
           onChange={handleFormData}
+          className="hidden"
         />
         <FormFields
           labelText="Description"
@@ -313,8 +331,15 @@ const AddCoinForm = () => {
           </select>
         </div>
         <div>
-          <label htmlFor="grade2">Grade 2</label>
-          <select required onChange={handleFormData} id="grade2" name="grade2">
+          <label htmlFor="grade2" className="bulk">
+            Grade 2
+          </label>
+          <select
+            className="bulk hidden"
+            onChange={handleFormData}
+            id="grade2"
+            name="grade2"
+          >
             <option value="">Select Grade</option>
             {coinGrades &&
               coinGrades

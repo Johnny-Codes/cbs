@@ -1,4 +1,4 @@
-const GetFamily = async (
+const GetCoinFamily = async (
   setFamily: React.Dispatch<React.SetStateAction<never[]>>
 ) => {
   try {
@@ -12,4 +12,4 @@ const GetFamily = async (
   }
 };
 
-export default GetFamily;
+export default GetCoinFamily;

@@ -1,10 +1,13 @@
 import AddCoinForm from "./coins/AddCoinForm";
-
+import CoinMenu from "./coins/CoinMenu";
 
 const App: React.FC = () => {
   return (
-    <AddCoinForm />
-  )
+    <>
+      <CoinMenu />
+      <AddCoinForm />
+    </>
+  );
 };
 
 export default App;

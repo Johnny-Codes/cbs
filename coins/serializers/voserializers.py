@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.urls import reverse
 from coins.models.denominations import (
     CoinFamily,
     Denominations,
@@ -19,9 +20,14 @@ class CoinStrikeSerializer(serializers.ModelSerializer):
 
 
 class CoinTypeNameSerializer(serializers.ModelSerializer):
+    url = serializers.SerializerMethodField()
+
     class Meta:
         model = CoinTypeName
-        fields = ("id", "coin_type")
+        fields = ("id", "coin_type", "url")
+
+    def get_url(self, obj):
+        return reverse("coin_type_name", kwargs={"coin_type": obj.id})
 
 
 class DenominationsSerializer(serializers.ModelSerializer):
