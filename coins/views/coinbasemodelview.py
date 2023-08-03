@@ -54,7 +54,10 @@ class CoinTypeSerializerView(
     def get(self, request, *args, **kwargs):
         coin_types = kwargs.get("coin_type")
         if coin_types is not None:
-            queryset = self.queryset.filter(coin_type=coin_types)
+            queryset = self.queryset.filter(
+                coin_type=coin_types,
+                is_deleted=False,
+            )
         else:
             queryset = self.queryset.all()
 

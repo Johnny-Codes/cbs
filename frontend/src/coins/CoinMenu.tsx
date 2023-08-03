@@ -1,59 +1,147 @@
 import GetCoinFamily from "./GetCoinFamily";
 import { useState, useEffect } from "react";
 
-const CoinTypeComponent = ({ coinType }) => {
+const CoinTypeComponent = ({ coinType, selectedCoin }) => {
   return (
-    <ul>
+    <div className="indent-16  hs-accordion-group">
       {coinType.map((coin) => (
-        <li key={coin.id} id={coin.id}>
-          {/* this actually needs to be a <Link> to a component */}
+        <div className="hs-accordion-content" key={coin.id}>
           {/* <a href={`http://localhost:8000${coin.url}`}> */}
-          {/* something like: <listCoinTypes url={coin.url} */}
-          {/* how to do cache? big db might need it. React query? */}
-          {coin.coin_type}
+
+          <p
+            data-url={coin.url}
+            onClick={selectedCoin}
+            className="p-2 border-b-2 border-x-2 border-black  text-gray-800 dark:text-gray-200"
+          >
+            {coin.coin_type}
+          </p>
           {/* </a> */}
-        </li>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 };
 
-const DenominationComponent = ({ denominations }) => {
+const DenominationComponent = ({
+  denominations,
+  openAccordions,
+  toggleAccordion,
+  selectedCoin,
+}) => {
   return (
-    <ul>
+    <div className="hs-accordion-group">
       {denominations.map((d) => (
-        <>
-          <li key={d.id} id={d.id}>
-            {d.denomination_of_coin}
-          </li>
-          <CoinTypeComponent coinType={d.coin_type_name} />
-        </>
+        <div
+          className="hs-accordion"
+          id={`hs-basic-nested-sub-heading-${d.id}`}
+          key={d.id}
+        >
+          <button
+            className="indent-8 border-2 border-black bg-sky-300 hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400"
+            onClick={() =>
+              toggleAccordion(`hs-basic-nested-sub-collapse-${d.id}`)
+            }
+            aria-controls={`hs-basic-nested-sub-collapse-${d.id}`}
+            aria-expanded={openAccordions.includes(
+              `hs-basic-nested-sub-collapse-${d.id}`
+            )}
+          >
+            - {d.denomination_of_coin}
+          </button>
+          <div
+            id={`hs-basic-nested-sub-collapse-${d.id}`}
+            className={`hs-accordion-content ${
+              openAccordions.includes(`hs-basic-nested-sub-collapse-${d.id}`)
+                ? "block"
+                : "hidden"
+            } w-full overflow-hidden transition-[height] duration-300`}
+            aria-labelledby={`hs-basic-nested-sub-heading-${d.id}`}
+          >
+            <CoinTypeComponent
+              coinType={d.coin_type_name}
+              openAccordions={openAccordions}
+              toggleAccordion={toggleAccordion}
+              selectedCoin={selectedCoin}
+            />
+          </div>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 };
 
-const FamilyComponent = ({ family }) => {
+const FamilyComponent = ({
+  family,
+  openAccordions,
+  toggleAccordion,
+  selectedCoin,
+}) => {
   return (
-    <ul>
+    <div className="hs-accordion-group">
       {family.map((fam) => (
-        <>
-          <li key={fam.id} className="text-3xl font-bold underline">
+        <div
+          className="hs-accordion"
+          id={`hs-basic-nested-heading-${fam.id}`}
+          key={fam.id}
+        >
+          <button
+            className="border-2 border-black bg-sky-400 hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400"
+            onClick={() =>
+              toggleAccordion(`hs-basic-nested-collapse-${fam.id}`)
+            }
+            aria-controls={`hs-basic-nested-collapse-${fam.id}`}
+            aria-expanded={openAccordions.includes(
+              `hs-basic-nested-collapse-${fam.id}`
+            )}
+          >
             {fam.type}
-          </li>
-          <DenominationComponent denominations={fam.denominations} />
-        </>
+          </button>
+          <div
+            id={`hs-basic-nested-collapse-${fam.id}`}
+            className={`hs-accordion-content ${
+              openAccordions.includes(`hs-basic-nested-collapse-${fam.id}`)
+                ? "block"
+                : "hidden"
+            } w-full overflow-hidden transition-[height] duration-300`}
+            aria-labelledby={`hs-basic-nested-heading-${fam.id}`}
+          >
+            <DenominationComponent
+              denominations={fam.denominations}
+              openAccordions={openAccordions}
+              toggleAccordion={toggleAccordion}
+              selectedCoin={selectedCoin}
+            />
+          </div>
+        </div>
       ))}
-    </ul>
+    </div>
   );
 };
 
-export default function CoinMenu() {
+export default function CoinMenu({ selectedCoin }) {
   const [family, setFamily] = useState([]);
+  const [openAccordions, setOpenAccordions] = useState([]);
 
   useEffect(() => {
     GetCoinFamily(setFamily);
   }, []);
 
-  return <FamilyComponent family={family} />;
+  const toggleAccordion = (accordionId) => {
+    setOpenAccordions((prevState) =>
+      prevState.includes(accordionId)
+        ? prevState.filter((id) => id !== accordionId)
+        : [...prevState, accordionId]
+    );
+  };
+
+  return (
+    <div>
+      <FamilyComponent
+        family={family}
+        openAccordions={openAccordions}
+        toggleAccordion={toggleAccordion}
+        selectedCoin={selectedCoin}
+      />
+    </div>
+  );
 }
