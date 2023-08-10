@@ -6,9 +6,14 @@ import GetCoinStrikes from "./GetCoinStrikes";
 import GetCoinMints from "./GetCoinMints";
 import GetCoinGradingServices from "./GetCoinGradingServices";
 import SubmitButton from "../buttons/SubmitButton";
+import CancelButton from "../buttons/CancelButton";
 import "./AddCoinForm.css";
+import { useSelector, useDispatch } from "react-redux";
+import { changeBoolean } from "./addOrEditCoinSlice";
+import GetCoinDetail from "./GetCoinDetail";
+import { RootState } from "../store";
 
-interface CoinFormData {
+type CoinFormData = {
   is_bulk: boolean;
   sku: string;
   pcgs_number?: number | null;
@@ -27,8 +32,11 @@ interface CoinFormData {
   strike: number;
   mint: number[];
   grading: number[];
-}
+};
 const AddCoinForm = () => {
+  const dispatch = useDispatch();
+  const selId = useSelector((state: RootState) => state.selectedCoinId.id);
+
   const [formData, setFormData] = useState<CoinFormData>({
     is_bulk: false,
     sku: "",
@@ -49,6 +57,7 @@ const AddCoinForm = () => {
     mint: [],
     grading: [],
   });
+
   const initialFormData: CoinFormData = {
     is_bulk: false,
     sku: "",
@@ -93,8 +102,6 @@ const AddCoinForm = () => {
   const handleBulkCoins = () => {
     const grade2 = document.getElementById("grade2");
     const year2 = document.getElementById("year2");
-    // const bulkSelect = document.querySelectorAll(".bulk");
-    // bulkSelect.classList.toggle("hidden");
     grade2?.classList.toggle("hidden");
     year2?.classList.toggle("hidden");
   };
@@ -134,6 +141,8 @@ const AddCoinForm = () => {
     GetCoinStrikes(setCoinStrikes);
     GetCoinMints(setCoinMints);
     GetCoinGradingServices(setCoinGradingServices);
+
+    GetCoinDetail(selId, setFormData, formData);
   }, []);
 
   const handleFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,23 +170,51 @@ const AddCoinForm = () => {
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const json = JSON.stringify(formData);
     const url = "http://localhost:8000/api/coins/";
-    const fetchConfig = {
-      method: "post",
-      body: json,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    try {
-      const response = await fetch(url, fetchConfig);
-      if (response.ok) {
-        setFormData(initialFormData);
+    if (selId) {
+      console.log("id exists?");
+      // fuck, I need to return the full json from GetCoinDetail to do a PUT to /api/coins/id...
+      // or do I? I have the ID for the URL. I need to get updated time from JS and
+      // I can just PUT the formData and leave the rest alone...
+      const date = Date.now();
+      formData.updated_at = date;
+      formData.id = selId;
+      console.log("formData", formData);
+      const fetchConfig = {
+        method: "put",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      try {
+        const response = await fetch(`${url}${selId}/`, fetchConfig);
+        if (response.ok) {
+          dispatch(changeBoolean());
+        }
+      } catch (error) {}
+    } else {
+      const fetchConfig = {
+        method: "post",
+        body: JSON.stringify(formData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      };
+      console.log("url", url, fetchConfig);
+      try {
+        const response = await fetch(url, fetchConfig);
+        if (response.ok) {
+          dispatch(changeBoolean());
+        }
+      } catch (error) {
+        console.log("error", error);
       }
-    } catch (error) {
-      console.log("error", error);
     }
+  };
+
+  const handleCancelForm = (e: React.FormEvent<HTMLFormElement>) => {
+    dispatch(changeBoolean());
   };
 
   return (
@@ -192,6 +229,7 @@ const AddCoinForm = () => {
           name="is_bulk"
           onChange={handleFormData}
           onClick={handleBulkCoins}
+          checked={formData.is_bulk}
         />
         <FormFields
           labelText="SKU"
@@ -207,6 +245,7 @@ const AddCoinForm = () => {
           type="number"
           name="pcgs_number"
           onChange={handleFormData}
+          value={formData.pcgs_number}
         />
         <FormFields
           required
@@ -214,6 +253,7 @@ const AddCoinForm = () => {
           htmlFor="title"
           name="title"
           onChange={handleFormData}
+          value={formData.title}
         />
         <FormFields
           required
@@ -222,6 +262,7 @@ const AddCoinForm = () => {
           htmlFor="year"
           name="year"
           onChange={handleFormData}
+          value={formData.year}
         />
         <FormFields
           labelText="Year 2"
@@ -230,6 +271,7 @@ const AddCoinForm = () => {
           name="year2"
           onChange={handleFormData}
           className="hidden"
+          value={formData.year2}
         />
         <FormFields
           labelText="Description"
@@ -237,6 +279,7 @@ const AddCoinForm = () => {
           type="textarea"
           onChange={handleFormData}
           name="description"
+          value={formData.description}
         />
         <FormFields
           required
@@ -245,6 +288,7 @@ const AddCoinForm = () => {
           type="number"
           onChange={handleFormData}
           name="cost"
+          value={formData.cost}
         />
         <FormFields
           required
@@ -253,6 +297,7 @@ const AddCoinForm = () => {
           type="number"
           name="quantity"
           onChange={handleFormData}
+          value={formData.quantity}
         />
         <FormFields
           labelText="Sale Price"
@@ -260,6 +305,7 @@ const AddCoinForm = () => {
           type="number"
           name="sale_price"
           onChange={handleFormData}
+          value={formData.sale_price}
         />
         <div>
           <label htmlFor="family">Family</label>
@@ -271,6 +317,7 @@ const AddCoinForm = () => {
             }}
             required
             id="family"
+            value={formData.family_of_coin}
           >
             <option value="">Select Family</option>
             {family &&
@@ -291,6 +338,7 @@ const AddCoinForm = () => {
             }}
             required
             id="denomination"
+            value={formData.denomination_of_coin}
           >
             <option value="">Select Denomination</option>
             {denominations &&
@@ -320,7 +368,13 @@ const AddCoinForm = () => {
         </div>
         <div>
           <label htmlFor="grade">Grade</label>
-          <select required onChange={handleFormData} id="grade" name="grade">
+          <select
+            required
+            onChange={handleFormData}
+            id="grade"
+            name="grade"
+            value={formData.grade}
+          >
             <option value="">Select Grade</option>
             {coinGrades &&
               coinGrades.map((coin) => (
@@ -339,6 +393,7 @@ const AddCoinForm = () => {
             onChange={handleFormData}
             id="grade2"
             name="grade2"
+            value={formData.grade2}
           >
             <option value="">Select Grade</option>
             {coinGrades &&
@@ -353,7 +408,13 @@ const AddCoinForm = () => {
         </div>
         <div>
           <label htmlFor="strike">Select Strike</label>
-          <select required onChange={handleFormData} id="strike" name="strike">
+          <select
+            required
+            onChange={handleFormData}
+            id="strike"
+            name="strike"
+            value={formData.strike}
+          >
             <option value="">Select Strike</option>
             {coinStrikes &&
               coinStrikes.map((strike) => (
@@ -365,33 +426,44 @@ const AddCoinForm = () => {
         </div>
         <div>
           {coinMints &&
-            coinMints.map((mint) => (
-              <FormFields
-                type="checkbox"
-                labelText={mint.coin_mint}
-                htmlFor={mint.id}
-                name="mint"
-                value={mint.id}
-                onChange={handleFormData}
-                key={mint.id}
-              />
-            ))}
+            coinMints.map((mint) => {
+              const isChecked = formData.mint.includes(mint.id);
+              return (
+                <FormFields
+                  type="checkbox"
+                  labelText={mint.coin_mint}
+                  htmlFor={mint.id}
+                  name="mint"
+                  value={mint.id}
+                  checked={isChecked}
+                  onChange={handleFormData}
+                  key={mint.id}
+                />
+              );
+            })}
         </div>
         <div>
           {coinGradingServices &&
-            coinGradingServices.map((service) => (
-              <FormFields
-                type="checkbox"
-                labelText={service.name}
-                htmlFor={service.id}
-                name="grading"
-                value={service.id}
-                onChange={handleFormData}
-                key={service.id}
-              />
-            ))}
+            coinGradingServices.map((service) => {
+              const isChecked = formData.grading.includes(service.id);
+              return (
+                <FormFields
+                  type="checkbox"
+                  labelText={service.name}
+                  htmlFor={service.id}
+                  name="grading"
+                  value={service.id}
+                  checked={isChecked}
+                  onChange={handleFormData}
+                  key={service.id}
+                />
+              );
+            })}
         </div>
-        <SubmitButton />
+        <span>
+          <SubmitButton />
+          <CancelButton onClick={handleCancelForm} />
+        </span>
       </form>
     </>
   );

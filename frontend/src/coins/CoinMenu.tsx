@@ -1,9 +1,10 @@
 import GetCoinFamily from "./GetCoinFamily";
 import { useState, useEffect } from "react";
+import AddCoinForm from "./AddCoinForm";
 
 const CoinTypeComponent = ({ coinType, selectedCoin }) => {
   return (
-    <div className="indent-16  hs-accordion-group">
+    <div className="hs-accordion-group">
       {coinType.map((coin) => (
         <div className="hs-accordion-content" key={coin.id}>
           {/* <a href={`http://localhost:8000${coin.url}`}> */}
@@ -37,7 +38,7 @@ const DenominationComponent = ({
           key={d.id}
         >
           <button
-            className="indent-8 border-2 border-black bg-sky-300 hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400"
+            className="border-2 border-black bg-sky-300 hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400"
             onClick={() =>
               toggleAccordion(`hs-basic-nested-sub-collapse-${d.id}`)
             }

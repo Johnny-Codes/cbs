@@ -36,7 +36,11 @@ class OneCoinBaseModelSerializerView(
 
     def put(self, request, *args, **kwargs):
         coin_instance = self.get_object()
-        serializer = self.get_serializer(coin_instance, data=request.data)
+        serializer = self.get_serializer(
+            coin_instance,
+            data=request.data,
+            partial=True,
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

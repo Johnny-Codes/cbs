@@ -5,13 +5,13 @@ textarea,
 select {
   margin: 1em;
   padding: 0.5em;
+  border: 1px black solid;
+  border-radius: 10px;
 }
 
 form {
   display: grid;
-  max-width: 780px;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-
   align-items: center;
   flex-wrap: wrap;
   border: 1px black solid;

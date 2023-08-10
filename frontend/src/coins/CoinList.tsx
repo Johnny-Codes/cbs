@@ -1,13 +1,17 @@
 import { useState, useEffect } from "react";
+import { RootState } from "../store";
+import { useSelector, useDispatch } from "react-redux";
+import { changeBoolean } from "./addOrEditCoinSlice";
+import { selectedCoinId } from "./selectedCoinSlice";
 
-type CoinListType = {
+export type CoinListType = {
   url: string;
 };
 
 export default function CoinList({ url }: CoinListType) {
+  const dispatch = useDispatch();
   const [coin, setCoin] = useState([]);
 
-  console.log("url prop", url);
   const fetchData = async () => {
     try {
       const response = await fetch(url);
@@ -21,7 +25,13 @@ export default function CoinList({ url }: CoinListType) {
   };
   useEffect(() => {
     fetchData();
-  }, url);
+  }, [url]);
+
+  const handleEdit = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    dispatch(changeBoolean());
+    dispatch(selectedCoinId(Number(e.target.value)));
+  };
 
   if (!url) {
     return <h1>Please select a coin</h1>;
@@ -43,15 +53,23 @@ export default function CoinList({ url }: CoinListType) {
         <tbody>
           {coin &&
             coin.map((c) => (
-              <tr key={c.id} className="even:bg-blue-200 odd:bg-white">
+              <tr
+                key={c.id}
+                value={c.id}
+                className="even:bg-blue-200 odd:bg-white"
+              >
                 <td className="border border-black p-2">{c.sku}</td>
                 <td className="border border-black p-2">{c.title}</td>
-                <td className="border border-black p-2">{c.cost}</td>
                 <td className="border border-black p-2">{c.quantity}</td>
+                <td className="border border-black p-2">{c.cost}</td>
                 <td className="border border-black p-2">
                   {c.cost * c.quantity}
                 </td>
-                <td className="border border-black p-2">edit button(s) here</td>
+                <td className="border border-black p-2">
+                  <button value={c.id} onClick={handleEdit}>
+                    Edit
+                  </button>
+                </td>
               </tr>
             ))}
         </tbody>

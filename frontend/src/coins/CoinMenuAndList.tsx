@@ -1,31 +1,35 @@
+import { useState } from "react";
 import CoinMenu from "./CoinMenu";
 import CoinList from "./CoinList";
-import { useState } from "react";
+import AddCoinForm from "./AddCoinForm";
+import { useSelector, useDispatch } from "react-redux";
+import { changeBoolean } from "./addOrEditCoinSlice";
+import { RootState } from "../store";
 
 export default function CoinMenuAndList() {
-  const [selectedCoin, setSelectedCoin] = useState();
+  const [selectedCoinType, setSelectedCoinType] = useState();
+  const isEdit = useSelector((state: RootState) => state.changeBoolean.isEdit);
   const baseUrl = "http://localhost:8000";
-  const handleSelectedCoin = (e) => {
-    console.log(
-      "handle selected coin value",
-      e.target.getAttribute("data-url")
-    );
-    setSelectedCoin(e.target.getAttribute("data-url"));
+
+  const handleSelectedCoinType = (e) => {
+    setSelectedCoinType(e.target.getAttribute("data-url"));
   };
+
   let fetchUrl;
-  if (!selectedCoin) {
+  if (!selectedCoinType) {
     fetchUrl = null;
   } else {
-    fetchUrl = `${baseUrl}${selectedCoin}`;
+    fetchUrl = `${baseUrl}${selectedCoinType}`;
   }
 
   return (
     <div className="grid grid-cols-12">
       <div className="col-span-2">
-        <CoinMenu selectedCoin={handleSelectedCoin} />
+        <CoinMenu selectedCoin={handleSelectedCoinType} />
       </div>
+
       <div className="col-span-10">
-        <CoinList url={fetchUrl} />
+        {!isEdit ? <CoinList url={fetchUrl} /> : <AddCoinForm />}
       </div>
     </div>
   );
