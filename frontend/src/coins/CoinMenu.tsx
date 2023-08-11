@@ -1,14 +1,11 @@
-import GetCoinFamily from "./GetCoinFamily";
 import { useState, useEffect } from "react";
-import AddCoinForm from "./AddCoinForm";
+import { useGetCoinFamilyQuery } from "./services/coins";
 
 const CoinTypeComponent = ({ coinType, selectedCoin }) => {
   return (
     <div className="hs-accordion-group">
       {coinType.map((coin) => (
         <div className="hs-accordion-content" key={coin.id}>
-          {/* <a href={`http://localhost:8000${coin.url}`}> */}
-
           <p
             data-url={coin.url}
             onClick={selectedCoin}
@@ -16,7 +13,6 @@ const CoinTypeComponent = ({ coinType, selectedCoin }) => {
           >
             {coin.coin_type}
           </p>
-          {/* </a> */}
         </div>
       ))}
     </div>
@@ -120,12 +116,8 @@ const FamilyComponent = ({
 };
 
 export default function CoinMenu({ selectedCoin }) {
-  const [family, setFamily] = useState([]);
   const [openAccordions, setOpenAccordions] = useState([]);
-
-  useEffect(() => {
-    GetCoinFamily(setFamily);
-  }, []);
+  const { data, error, isLoading } = useGetCoinFamilyQuery("");
 
   const toggleAccordion = (accordionId) => {
     setOpenAccordions((prevState) =>
@@ -137,12 +129,22 @@ export default function CoinMenu({ selectedCoin }) {
 
   return (
     <div>
-      <FamilyComponent
-        family={family}
-        openAccordions={openAccordions}
-        toggleAccordion={toggleAccordion}
-        selectedCoin={selectedCoin}
-      />
+      {error ? (
+        <>
+          <p>error</p>
+        </>
+      ) : isLoading ? (
+        <>
+          <h1>Loading...</h1>
+        </>
+      ) : data ? (
+        <FamilyComponent
+          family={data}
+          openAccordions={openAccordions}
+          toggleAccordion={toggleAccordion}
+          selectedCoin={selectedCoin}
+        />
+      ) : null}
     </div>
   );
 }

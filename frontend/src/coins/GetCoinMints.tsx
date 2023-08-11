@@ -1,4 +1,4 @@
-const GetCoinMints = async (
+const getCoinMints = async (
   setCoinMints: React.Dispatch<React.SetStateAction<never[]>>
 ) => {
   try {
@@ -12,4 +12,4 @@ const GetCoinMints = async (
   }
 };
 
-export default GetCoinMints;
+export default getCoinMints;

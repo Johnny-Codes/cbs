@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 
-const GetCoinDetail = async (
+const getCoinDetail = async (
   id: number | null,
   setFormData,
   formData,
@@ -38,4 +38,4 @@ const GetCoinDetail = async (
   }
 };
 
-export default GetCoinDetail;
+export default getCoinDetail;

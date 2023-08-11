@@ -1,12 +1,11 @@
-import { useState } from "react";
-import AddCoinForm from "./coins/AddCoinForm";
-import CoinMenu from "./coins/CoinMenu";
 import CoinMenuAndList from "./coins/CoinMenuAndList";
+import TestingStuff from "./coins/TestingStuff";
 
 const App: React.FC = () => {
   return (
     <>
       <CoinMenuAndList />
+      <TestingStuff />
     </>
   );
 };

@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
 import FormFields from "../forms/FormFields";
-import GetCoinFamily from "./GetCoinFamily";
-import GetCoinGrades from "./GetCoinGrades";
-import GetCoinStrikes from "./GetCoinStrikes";
-import GetCoinMints from "./GetCoinMints";
-import GetCoinGradingServices from "./GetCoinGradingServices";
+import getCoinFamily from "./getCoinFamily";
+import getCoinGrades from "./getCoinGrades";
+import getCoinStrikes from "./getCoinStrikes";
+import getCoinMints from "./getCoinMints";
+import getCoinGradingServices from "./getCoinGradingServices";
 import SubmitButton from "../buttons/SubmitButton";
 import CancelButton from "../buttons/CancelButton";
 import "./AddCoinForm.css";
 import { useSelector, useDispatch } from "react-redux";
 import { changeBoolean } from "./addOrEditCoinSlice";
-import GetCoinDetail from "./GetCoinDetail";
+import getCoinDetail from "./getCoinDetail";
 import { RootState } from "../store";
 
 type CoinFormData = {
@@ -78,6 +78,7 @@ const AddCoinForm = () => {
     mint: [],
     grading: [],
   };
+  // useEffect(family), [family] => rtk query
   const [family, setFamily] = useState([]);
   const [denominations, setDenominations] = useState([]);
   const [coinName, setCoinName] = useState([]);
@@ -85,19 +86,6 @@ const AddCoinForm = () => {
   const [coinStrikes, setCoinStrikes] = useState([]);
   const [coinMints, setCoinMints] = useState([]);
   const [coinGradingServices, setCoinGradingServices] = useState([]);
-
-  const getRandomSku = async () => {
-    try {
-      const response = await fetch("http://localhost:8000/api/sku/random/");
-      if (response.ok) {
-        const json = await response.json();
-        const randomSku = json.random_sku;
-        setFormData({ ...formData, sku: randomSku });
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
 
   const handleBulkCoins = () => {
     const grade2 = document.getElementById("grade2");
@@ -135,15 +123,28 @@ const AddCoinForm = () => {
     }
   };
   useEffect(() => {
+    const getRandomSku = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/sku/random/");
+        if (response.ok) {
+          const json = await response.json();
+          const randomSku = json.random_sku;
+          setFormData({ ...formData, sku: randomSku });
+        }
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
     getRandomSku();
-    GetCoinFamily(setFamily);
-    GetCoinGrades(setCoinGrades);
-    GetCoinStrikes(setCoinStrikes);
-    GetCoinMints(setCoinMints);
-    GetCoinGradingServices(setCoinGradingServices);
-
-    GetCoinDetail(selId, setFormData, formData);
-  }, []);
+    getCoinFamily(setFamily);
+    getCoinGrades(setCoinGrades);
+    getCoinStrikes(setCoinStrikes);
+    getCoinMints(setCoinMints);
+    getCoinGradingServices(setCoinGradingServices);
+    if (selId) {
+      getCoinDetail(selId, setFormData, formData, handleFamilyChange);
+    }
+  }, [selId]);
 
   const handleFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;

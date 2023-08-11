@@ -1,4 +1,4 @@
-const GetCoinGradingServices = async (
+const getCoinGradingServices = async (
   setCoinGradingServices: React.Dispatch<React.SetStateAction<never[]>>
 ) => {
   try {
@@ -14,4 +14,4 @@ const GetCoinGradingServices = async (
   }
 };
 
-export default GetCoinGradingServices;
+export default getCoinGradingServices;
