@@ -2,12 +2,7 @@ import React, { useEffect } from "react";
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 
-const getCoinDetail = async (
-  id: number | null,
-  setFormData,
-  formData,
-  handleFamilyChange
-) => {
+const getCoinDetail = async (id: number | null, setFormData, formData) => {
   console.log("get coin detail");
   const coin = id;
   console.log("coin", coin);
@@ -20,7 +15,6 @@ const getCoinDetail = async (
         const json = await response.json();
         const updatedFormData = { ...formData, ...json };
         setFormData(updatedFormData);
-        handleFamilyChange;
         if (json.is_bulk) {
           console.log("is bulk");
           const grade2 = document.getElementById("grade2");

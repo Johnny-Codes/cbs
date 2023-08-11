@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useGetCoinFamilyQuery } from "./services/coins";
+import { useGetAllCoinFamiliesQuery } from "./services/coins";
 
 const CoinTypeComponent = ({ coinType, selectedCoin }) => {
   return (
@@ -117,7 +117,7 @@ const FamilyComponent = ({
 
 export default function CoinMenu({ selectedCoin }) {
   const [openAccordions, setOpenAccordions] = useState([]);
-  const { data, error, isLoading } = useGetCoinFamilyQuery("");
+  const { data, error, isLoading } = useGetAllCoinFamiliesQuery("");
 
   const toggleAccordion = (accordionId) => {
     setOpenAccordions((prevState) =>

@@ -82,3 +82,9 @@ class DenominationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Denominations
         fields = "__all__"
+
+
+class CoinTypeNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CoinTypeName
+        fields = "__all__"

@@ -1,17 +1,25 @@
 import React, { useState, useEffect } from "react";
+
 import FormFields from "../forms/FormFields";
-import getCoinFamily from "./getCoinFamily";
-import getCoinGrades from "./getCoinGrades";
-import getCoinStrikes from "./getCoinStrikes";
-import getCoinMints from "./getCoinMints";
-import getCoinGradingServices from "./getCoinGradingServices";
 import SubmitButton from "../buttons/SubmitButton";
 import CancelButton from "../buttons/CancelButton";
-import "./AddCoinForm.css";
+
+import getCoinDetail from "./getCoinDetail";
+
+import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 import { changeBoolean } from "./addOrEditCoinSlice";
-import getCoinDetail from "./getCoinDetail";
-import { RootState } from "../store";
+import {
+  useGetAllCoinDenominationsQuery,
+  useGetAllCoinFamiliesQuery,
+  useGetAllCoinGradesQuery,
+  useGetAllCoinGradingServicesQuery,
+  useGetAllCoinMintsQuery,
+  useGetAllCoinStrikesQuery,
+  useGetAllCoinTypeNamesQuery,
+} from "./services/coins";
+
+import "./AddCoinForm.css";
 
 type CoinFormData = {
   is_bulk: boolean;
@@ -26,7 +34,7 @@ type CoinFormData = {
   sale_price: number;
   family_of_coin: number;
   denomination_of_coin: number;
-  coin_type_name: number;
+  coin_type: number;
   grade: number;
   grade2?: number | null;
   strike: number;
@@ -36,7 +44,7 @@ type CoinFormData = {
 const AddCoinForm = () => {
   const dispatch = useDispatch();
   const selId = useSelector((state: RootState) => state.selectedCoinId.id);
-
+  console.log("sel id", selId);
   const [formData, setFormData] = useState<CoinFormData>({
     is_bulk: false,
     sku: "",
@@ -50,7 +58,7 @@ const AddCoinForm = () => {
     sale_price: 0,
     family_of_coin: 0,
     denomination_of_coin: 0,
-    coin_type_name: 0,
+    coin_type: 0,
     grade: 0,
     grade2: null,
     strike: 0,
@@ -58,34 +66,19 @@ const AddCoinForm = () => {
     grading: [],
   });
 
-  const initialFormData: CoinFormData = {
-    is_bulk: false,
-    sku: "",
-    pcgs_number: null,
-    title: "",
-    year: 0,
-    year2: null,
-    description: "",
-    cost: 0,
-    quantity: 0,
-    sale_price: 0,
-    family_of_coin: 0,
-    denomination_of_coin: 0,
-    coin_type_name: 0,
-    grade: 0,
-    grade2: null,
-    strike: 0,
-    mint: [],
-    grading: [],
-  };
-  // useEffect(family), [family] => rtk query
-  const [family, setFamily] = useState([]);
-  const [denominations, setDenominations] = useState([]);
-  const [coinName, setCoinName] = useState([]);
-  const [coinGrades, setCoinGrades] = useState([]);
-  const [coinStrikes, setCoinStrikes] = useState([]);
-  const [coinMints, setCoinMints] = useState([]);
-  const [coinGradingServices, setCoinGradingServices] = useState([]);
+  const { data: family } = useGetAllCoinFamiliesQuery("");
+  const { data: denominations } = useGetAllCoinDenominationsQuery("");
+  const { data: coinName } = useGetAllCoinTypeNamesQuery("");
+  const { data: coinGrades } = useGetAllCoinGradesQuery("");
+  const { data: coinStrikes } = useGetAllCoinStrikesQuery("");
+  const { data: coinMints } = useGetAllCoinMintsQuery("");
+  const { data: coinGradingServices } = useGetAllCoinGradingServicesQuery("");
+
+  useEffect(() => {
+    family;
+    denominations;
+    coinName;
+  }, [family, denominations, coinName]);
 
   const handleBulkCoins = () => {
     const grade2 = document.getElementById("grade2");
@@ -94,34 +87,6 @@ const AddCoinForm = () => {
     year2?.classList.toggle("hidden");
   };
 
-  const handleFamilyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedFamilyId = parseInt(e.target.value, 10);
-
-    if (!selectedFamilyId) {
-      setDenominations(0);
-      setCoinName(0);
-    } else {
-      const selectedFamily = family.find(
-        (item) => item.id === selectedFamilyId
-      );
-      setDenominations(selectedFamily.denominations);
-    }
-  };
-
-  const handleDenominationChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const selectedDenominationId = parseInt(e.target.value, 10);
-
-    if (!selectedDenominationId) {
-      setCoinName(0);
-    } else {
-      const selectedDenomination = denominations.find(
-        (item) => item.id === selectedDenominationId
-      );
-      setCoinName(selectedDenomination.coin_type_name);
-    }
-  };
   useEffect(() => {
     const getRandomSku = async () => {
       try {
@@ -135,14 +100,10 @@ const AddCoinForm = () => {
         console.log("error", error);
       }
     };
-    getRandomSku();
-    getCoinFamily(setFamily);
-    getCoinGrades(setCoinGrades);
-    getCoinStrikes(setCoinStrikes);
-    getCoinMints(setCoinMints);
-    getCoinGradingServices(setCoinGradingServices);
     if (selId) {
-      getCoinDetail(selId, setFormData, formData, handleFamilyChange);
+      getCoinDetail(selId, setFormData, formData);
+    } else {
+      getRandomSku();
     }
   }, [selId]);
 
@@ -174,11 +135,7 @@ const AddCoinForm = () => {
     const url = "http://localhost:8000/api/coins/";
     if (selId) {
       console.log("id exists?");
-      // fuck, I need to return the full json from GetCoinDetail to do a PUT to /api/coins/id...
-      // or do I? I have the ID for the URL. I need to get updated time from JS and
-      // I can just PUT the formData and leave the rest alone...
-      const date = Date.now();
-      formData.updated_at = date;
+      formData.updated_at = Date.now();
       formData.id = selId;
       console.log("formData", formData);
       const fetchConfig = {
@@ -314,7 +271,7 @@ const AddCoinForm = () => {
             name="family_of_coin"
             onChange={(e) => {
               handleFormData(e);
-              handleFamilyChange(e);
+              // handleFamilyChange(e);
             }}
             required
             id="family"
@@ -335,7 +292,7 @@ const AddCoinForm = () => {
             name="denomination_of_coin"
             onChange={(e) => {
               handleFormData(e);
-              handleDenominationChange(e);
+              // handleDenominationChange(e);
             }}
             required
             id="denomination"
@@ -343,11 +300,13 @@ const AddCoinForm = () => {
           >
             <option value="">Select Denomination</option>
             {denominations &&
-              denominations.map((denomination) => (
-                <option key={denomination.id} value={denomination.id}>
-                  {denomination.denomination_of_coin}
-                </option>
-              ))}
+              denominations.map((denomination) => {
+                return denomination.family == formData.family_of_coin ? (
+                  <option key={denomination.id} value={denomination.id}>
+                    {denomination.denomination_of_coin}
+                  </option>
+                ) : null;
+              })}
           </select>
         </div>
         <div>
@@ -357,14 +316,17 @@ const AddCoinForm = () => {
             onChange={handleFormData}
             id="coin_name"
             name="coin_type"
+            value={formData.coin_type}
           >
             <option value="">Select Coin</option>
             {coinName &&
-              coinName.map((coin) => (
-                <option key={coin.id} value={coin.id}>
-                  {coin.coin_type}
-                </option>
-              ))}
+              coinName.map((coin) => {
+                return coin.denominations == formData.denomination_of_coin ? (
+                  <option key={coin.id} value={coin.id}>
+                    {coin.coin_type}
+                  </option>
+                ) : null;
+              })}
           </select>
         </div>
         <div>
@@ -398,13 +360,11 @@ const AddCoinForm = () => {
           >
             <option value="">Select Grade</option>
             {coinGrades &&
-              coinGrades
-                .sort((a, b) => b.grade - a.grade)
-                .map((coin) => (
-                  <option key={coin.id} value={coin.id}>
-                    {coin.grade}
-                  </option>
-                ))}
+              coinGrades.map((coin) => (
+                <option key={coin.id} value={coin.id}>
+                  {coin.grade}
+                </option>
+              ))}
           </select>
         </div>
         <div>

@@ -10,8 +10,26 @@ export const coinApi = createApi({
     getSpecificCoin: builder.query({
       query: (coinId) => `coins/${coinId}/`,
     }),
-    getCoinFamily: builder.query({
+    getAllCoinFamilies: builder.query({
       query: () => `coins/family/`,
+    }),
+    getAllCoinDenominations: builder.query({
+      query: () => `coins/denominations/`,
+    }),
+    getAllCoinTypeNames: builder.query({
+      query: () => `coins/cointypes/`,
+    }),
+    getAllCoinGrades: builder.query({
+      query: () => `coins/coingrades/`,
+    }),
+    getAllCoinStrikes: builder.query({
+      query: () => `coins/strike/`,
+    }),
+    getAllCoinMints: builder.query({
+      query: () => `coins/mints/`,
+    }),
+    getAllCoinGradingServices: builder.query({
+      query: () => `coins/gradingservices/`,
     }),
   }),
 });
@@ -19,5 +37,11 @@ export const coinApi = createApi({
 export const {
   useGetAllCoinsQuery,
   useGetSpecificCoinQuery,
-  useGetCoinFamilyQuery,
+  useGetAllCoinFamiliesQuery,
+  useGetAllCoinDenominationsQuery,
+  useGetAllCoinTypeNamesQuery,
+  useGetAllCoinGradesQuery,
+  useGetAllCoinStrikesQuery,
+  useGetAllCoinMintsQuery,
+  useGetAllCoinGradingServicesQuery,
 } = coinApi;

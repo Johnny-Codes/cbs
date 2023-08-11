@@ -1,4 +1,8 @@
-from coins.models.denominations import CoinFamily, Denominations
+from coins.models.denominations import (
+    CoinFamily,
+    Denominations,
+    CoinTypeName,
+)
 from coins.models.grading import (
     GradingServices,
     CoinGrades,
@@ -12,6 +16,7 @@ from coins.serializers.voserializers import (
     SelectMintSerializer,
     CoinStrikeSerializer,
     DenominationSerializer,
+    CoinTypeNameSerializer,
 )
 
 from rest_framework import mixins, generics
@@ -84,6 +89,18 @@ class DenominationSerializerView(
 ):
     queryset = Denominations.objects.all()
     serializer_class = DenominationSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class CoinTypeNameSerializerView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView,
+):
+    queryset = CoinTypeName.objects.all()
+    serializer_class = CoinTypeNameSerializer
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
