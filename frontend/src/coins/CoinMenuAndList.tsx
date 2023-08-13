@@ -30,6 +30,7 @@ export default function CoinMenuAndList() {
 
       <div className="col-span-10">
         {!isEdit ? <CoinList url={fetchUrl} /> : <AddCoinForm />}
+        {/* <AddCoinForm /> */}
       </div>
     </div>
   );

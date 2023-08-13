@@ -44,7 +44,7 @@ type CoinFormData = {
 const AddCoinForm = () => {
   const dispatch = useDispatch();
   const selId = useSelector((state: RootState) => state.selectedCoinId.id);
-  console.log("sel id", selId);
+
   const [formData, setFormData] = useState<CoinFormData>({
     is_bulk: false,
     sku: "",

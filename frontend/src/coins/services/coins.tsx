@@ -5,7 +5,7 @@ export const coinApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/" }),
   endpoints: (builder) => ({
     getAllCoins: builder.query({
-      query: () => "coins/",
+      query: () => `coins/`,
     }),
     getSpecificCoin: builder.query({
       query: (coinId) => `coins/${coinId}/`,
