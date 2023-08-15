@@ -1,11 +1,9 @@
-import CoinMenuAndList from "./coins/CoinMenuAndList";
-import TestingStuff from "./coins/TestingStuff";
-import AddCoinForm from "./coins/AddCoinForm";
+import Router from "./Router";
 
 const App: React.FC = () => {
   return (
     <>
-      <CoinMenuAndList />
+      <Router />
     </>
   );
 };

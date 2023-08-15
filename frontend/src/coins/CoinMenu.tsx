@@ -34,7 +34,7 @@ const DenominationComponent = ({
           key={d.id}
         >
           <button
-            className="border-2 border-black bg-sky-300 hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400"
+            className="border-2 border-black bg-blue-400 hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400"
             onClick={() =>
               toggleAccordion(`hs-basic-nested-sub-collapse-${d.id}`)
             }
@@ -82,7 +82,7 @@ const FamilyComponent = ({
           key={fam.id}
         >
           <button
-            className="border-2 border-black bg-sky-400 hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400"
+            className="border-2 border-black bg-blue-500 hs-accordion-toggle hs-accordion-active:text-blue-600 py-3 inline-flex items-center gap-x-3 w-full font-semibold text-left text-gray-800 transition hover:text-gray-500 dark:hs-accordion-active:text-blue-500 dark:text-gray-200 dark:hover:text-gray-400"
             onClick={() =>
               toggleAccordion(`hs-basic-nested-collapse-${fam.id}`)
             }
