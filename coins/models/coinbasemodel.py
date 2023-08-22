@@ -4,7 +4,6 @@ from core.models.isbulk import IsBulk
 from core.models.sku import SKU
 from coins.models.mints import (
     SelectOneMint,
-    SelectMints,
 )
 from images.models import Images
 from .denominations import (

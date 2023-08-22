@@ -12,11 +12,34 @@ from coins.models.grading import (
     GradingServices,
     CoinGrades,
 )
+from coins.models.mintproducts import (
+    MintSetTypesModel,
+    MintProductsModel,
+)
+
+
+@admin.register(MintSetTypesModel)
+class MintSetTypesAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "mint_types",
+    )
+
+
+@admin.register(MintProductsModel)
+class MintProducstAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "title",
+    )
 
 
 @admin.register(GradingServices)
 class GradingServicesAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
+    list_display = (
+        "id",
+        "name",
+    )
 
 
 @admin.register(CoinGrades)
