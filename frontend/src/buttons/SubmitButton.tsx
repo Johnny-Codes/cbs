@@ -6,7 +6,7 @@ const SubmitButton = ({ ...rest }) => {
       type="submit"
       buttonText="Submit"
       {...rest}
-      className="bg-gray-300 hover:bg-gray-500 text-black hover:text-white font-bold py-2 px-4 rounded m-4"
+      className="bg-green-300 hover:bg-green-500 text-black hover:text-white font-bold py-2 px-4 rounded m-4"
     />
   );
 };

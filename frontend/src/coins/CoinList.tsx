@@ -3,6 +3,7 @@ import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 import { changeBoolean } from "./addOrEditCoinSlice";
 import { selectedCoinId } from "./selectedCoinSlice";
+import EditButton from "../buttons/EditButton";
 
 export type CoinListType = {
   url: string;
@@ -32,6 +33,11 @@ export default function CoinList({ url }: CoinListType) {
     dispatch(changeBoolean());
     dispatch(selectedCoinId(Number(e.target.value)));
   };
+
+  // const handleDelete = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   e.preventDefault();
+  //   HandleDelete({ id: e.target.value });
+  // };
 
   if (!url) {
     return <h1>Please select a coin</h1>;
@@ -66,9 +72,7 @@ export default function CoinList({ url }: CoinListType) {
                   {c.cost * c.quantity}
                 </td>
                 <td className="border border-black p-2">
-                  <button value={c.id} onClick={handleEdit}>
-                    Edit
-                  </button>
+                  <EditButton value={c.id} onClick={handleEdit} />
                 </td>
               </tr>
             ))}

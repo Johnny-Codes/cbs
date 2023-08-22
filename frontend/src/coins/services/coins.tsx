@@ -4,6 +4,9 @@ export const coinApi = createApi({
   reducerPath: "coinApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/" }),
   endpoints: (builder) => ({
+    getAllActiveCoins: builder.query({
+      query: () => `coins/?is_deleted=false`,
+    }),
     getAllCoins: builder.query({
       query: () => `coins/`,
     }),
@@ -31,6 +34,9 @@ export const coinApi = createApi({
     getAllCoinGradingServices: builder.query({
       query: () => `coins/gradingservices/`,
     }),
+    softDeleteCoin: builder.mutation({
+      query: (id) => ({ url: `coins/${id}/`, method: "DELETE" }),
+    }),
   }),
 });
 
@@ -44,4 +50,6 @@ export const {
   useGetAllCoinStrikesQuery,
   useGetAllCoinMintsQuery,
   useGetAllCoinGradingServicesQuery,
+  useGetAllActiveCoinsQuery,
+  useSoftDeleteCoinMutation,
 } = coinApi;

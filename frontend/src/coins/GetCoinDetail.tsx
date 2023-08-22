@@ -3,11 +3,8 @@ import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 
 const getCoinDetail = async (id: number | null, setFormData, formData) => {
-  console.log("get coin detail");
   const coin = id;
-  console.log("coin", coin);
   const baseUrl = "http://localhost:8000/api/coins/";
-  console.log("base url", baseUrl);
   if (id) {
     try {
       const response = await fetch(`${baseUrl}${coin}`);

@@ -1,14 +1,14 @@
 import Button from "./Button";
 
-const SubmitButton = ({ ...rest }) => {
+const CancelButton = ({ ...rest }) => {
   return (
     <Button
-      type="cancel"
+      type="button"
       buttonText="Cancel"
       {...rest}
-      className="bg-red-300 hover:bg-red-500 text-black hover:text-white font-bold py-2 px-4 rounded m-4"
+      className="bg-gray-300 hover:bg-gray-500 text-black hover:text-white font-bold py-2 px-4 rounded m-4"
     />
   );
 };
 
-export default SubmitButton;
+export default CancelButton;

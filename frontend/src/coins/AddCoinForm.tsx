@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import FormFields from "../forms/FormFields";
 import SubmitButton from "../buttons/SubmitButton";
 import CancelButton from "../buttons/CancelButton";
+import DeleteButton from "../buttons/DeleteButton";
 
 import getCoinDetail from "./getCoinDetail";
 
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 import { changeBoolean } from "./addOrEditCoinSlice";
+import { selectedCoinId } from "./selectedCoinSlice";
+
 import {
   useGetAllCoinDenominationsQuery,
   useGetAllCoinFamiliesQuery,
@@ -17,6 +21,7 @@ import {
   useGetAllCoinMintsQuery,
   useGetAllCoinStrikesQuery,
   useGetAllCoinTypeNamesQuery,
+  useSoftDeleteCoinMutation,
 } from "./services/coins";
 
 import "./AddCoinForm.css";
@@ -149,6 +154,7 @@ const AddCoinForm = () => {
         const response = await fetch(`${url}${selId}/`, fetchConfig);
         if (response.ok) {
           dispatch(changeBoolean());
+          dispatch(selectedCoinId(undefined));
         }
       } catch (error) {}
     } else {
@@ -163,7 +169,7 @@ const AddCoinForm = () => {
       try {
         const response = await fetch(url, fetchConfig);
         if (response.ok) {
-          dispatch(changeBoolean());
+          navigate("/inventory");
         }
       } catch (error) {
         console.log("error", error);
@@ -171,8 +177,28 @@ const AddCoinForm = () => {
     }
   };
 
+  let navigate = useNavigate();
+
   const handleCancelForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (selId) {
+      dispatch(changeBoolean());
+      dispatch(selectedCoinId(undefined));
+    } else {
+      console.log("this is the add page");
+      navigate("/inventory");
+      dispatch(selectedCoinId(undefined));
+    }
+  };
+
+  const [deleteCoin, response] = useSoftDeleteCoinMutation();
+
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    deleteCoin(e.target.value);
+    console.log("delete response", response);
     dispatch(changeBoolean());
+    dispatch(selectedCoinId(undefined));
   };
 
   return (
@@ -424,6 +450,9 @@ const AddCoinForm = () => {
         <span>
           <SubmitButton />
           <CancelButton onClick={handleCancelForm} />
+          {selId ? (
+            <DeleteButton id={selId} value={selId} onClick={handleDelete} />
+          ) : null}
         </span>
       </form>
     </>
