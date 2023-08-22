@@ -36,17 +36,19 @@ class SelectMints(models.Model):
         verbose_name = "Select Multiple Mints"
 
 
+MINTS = (
+    ("Philadelphia Mint", "Philadelphia Mint"),
+    ("San Francisco Mint", "San Francisco Mint"),
+    ("Denver Mint", "Denver Mint"),
+    ("Carson City Mint", "Carson City Mint"),
+    ("West Point Mint", "West Point Mint"),
+    ("Charlotte Mint", "Charlotte Mint"),
+    ("New Orleans Mint", "New Orleans Mint"),
+    ("Dahlonega Mint", "Dahlonega Mint"),
+)
+
+
 class SelectOneMint(models.Model):
-    MINTS = (
-        ("Philadelphia Mint", "Philadelphia Mint"),
-        ("San Francisco Mint", "San Francisco Mint"),
-        ("Denver Mint", "Denver Mint"),
-        ("Carson City Mint", "Carson City Mint"),
-        ("West Point Mint", "West Point Mint"),
-        ("Charlotte Mint", "Charlotte Mint"),
-        ("New Orleans Mint", "New Orleans Mint"),
-        ("Dahlonega Mint", "Dahlonega Mint"),
-    )
     coin_mint = models.CharField(
         max_length=32,
         choices=MINTS,
