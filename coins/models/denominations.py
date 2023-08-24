@@ -5,8 +5,8 @@ FAMILY_CHOICES = (
     ("Gold", "Gold"),
     ("Silver", "Silver"),
     ("Clad", "Clad"),
-    ("Copper", "Copper"),
     ("Nickel", "Nickel"),
+    ("Copper", "Copper"),
 )
 
 
@@ -49,8 +49,6 @@ DENOM = (
 )
 
 GOLD_DENOM = (
-    ("$50", "$50"),
-    ("$25", "$25"),
     ("$20", "$20"),
     ("$10", "$10"),
     ("$5", "$5"),
@@ -86,7 +84,6 @@ CLAD_DENOM = (
     ("50C", "50C"),
     ("25C", "25C"),
     ("10C", "10C"),
-    ("5C", "5C"),
 )
 
 
@@ -114,7 +111,6 @@ class Denominations(models.Model):
 class CoinTypeName(models.Model):
     coin_type = models.CharField(
         max_length=100,
-        unique=True,
     )
     denominations = models.ForeignKey(
         Denominations,

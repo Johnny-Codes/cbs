@@ -5,16 +5,22 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('core', '0001_initial'),
-        ('coins', '0035_alter_coinfamily_type'),
+        # ("core", "0001_squashed_0032_remove_mintproductsmodel_mint_set_name"),
+        ("coins", "0035_alter_coinfamily_type"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='coinbasemodel',
-            name='sku_ptr',
-            field=models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='core.sku'),
+            model_name="coinbasemodel",
+            name="sku_ptr",
+            field=models.OneToOneField(
+                auto_created=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                parent_link=True,
+                primary_key=True,
+                serialize=False,
+                to="core.sku",
+            ),
         ),
     ]
