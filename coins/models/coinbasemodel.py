@@ -2,6 +2,7 @@ from django.db import models
 from core.models.createdupdated import CreatedUpdated
 from core.models.isbulk import IsBulk
 from core.models.sku import SKU
+from core.models.softdelete import SoftDeleteModel
 from coins.models.mints import (
     SelectOneMint,
 )
@@ -22,6 +23,7 @@ class CoinBaseModel(
     SKU,
     CreatedUpdated,
     IsBulk,
+    SoftDeleteModel,
     models.Model,
 ):
     pcgs_number = models.IntegerField(

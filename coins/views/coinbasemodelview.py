@@ -15,6 +15,14 @@ class CoinBaseModelSerializerView(
     serializer_class = CoinBaseModelSerializer
 
     def get(self, request, *args, **kwargs):
+        is_deleted_param = request.query_params.get("is_deleted", None)
+
+        if is_deleted_param is not None:
+            if is_deleted_param.lower() == "true":
+                self.queryset = self.queryset.filter(is_deleted=True)
+            elif is_deleted_param.lower() == "false":
+                self.queryset = self.queryset.filter(is_deleted=False)
+
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -36,6 +44,11 @@ class OneCoinBaseModelSerializerView(
 
     def put(self, request, *args, **kwargs):
         coin_instance = self.get_object()
+        print("request", request)
+        if "toggle_soft_delete" in request.data:
+            coin_instance.soft_delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
         serializer = self.get_serializer(
             coin_instance,
             data=request.data,

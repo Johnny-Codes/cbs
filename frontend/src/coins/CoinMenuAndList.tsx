@@ -3,7 +3,7 @@ import CoinMenu from "./CoinMenu";
 import CoinList from "./CoinList";
 import AddCoinForm from "./AddCoinForm";
 import { useSelector, useDispatch } from "react-redux";
-import { changeBoolean } from "./addOrEditCoinSlice";
+import { setEditMode } from "./addOrEditCoinSlice";
 import { RootState } from "../store";
 
 export default function CoinMenuAndList() {

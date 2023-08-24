@@ -13,12 +13,15 @@ export const addOrEditCoinSlice = createSlice({
   name: "addOrEditCoin",
   initialState,
   reducers: {
-    changeBoolean: (state: AddOrEditCoinState) => {
-      state.isEdit = !state.isEdit;
+    setEditMode: (state: AddOrEditCoinState) => {
+      state.isEdit = true;
+    },
+    setAddMode: (state: AddOrEditCoinState) => {
+      state.isEdit = false;
     },
   },
 });
 
-export const { changeBoolean } = addOrEditCoinSlice.actions;
+export const { setEditMode, setAddMode } = addOrEditCoinSlice.actions;
 
 export default addOrEditCoinSlice.reducer;

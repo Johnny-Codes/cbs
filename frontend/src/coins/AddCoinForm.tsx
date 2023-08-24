@@ -6,11 +6,11 @@ import SubmitButton from "../buttons/SubmitButton";
 import CancelButton from "../buttons/CancelButton";
 import DeleteButton from "../buttons/DeleteButton";
 
-import getCoinDetail from "./getCoinDetail";
+import getCoinDetail from "./GetCoinDetail";
 
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
-import { changeBoolean } from "./addOrEditCoinSlice";
+import { setEditMode, setAddMode } from "./addOrEditCoinSlice";
 import { selectedCoinId } from "./selectedCoinSlice";
 
 import {
@@ -80,12 +80,6 @@ const AddCoinForm = () => {
   const { data: coinMints } = useGetAllCoinMintsQuery("");
   const { data: coinGradingServices } = useGetAllCoinGradingServicesQuery("");
 
-  useEffect(() => {
-    family;
-    denominations;
-    coinName;
-  }, [family, denominations, coinName]);
-
   const handleBulkCoins = () => {
     const grade2 = document.getElementById("grade2");
     const year2 = document.getElementById("year2");
@@ -111,7 +105,10 @@ const AddCoinForm = () => {
     } else {
       getRandomSku();
     }
-  }, [selId]);
+    family;
+    denominations;
+    coinName;
+  }, [selId, family, denominations, coinName]);
 
   const handleFormData = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -131,7 +128,6 @@ const AddCoinForm = () => {
         : formData.grading.filter((id) => id !== gradingId);
       newValue = updatedGrading;
     }
-
     setFormData({ ...formData, [name]: newValue });
     console.log("form data", formData);
   };
@@ -143,16 +139,17 @@ const AddCoinForm = () => {
     e.preventDefault();
     if (!selId) {
       addCoin({ data: formData, id: "", method: "POST" });
-      console.log(addCoinResponse);
-      dispatch(changeBoolean());
+      console.log("addCoin", addCoin);
+      console.log("addCoinResponse", addCoinResponse);
+      dispatch(setAddMode());
       dispatch(selectedCoinId(undefined));
+      navigate("/inventory");
     } else {
       formData.updated_at = Date.now();
       formData.id = selId;
-      console.log("formdata", formData);
       addCoin({ data: formData, id: selId, method: "PUT" });
       navigate("/inventory");
-      dispatch(changeBoolean());
+      dispatch(setEditMode());
       dispatch(selectedCoinId(undefined));
     }
   };
@@ -160,23 +157,25 @@ const AddCoinForm = () => {
   const handleCancelForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (selId) {
-      dispatch(changeBoolean());
+      dispatch(setAddMode());
       dispatch(selectedCoinId(undefined));
     } else {
-      console.log("this is the add page");
       navigate("/inventory");
       dispatch(selectedCoinId(undefined));
+      dispatch(setAddMode());
     }
   };
 
-  const [deleteCoin, response] = useSoftDeleteCoinMutation();
+  const [deleteCoin, deleteCoinResponse] = useSoftDeleteCoinMutation();
 
   const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    deleteCoin(e.target.value);
-    console.log("delete response", response);
-    dispatch(changeBoolean());
+    const id = formData.id;
+    deleteCoin(id);
+    console.log("delete coin", deleteCoin);
+    dispatch(setAddMode());
     dispatch(selectedCoinId(undefined));
+    navigate("/inventory");
   };
 
   return (
@@ -275,7 +274,6 @@ const AddCoinForm = () => {
             name="family_of_coin"
             onChange={(e) => {
               handleFormData(e);
-              // handleFamilyChange(e);
             }}
             required
             id="family"
@@ -296,7 +294,6 @@ const AddCoinForm = () => {
             name="denomination_of_coin"
             onChange={(e) => {
               handleFormData(e);
-              // handleDenominationChange(e);
             }}
             required
             id="denomination"

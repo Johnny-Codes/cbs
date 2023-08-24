@@ -3,9 +3,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const coinApi = createApi({
   reducerPath: "coinApi",
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/" }),
+  tagTypes: ["Coins"],
   endpoints: (builder) => ({
     getAllActiveCoins: builder.query({
-      query: () => `coins/?is_deleted=false`,
+      query: (isDeleted) => `coins/?is_deleted=${isDeleted}`,
+      providesTags: ["Coins"],
     }),
     getAllCoins: builder.query({
       query: () => `coins/`,
@@ -35,7 +37,12 @@ export const coinApi = createApi({
       query: () => `coins/gradingservices/`,
     }),
     softDeleteCoin: builder.mutation({
-      query: (id) => ({ url: `coins/${id}/`, method: "DELETE" }),
+      query: (id) => ({
+        url: `coins/${id}/`,
+        method: "PUT",
+        body: { toggle_soft_delete: true },
+      }),
+      invalidatesTags: ["Coins"],
     }),
     addCoinToInventory: builder.mutation({
       query: ({ data, id, method }) => {
@@ -50,6 +57,7 @@ export const coinApi = createApi({
           body: data,
         };
       },
+      invalidatesTags: ["Coins"],
     }),
   }),
 });

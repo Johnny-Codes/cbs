@@ -1,6 +1,17 @@
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { selectedCoinId } from "../coins/selectedCoinSlice";
+import { setEditMode, setAddMode } from "../coins/addOrEditCoinSlice";
 
 const NavBar = () => {
+  const dispatch = useDispatch();
+
+  const handleAddCoinClick = () => {
+    dispatch(selectedCoinId(null));
+  };
+  const handleInventoryClick = () => {
+    dispatch(setAddMode());
+  };
   return (
     <nav className="flex items-center justify-between flex-wrap bg-blue-500 p-6">
       <div className="flex items-center flex-shrink-0 text-white mr-6">
@@ -25,12 +36,14 @@ const NavBar = () => {
           <NavLink
             to="/inventory"
             className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-500 mr-4"
+            onClick={handleInventoryClick}
           >
             Inventory
           </NavLink>
           <NavLink
             to="/add-coin"
             className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-500 mr-4"
+            onClick={handleAddCoinClick}
           >
             Add Coin
           </NavLink>

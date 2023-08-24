@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useHistory } from "react-router-dom";
 import CoinMenuAndList from "./coins/CoinMenuAndList";
 import AddCoinForm from "./coins/AddCoinForm";
 import NavBar from "./nav/NavBar";
