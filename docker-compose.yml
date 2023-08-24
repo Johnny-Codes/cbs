@@ -1,6 +1,11 @@
+volumes:
+  coinventory-data:
+    external: true
 services:
   db:
     image: postgres
+    ports:
+      - "15432:5432"
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:

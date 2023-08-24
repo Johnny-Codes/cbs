@@ -44,7 +44,6 @@ class OneCoinBaseModelSerializerView(
 
     def put(self, request, *args, **kwargs):
         coin_instance = self.get_object()
-        print("request", request)
         if "toggle_soft_delete" in request.data:
             coin_instance.soft_delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
