@@ -14,6 +14,7 @@ import { changeBoolean } from "./addOrEditCoinSlice";
 import { selectedCoinId } from "./selectedCoinSlice";
 
 import {
+  useAddCoinToInventoryMutation,
   useGetAllCoinDenominationsQuery,
   useGetAllCoinFamiliesQuery,
   useGetAllCoinGradesQuery,
@@ -135,49 +136,26 @@ const AddCoinForm = () => {
     console.log("form data", formData);
   };
 
+  const navigate = useNavigate();
+
+  const [addCoin, addCoinResponse] = useAddCoinToInventoryMutation();
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const url = "http://localhost:8000/api/coins/";
-    if (selId) {
-      console.log("id exists?");
+    if (!selId) {
+      addCoin({ data: formData, id: "", method: "POST" });
+      console.log(addCoinResponse);
+      dispatch(changeBoolean());
+      dispatch(selectedCoinId(undefined));
+    } else {
       formData.updated_at = Date.now();
       formData.id = selId;
-      console.log("formData", formData);
-      const fetchConfig = {
-        method: "put",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      try {
-        const response = await fetch(`${url}${selId}/`, fetchConfig);
-        if (response.ok) {
-          dispatch(changeBoolean());
-          dispatch(selectedCoinId(undefined));
-        }
-      } catch (error) {}
-    } else {
-      const fetchConfig = {
-        method: "post",
-        body: JSON.stringify(formData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-      console.log("url", url, fetchConfig);
-      try {
-        const response = await fetch(url, fetchConfig);
-        if (response.ok) {
-          navigate("/inventory");
-        }
-      } catch (error) {
-        console.log("error", error);
-      }
+      console.log("formdata", formData);
+      addCoin({ data: formData, id: selId, method: "PUT" });
+      navigate("/inventory");
+      dispatch(changeBoolean());
+      dispatch(selectedCoinId(undefined));
     }
   };
-
-  let navigate = useNavigate();
 
   const handleCancelForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

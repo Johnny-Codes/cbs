@@ -37,10 +37,25 @@ export const coinApi = createApi({
     softDeleteCoin: builder.mutation({
       query: (id) => ({ url: `coins/${id}/`, method: "DELETE" }),
     }),
+    addCoinToInventory: builder.mutation({
+      query: ({ data, id, method }) => {
+        let url = `coins/`;
+        if (id !== "") {
+          url = `coins/${id}/`;
+        }
+
+        return {
+          url: url,
+          method: method,
+          body: data,
+        };
+      },
+    }),
   }),
 });
 
 export const {
+  useAddCoinToInventoryMutation,
   useGetAllCoinsQuery,
   useGetSpecificCoinQuery,
   useGetAllCoinFamiliesQuery,
