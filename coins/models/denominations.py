@@ -1,7 +1,13 @@
 from django.db import models
 from django.urls import reverse
 
-FAMILY_CHOICES = (("Gold", "Gold"), ("Silver", "Silver"), ("Clad", "Clad"), ("Copper", "Copper"), ("Nickel", "Nickel"))
+FAMILY_CHOICES = (
+    ("Gold", "Gold"),
+    ("Silver", "Silver"),
+    ("Clad", "Clad"),
+    ("Copper", "Copper"),
+    ("Nickel", "Nickel"),
+)
 
 
 class CoinFamily(models.Model):
@@ -33,6 +39,7 @@ DENOM = (
     ("25C", "25C"),
     ("20C", "20C"),
     ("10C", "10C"),
+    ("H10C", "H10C"),
     ("5C", "5C"),
     ("3CN", "3CN"),
     ("3CS", "3CS"),
@@ -59,6 +66,8 @@ SILVER_DENOM = (
     ("25C", "25C"),
     ("20C", "20C"),
     ("10C", "10C"),
+    ("H10C", "H10C"),
+    ("3CS", "3CS"),
 )
 
 COPPER_DENOM = (
@@ -69,7 +78,6 @@ COPPER_DENOM = (
 
 NICKEL_DENOM = (
     ("5C", "5C"),
-    ("3CN", "3CN"),
     ("3CN", "3CN"),
 )
 
