@@ -13,7 +13,7 @@ def populate_coin_grades(apps, schema_editor):
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("coins", "0032_remove_mintproductsmodel_mint_set_name"),
+        ("coins", "0001_squashed_0032_remove_mintproductsmodel_mint_set_name"),
     ]
 
     operations = [

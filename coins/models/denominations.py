@@ -1,7 +1,13 @@
 from django.db import models
 from django.urls import reverse
 
-FAMILY_CHOICES = (("Gold", "Gold"), ("Silver", "Silver"), ("Clad", "Clad"), ("Copper", "Copper"), ("Nickel", "Nickel"))
+FAMILY_CHOICES = (
+    ("Gold", "Gold"),
+    ("Silver", "Silver"),
+    ("Clad", "Clad"),
+    ("Nickel", "Nickel"),
+    ("Copper", "Copper"),
+)
 
 
 class CoinFamily(models.Model):
@@ -33,6 +39,7 @@ DENOM = (
     ("25C", "25C"),
     ("20C", "20C"),
     ("10C", "10C"),
+    ("H10C", "H10C"),
     ("5C", "5C"),
     ("3CN", "3CN"),
     ("3CS", "3CS"),
@@ -42,8 +49,6 @@ DENOM = (
 )
 
 GOLD_DENOM = (
-    ("$50", "$50"),
-    ("$25", "$25"),
     ("$20", "$20"),
     ("$10", "$10"),
     ("$5", "$5"),
@@ -59,6 +64,8 @@ SILVER_DENOM = (
     ("25C", "25C"),
     ("20C", "20C"),
     ("10C", "10C"),
+    ("H10C", "H10C"),
+    ("3CS", "3CS"),
 )
 
 COPPER_DENOM = (
@@ -70,7 +77,6 @@ COPPER_DENOM = (
 NICKEL_DENOM = (
     ("5C", "5C"),
     ("3CN", "3CN"),
-    ("3CN", "3CN"),
 )
 
 CLAD_DENOM = (
@@ -78,7 +84,6 @@ CLAD_DENOM = (
     ("50C", "50C"),
     ("25C", "25C"),
     ("10C", "10C"),
-    ("5C", "5C"),
 )
 
 
@@ -106,7 +111,6 @@ class Denominations(models.Model):
 class CoinTypeName(models.Model):
     coin_type = models.CharField(
         max_length=100,
-        unique=True,
     )
     denominations = models.ForeignKey(
         Denominations,
