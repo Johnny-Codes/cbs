@@ -87,6 +87,7 @@ INSTALLED_APPS = [
     "images.apps.ImagesConfig",
     "bullion.apps.BullionConfig",
     "contact.apps.ContactConfig",
+    "customers.apps.CustomersConfig",
     # 3rd Party
     "rest_framework",
     "corsheaders",
