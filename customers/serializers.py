@@ -17,4 +17,5 @@ class CustomersSerializer(serializers.ModelSerializer):
             "city",
             "state",
             "zip_code",
+            "is_deleted",
         )

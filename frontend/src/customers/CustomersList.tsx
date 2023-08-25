@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import EditButton from "../buttons/EditButton";
 import {
-  useGetAllCustomersQuery,
+  useGetAllActiveCustomersQuery,
   useGetCustomerDetailQuery,
 } from "./services/customers";
 import { selectedCustomerId } from "./customerSlice";
@@ -22,7 +22,7 @@ type customerType = {
 const CustomersList = () => {
   const dispatch = useDispatch();
   const { data: customerData, isLoading: loadingCustomerData } =
-    useGetAllCustomersQuery("");
+    useGetAllActiveCustomersQuery(false);
 
   const selectedCustomer = useSelector(
     (state: RootState) => state.selectedCustomerId.id
@@ -52,7 +52,7 @@ const CustomersList = () => {
         type="button"
         className="border p-4"
         onClick={(e) => {
-          setAddCustomer(true);
+          setAddCustomer(!addCustomer);
           handleEditCustomer(e);
         }}
       />
@@ -71,7 +71,7 @@ const CustomersList = () => {
         <tbody>
           {customers &&
             customers.map((customer: customerType) => (
-              <tr key={customer.id}>
+              <tr key={customer.id} className="even:bg-blue-200">
                 <td className="border border-black p-2">
                   {customer.first_name} {customer.last_name}
                 </td>

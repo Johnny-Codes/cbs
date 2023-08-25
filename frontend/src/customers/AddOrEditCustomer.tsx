@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {
   useAddCustomerMutation,
   useGetCustomerDetailQuery,
+  useSoftDeleteCustomerMutation,
 } from "./services/customers";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
@@ -11,6 +12,8 @@ import SubmitButton from "../buttons/SubmitButton";
 import CancelButton from "../buttons/CancelButton";
 import DeleteButton from "../buttons/DeleteButton";
 import { selectedCustomerId } from "./customerSlice";
+
+import { Navigate, useNavigate } from "react-router-dom";
 
 type formData = {
   first_name: string;
@@ -36,6 +39,7 @@ const AddOrEditCustomer = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const customerId = useSelector(
     (state: RootState) => state.selectedCustomerId.id
@@ -66,6 +70,16 @@ const AddOrEditCustomer = () => {
       addCustomer({ data: formData, id: formData.id, method: "PUT" });
     }
     dispatch(selectedCustomerId(null));
+  };
+
+  const [deleteCustomer, deleteCustomerResponse] =
+    useSoftDeleteCustomerMutation();
+
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const id = formData.id;
+    deleteCustomer(id);
+    navigate("/customers");
   };
 
   return (
@@ -149,7 +163,11 @@ const AddOrEditCustomer = () => {
       </div>
       <div>
         <SubmitButton />
-        <DeleteButton />
+        <DeleteButton
+          id={customerId}
+          value={customerId}
+          onClick={handleDelete}
+        />
         <CancelButton />
       </div>
     </form>

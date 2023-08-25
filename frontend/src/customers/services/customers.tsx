@@ -9,9 +9,12 @@ export const customersApi = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8000/api/" }),
   tagTypes: ["Customers"],
   endpoints: (builder) => ({
+    getAllActiveCustomers: builder.query({
+      query: (isDeleted) => `customers/?is_deleted=${isDeleted}`,
+      providesTags: ["Customers"],
+    }),
     getAllCustomers: builder.query({
       query: () => "customers/",
-      providesTags: ["Customers"],
     }),
     addCustomer: builder.mutation({
       query: ({ data, id, method }) => {
@@ -37,11 +40,21 @@ export const customersApi = createApi({
         return "";
       },
     }),
+    softDeleteCustomer: builder.mutation({
+      query: (id) => ({
+        url: `customers/${id}/`,
+        method: "PUT",
+        body: { toggle_soft_delete: true },
+      }),
+      invalidatesTags: ["Customers"],
+    }),
   }),
 });
 
 export const {
+  useGetAllActiveCustomersQuery,
   useGetAllCustomersQuery,
   useAddCustomerMutation,
   useGetCustomerDetailQuery,
+  useSoftDeleteCustomerMutation,
 } = customersApi;
