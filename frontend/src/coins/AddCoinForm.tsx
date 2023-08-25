@@ -10,7 +10,7 @@ import getCoinDetail from "./GetCoinDetail";
 
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
-import { setEditMode, setAddMode } from "./addOrEditCoinSlice";
+import { setEditMode, setListMode } from "./addOrEditCoinSlice";
 import { selectedCoinId } from "./selectedCoinSlice";
 
 import {
@@ -141,15 +141,16 @@ const AddCoinForm = () => {
       addCoin({ data: formData, id: "", method: "POST" });
       console.log("addCoin", addCoin);
       console.log("addCoinResponse", addCoinResponse);
-      dispatch(setAddMode());
+      dispatch(setListMode());
       dispatch(selectedCoinId(undefined));
       navigate("/inventory");
     } else {
+      console.log("edit existing");
       formData.updated_at = Date.now();
       formData.id = selId;
       addCoin({ data: formData, id: selId, method: "PUT" });
       navigate("/inventory");
-      dispatch(setEditMode());
+      dispatch(setListMode());
       dispatch(selectedCoinId(undefined));
     }
   };
@@ -157,12 +158,12 @@ const AddCoinForm = () => {
   const handleCancelForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (selId) {
-      dispatch(setAddMode());
+      dispatch(setListMode());
       dispatch(selectedCoinId(undefined));
     } else {
       navigate("/inventory");
       dispatch(selectedCoinId(undefined));
-      dispatch(setAddMode());
+      dispatch(setListMode());
     }
   };
 
@@ -173,7 +174,7 @@ const AddCoinForm = () => {
     const id = formData.id;
     deleteCoin(id);
     console.log("delete coin", deleteCoin);
-    dispatch(setAddMode());
+    dispatch(setListMode());
     dispatch(selectedCoinId(undefined));
     navigate("/inventory");
   };

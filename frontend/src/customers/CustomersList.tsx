@@ -1,5 +1,13 @@
+import React, { useState, useEffect } from "react";
 import EditButton from "../buttons/EditButton";
-import { useGetAllCustomersQuery } from "./services/customers";
+import {
+  useGetAllCustomersQuery,
+  useGetCustomerDetailQuery,
+} from "./services/customers";
+import { selectedCustomerId } from "./customerSlice";
+import AddOrEditCustomer from "./AddOrEditCustomer";
+import Button from "../buttons/Button";
+import { useSelector, useDispatch } from "react-redux";
 
 type customerType = {
   id: number;
@@ -12,11 +20,43 @@ type customerType = {
 };
 
 const CustomersList = () => {
-  const { data: customers } = useGetAllCustomersQuery("");
-  console.log(customers);
+  const dispatch = useDispatch();
+  const { data: customerData, isLoading: loadingCustomerData } =
+    useGetAllCustomersQuery("");
+
+  const selectedCustomer = useSelector(
+    (state: RootState) => state.selectedCustomerId.id
+  );
+
+  const [customers, setCustomers] = useState([]);
+
+  const [addCustomer, setAddCustomer] = useState(false);
+
+  useEffect(() => {
+    if (customerData) {
+      setCustomers(customerData);
+    }
+  }, [customerData]);
+
+  if (loadingCustomerData) return <h1>Loading...</h1>;
+
+  const handleEditCustomer = (e) => {
+    console.log(e.target.value);
+    dispatch(selectedCustomerId(e.target.value));
+  };
 
   return (
-    <>
+    <div>
+      <Button
+        buttonText="Add Customer"
+        type="button"
+        className="border p-4"
+        onClick={(e) => {
+          setAddCustomer(true);
+          handleEditCustomer(e);
+        }}
+      />
+      {addCustomer && <AddOrEditCustomer />}
       <table className="table-auto border-collapse w-full">
         <thead>
           <tr className="bg-blue-500">
@@ -46,8 +86,8 @@ const CustomersList = () => {
                 <td className="border border-black p-2">
                   <EditButton
                     value={customer.id}
-                    onClick={() => {
-                      console.log(customer.id);
+                    onClick={(e) => {
+                      setAddCustomer(true), handleEditCustomer(e);
                     }}
                   />
                 </td>
@@ -55,7 +95,7 @@ const CustomersList = () => {
             ))}
         </tbody>
       </table>
-    </>
+    </div>
   );
 };
 

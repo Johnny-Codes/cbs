@@ -12,7 +12,7 @@ class CustomersSerializerView(
     mixins.CreateModelMixin,
     generics.GenericAPIView,
 ):
-    queryset = Customers.objects.all()
+    queryset = Customers.objects.all().order_by("last_name")
     serializer_class = CustomersSerializer
 
     def get(self, request, *args, **kwargs):

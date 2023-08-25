@@ -16,12 +16,12 @@ export const addOrEditCoinSlice = createSlice({
     setEditMode: (state: AddOrEditCoinState) => {
       state.isEdit = true;
     },
-    setAddMode: (state: AddOrEditCoinState) => {
+    setListMode: (state: AddOrEditCoinState) => {
       state.isEdit = false;
     },
   },
 });
 
-export const { setEditMode, setAddMode } = addOrEditCoinSlice.actions;
+export const { setEditMode, setListMode } = addOrEditCoinSlice.actions;
 
 export default addOrEditCoinSlice.reducer;

@@ -7,10 +7,13 @@ import { customersApi } from "./customers/services/customers";
 import addOrEditCoinSlice from "./coins/addOrEditCoinSlice";
 import selectedCoinSlice from "./coins/selectedCoinSlice";
 
+import customerSlice from "./customers/customerSlice";
+
 export const store = configureStore({
   reducer: {
     changeBoolean: addOrEditCoinSlice,
     selectedCoinId: selectedCoinSlice,
+    selectedCustomerId: customerSlice,
     [coinApi.reducerPath]: coinApi.reducer,
     [customersApi.reducerPath]: customersApi.reducer,
   },
