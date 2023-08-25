@@ -14,12 +14,24 @@ class Business(models.Model):
 
 
 class User(AbstractUser):
+    username = models.CharField(
+        max_length=32,
+        unique=True,
+        blank=True,
+        null=True,
+    )
+    email = models.EmailField(unique=True)
     business = models.ForeignKey(
         Business,
         on_delete=models.CASCADE,
         null=True,
         blank=True,
     )
+
+    def save(self, *args, **kwargs):
+        if not self.username:
+            self.username = self.email
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.username

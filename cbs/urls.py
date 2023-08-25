@@ -25,7 +25,7 @@ urlpatterns = [
     path("api/", include("coins.urls")),
     path("api/", include("images.api_urls")),
     path("api-auth/", include("rest_framework.urls")),
-    path("accounts/", include("accounts.urls")),
+    path("api/", include("accounts.urls")),
     path("api/", include("core.urls")),
     path("api/", include("customers.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

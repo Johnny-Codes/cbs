@@ -7,6 +7,7 @@ class CustomersSerializer(serializers.ModelSerializer):
         model = Customers
         fields = (
             "id",
+            "username",
             "first_name",
             "last_name",
             "email",
@@ -16,4 +17,5 @@ class CustomersSerializer(serializers.ModelSerializer):
             "city",
             "state",
             "zip_code",
+            "is_deleted",
         )

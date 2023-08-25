@@ -1,8 +1,12 @@
 from django.db import models
 from accounts.models import User
+from core.models import SoftDeleteModel
 
 
-class Customers(User):
+class Customers(
+    SoftDeleteModel,
+    User,
+):
     phone_number = models.CharField(
         max_length=11,
         blank=True,
