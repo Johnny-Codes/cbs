@@ -47,6 +47,12 @@ const NavBar = () => {
           >
             Add Coin
           </NavLink>
+          <NavLink
+            to="/customers"
+            className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-500 mr-4"
+          >
+            Customers
+          </NavLink>
           {/* <a
             href="#responsive-header"
             className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"

@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, useHistory } from "react-router-dom";
 import CoinMenuAndList from "./coins/CoinMenuAndList";
 import AddCoinForm from "./coins/AddCoinForm";
 import NavBar from "./nav/NavBar";
+import CustomersList from "./customers/CustomersList";
 
 function Router() {
   return (
@@ -11,6 +12,8 @@ function Router() {
       <Routes>
         <Route path="/inventory" element={<CoinMenuAndList />} />
         <Route path="/add-coin" element={<AddCoinForm />} />
+        <Route path="/add-customer" />
+        <Route path="/customers" element={<CustomersList />} />
       </Routes>
     </BrowserRouter>
   );
