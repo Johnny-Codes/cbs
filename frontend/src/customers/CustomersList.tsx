@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
 import EditButton from "../buttons/EditButton";
-import {
-  useGetAllActiveCustomersQuery,
-  useGetCustomerDetailQuery,
-} from "./services/customers";
+import { useGetAllActiveCustomersQuery } from "./services/customers";
 import { selectedCustomerId } from "./customerSlice";
 import AddOrEditCustomer from "./AddOrEditCustomer";
 import Button from "../buttons/Button";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import DeleteButton from "../buttons/DeleteButton";
+import { useSoftDeleteCustomerMutation } from "./services/customers";
 
 type customerType = {
   id: number;
@@ -24,10 +23,6 @@ const CustomersList = () => {
   const { data: customerData, isLoading: loadingCustomerData } =
     useGetAllActiveCustomersQuery(false);
 
-  const selectedCustomer = useSelector(
-    (state: RootState) => state.selectedCustomerId.id
-  );
-
   const [customers, setCustomers] = useState([]);
 
   const [addCustomer, setAddCustomer] = useState(false);
@@ -43,6 +38,15 @@ const CustomersList = () => {
   const handleEditCustomer = (e) => {
     console.log(e.target.value);
     dispatch(selectedCustomerId(e.target.value));
+  };
+
+  const [deleteCustomer, deleteCustomerResponse] =
+    useSoftDeleteCustomerMutation();
+
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const id = e.target.value;
+    deleteCustomer(id);
   };
 
   return (
@@ -81,7 +85,7 @@ const CustomersList = () => {
                 <td className="border border-black p-2">{customer.email}</td>
                 <td className="border border-black p-2">{customer.state}</td>
                 <td className="border border-black p-2">
-                  {customer.business ? <>"Yes" {customer.business}</> : "No"}
+                  {customer.business ? <>{customer.business}</> : "No"}
                 </td>
                 <td className="border border-black p-2">
                   <EditButton
@@ -89,6 +93,11 @@ const CustomersList = () => {
                     onClick={(e) => {
                       setAddCustomer(true), handleEditCustomer(e);
                     }}
+                  />
+                  <DeleteButton
+                    id={customer.id}
+                    value={customer.id}
+                    onClick={handleDelete}
                   />
                 </td>
               </tr>

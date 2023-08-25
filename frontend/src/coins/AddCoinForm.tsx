@@ -173,7 +173,6 @@ const AddCoinForm = () => {
     e.preventDefault();
     const id = formData.id;
     deleteCoin(id);
-    console.log("delete coin", deleteCoin);
     dispatch(setListMode());
     dispatch(selectedCoinId(undefined));
     navigate("/inventory");
