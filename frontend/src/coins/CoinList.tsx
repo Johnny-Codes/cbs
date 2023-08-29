@@ -1,9 +1,11 @@
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setEditMode } from "./addOrEditCoinSlice";
 import { selectedCoinId } from "./selectedCoinSlice";
 import EditButton from "../buttons/EditButton";
-import { useGetAllActiveCoinsQuery } from "./services/coins";
+import { useGetCoinTypeForCoinListQuery } from "./services/coins";
+import DeleteButton from "../buttons/DeleteButton";
+import HandleDelete from "./HandleDelete";
 
 export type CoinListType = {
   url: string;
@@ -11,12 +13,16 @@ export type CoinListType = {
 
 export default function CoinList({ url }: CoinListType) {
   const dispatch = useDispatch();
-  const { data: activeCoins } = useGetAllActiveCoinsQuery(false);
 
-  console.log("active coins", activeCoins);
+  const { data: selectedCoinType, isLoading: coinTypeLoading } =
+    useGetCoinTypeForCoinListQuery(url);
+
+  const [coinTypeList, setCoinTypeList] = useState();
+
+  console.log("coin type list", coinTypeList);
   useEffect(() => {
-    activeCoins;
-  }, [activeCoins]);
+    setCoinTypeList(selectedCoinType);
+  }, [url]);
   const handleEdit = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     dispatch(setEditMode());
@@ -46,8 +52,8 @@ export default function CoinList({ url }: CoinListType) {
           </tr>
         </thead>
         <tbody>
-          {activeCoins &&
-            activeCoins.map((c) => (
+          {selectedCoinType &&
+            selectedCoinType.map((c) => (
               <tr
                 key={c.id}
                 value={c.id}
@@ -62,6 +68,7 @@ export default function CoinList({ url }: CoinListType) {
                 </td>
                 <td className="border border-black p-2">
                   <EditButton value={c.id} onClick={handleEdit} />
+                  <DeleteButton />
                 </td>
               </tr>
             ))}

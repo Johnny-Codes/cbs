@@ -40,14 +40,14 @@ const CustomersList = () => {
     dispatch(selectedCustomerId(e.target.value));
   };
 
-  const [deleteCustomer, deleteCustomerResponse] =
-    useSoftDeleteCustomerMutation();
+  // const [deleteCustomer, deleteCustomerResponse] =
+  //   useSoftDeleteCustomerMutation();
 
-  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const id = e.target.value;
-    deleteCustomer(id);
-  };
+  // const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   const id = e.target.value;
+  //   deleteCustomer(id);
+  // };
 
   return (
     <div>
@@ -94,11 +94,11 @@ const CustomersList = () => {
                       setAddCustomer(true), handleEditCustomer(e);
                     }}
                   />
-                  <DeleteButton
+                  {/* <DeleteButton
                     id={customer.id}
                     value={customer.id}
                     onClick={handleDelete}
-                  />
+                  /> */}
                 </td>
               </tr>
             ))}

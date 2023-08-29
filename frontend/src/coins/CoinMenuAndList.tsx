@@ -1,26 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import CoinMenu from "./CoinMenu";
 import CoinList from "./CoinList";
 import AddCoinForm from "./AddCoinForm";
 import { useSelector, useDispatch } from "react-redux";
-import { setEditMode } from "./addOrEditCoinSlice";
 import { RootState } from "../store";
 
 export default function CoinMenuAndList() {
   const [selectedCoinType, setSelectedCoinType] = useState();
   const isEdit = useSelector((state: RootState) => state.changeBoolean.isEdit);
   const baseUrl = "http://localhost:8000";
+  console.log("selected coin type", selectedCoinType);
 
   const handleSelectedCoinType = (e) => {
     setSelectedCoinType(e.target.getAttribute("data-url"));
   };
+  console.log("selected coin type", selectedCoinType);
 
-  let fetchUrl;
-  if (!selectedCoinType) {
-    fetchUrl = null;
-  } else {
-    fetchUrl = `${baseUrl}${selectedCoinType}`;
-  }
+  const [fetchUrl, setFetchUrl] = useState("");
+  useEffect(() => {
+    setFetchUrl(`${baseUrl}${selectedCoinType}`);
+    console.log("fetch url", fetchUrl);
+  }, [selectedCoinType]);
 
   return (
     <div className="grid grid-cols-12">

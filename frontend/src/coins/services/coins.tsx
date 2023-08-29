@@ -12,6 +12,10 @@ export const coinApi = createApi({
     getAllCoins: builder.query({
       query: () => `coins/`,
     }),
+    getCoinTypeForCoinList: builder.query({
+      query: (url) => `${url}?is_deleted=false`,
+      providesTags: ["Coins"],
+    }),
     getSpecificCoin: builder.query({
       query: (coinId) => `coins/${coinId}/`,
     }),
@@ -75,4 +79,5 @@ export const {
   useGetAllCoinGradingServicesQuery,
   useGetAllActiveCoinsQuery,
   useSoftDeleteCoinMutation,
+  useGetCoinTypeForCoinListQuery,
 } = coinApi;

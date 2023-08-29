@@ -103,4 +103,12 @@ class CoinTypeNameSerializerView(
     serializer_class = CoinTypeNameSerializer
 
     def get(self, request, *args, **kwargs):
+        is_deleted_param = request.query_params.get("is_deleted", None)
+
+        if is_deleted_param is not None:
+            if is_deleted_param.lower() == "true":
+                self.queryset = self.queryset.filter(is_deleted=True)
+            elif is_deleted_param.lower() == "false":
+                self.queryset = self.queryset.filter(is_deleted=False)
+
         return self.list(request, *args, **kwargs)
