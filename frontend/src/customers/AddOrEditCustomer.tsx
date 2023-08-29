@@ -13,7 +13,7 @@ import CancelButton from "../buttons/CancelButton";
 import DeleteButton from "../buttons/DeleteButton";
 import { selectedCustomerId } from "./customerSlice";
 
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 type formData = {
   first_name: string;
@@ -45,6 +45,8 @@ const AddOrEditCustomer = () => {
     (state: RootState) => state.selectedCustomerId.id
   );
 
+  console.log("customer id", customerId);
+
   const { data: customerData, isLoading: loadingCustomerData } =
     useGetCustomerDetailQuery(customerId);
 
@@ -70,6 +72,7 @@ const AddOrEditCustomer = () => {
       addCustomer({ data: formData, id: formData.id, method: "PUT" });
     }
     dispatch(selectedCustomerId(null));
+    navigate("/customers");
   };
 
   const [deleteCustomer, deleteCustomerResponse] =
@@ -168,7 +171,11 @@ const AddOrEditCustomer = () => {
           value={customerId}
           onClick={handleDelete}
         />
-        <CancelButton />
+        <CancelButton
+          onClick={() => {
+            navigate("/customers"), dispatch(selectedCustomerId(null));
+          }}
+        />
       </div>
     </form>
   );

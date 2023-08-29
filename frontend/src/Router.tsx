@@ -13,7 +13,7 @@ function Router() {
       <Routes>
         <Route path="/inventory" element={<CoinMenuAndList />} />
         <Route path="/add-coin" element={<AddCoinForm />} />
-        <Route path="/add-customer" element={<AddOrEditCustomer />} />
+        <Route path="/customers/add" element={<AddOrEditCustomer />} />
         <Route path="/customers" element={<CustomersList />} />
       </Routes>
     </BrowserRouter>

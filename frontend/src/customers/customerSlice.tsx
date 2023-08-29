@@ -15,11 +15,9 @@ export const customerSlice = createSlice({
   reducers: {
     selectedCustomerId: (
       state: CustomerState,
-      action: PayloadAction<number>
+      action: PayloadAction<number | null>
     ) => {
-      if (action.payload >= 1) {
-        state.id = action.payload;
-      }
+      state.id = action.payload;
     },
   },
 });

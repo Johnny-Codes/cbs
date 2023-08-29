@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { selectedCoinId } from "../coins/selectedCoinSlice";
 import { setEditMode, setListMode } from "../coins/addOrEditCoinSlice";
+import { selectedCustomerId } from "../customers/customerSlice";
 
 const NavBar = () => {
   const dispatch = useDispatch();
@@ -9,6 +10,11 @@ const NavBar = () => {
   const handleAddCoinClick = () => {
     dispatch(selectedCoinId(null));
   };
+
+  const handleAddCustomerClick = () => {
+    dispatch(selectedCustomerId(null));
+  };
+
   const handleInventoryClick = () => {
     dispatch(setListMode());
   };
@@ -52,6 +58,13 @@ const NavBar = () => {
             className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-500 mr-4"
           >
             Customers
+          </NavLink>
+          <NavLink
+            to="/customers/add"
+            className="block mt-4 lg:inline-block lg:mt-0 text-white hover:text-gray-500 mr-4"
+            onClick={handleAddCustomerClick}
+          >
+            Add Customer
           </NavLink>
           {/* <a
             href="#responsive-header"

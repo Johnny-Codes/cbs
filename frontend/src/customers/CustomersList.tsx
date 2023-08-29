@@ -7,6 +7,7 @@ import Button from "../buttons/Button";
 import { useDispatch } from "react-redux";
 import DeleteButton from "../buttons/DeleteButton";
 import { useSoftDeleteCustomerMutation } from "./services/customers";
+import { useNavigate } from "react-router-dom";
 
 type customerType = {
   id: number;
@@ -19,13 +20,14 @@ type customerType = {
 };
 
 const CustomersList = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { data: customerData, isLoading: loadingCustomerData } =
     useGetAllActiveCustomersQuery(false);
 
   const [customers, setCustomers] = useState([]);
-
-  const [addCustomer, setAddCustomer] = useState(false);
+  const [deleteCustomer, deleteCustomerResponse] =
+    useSoftDeleteCustomerMutation();
 
   useEffect(() => {
     if (customerData) {
@@ -38,29 +40,17 @@ const CustomersList = () => {
   const handleEditCustomer = (e) => {
     console.log(e.target.value);
     dispatch(selectedCustomerId(e.target.value));
+    navigate("/customers/add");
   };
 
-  // const [deleteCustomer, deleteCustomerResponse] =
-  //   useSoftDeleteCustomerMutation();
-
-  // const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
-  //   e.preventDefault();
-  //   const id = e.target.value;
-  //   deleteCustomer(id);
-  // };
+  const handleDelete = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const id = e.target.value;
+    deleteCustomer(id);
+  };
 
   return (
     <div>
-      <Button
-        buttonText="Add Customer"
-        type="button"
-        className="border p-4"
-        onClick={(e) => {
-          setAddCustomer(!addCustomer);
-          handleEditCustomer(e);
-        }}
-      />
-      {addCustomer && <AddOrEditCustomer />}
       <table className="table-auto border-collapse w-full">
         <thead>
           <tr className="bg-blue-500">
@@ -91,14 +81,14 @@ const CustomersList = () => {
                   <EditButton
                     value={customer.id}
                     onClick={(e) => {
-                      setAddCustomer(true), handleEditCustomer(e);
+                      handleEditCustomer(e);
                     }}
                   />
-                  {/* <DeleteButton
+                  <DeleteButton
                     id={customer.id}
                     value={customer.id}
                     onClick={handleDelete}
-                  /> */}
+                  />
                 </td>
               </tr>
             ))}
