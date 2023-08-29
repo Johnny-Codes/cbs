@@ -129,7 +129,6 @@ const AddCoinForm = () => {
       newValue = updatedGrading;
     }
     setFormData({ ...formData, [name]: newValue });
-    console.log("form data", formData);
   };
 
   const navigate = useNavigate();
@@ -139,13 +138,10 @@ const AddCoinForm = () => {
     e.preventDefault();
     if (!selId) {
       addCoin({ data: formData, id: "", method: "POST" });
-      console.log("addCoin", addCoin);
-      console.log("addCoinResponse", addCoinResponse);
       dispatch(setListMode());
       dispatch(selectedCoinId(undefined));
       navigate("/inventory");
     } else {
-      console.log("edit existing");
       formData.updated_at = Date.now();
       formData.id = selId;
       addCoin({ data: formData, id: selId, method: "PUT" });

@@ -38,7 +38,6 @@ const CustomersList = () => {
   if (loadingCustomerData) return <h1>Loading...</h1>;
 
   const handleEditCustomer = (e) => {
-    console.log(e.target.value);
     dispatch(selectedCustomerId(e.target.value));
     navigate("/customers/add");
   };

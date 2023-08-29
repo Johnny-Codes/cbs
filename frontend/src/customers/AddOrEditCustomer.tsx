@@ -45,8 +45,6 @@ const AddOrEditCustomer = () => {
     (state: RootState) => state.selectedCustomerId.id
   );
 
-  console.log("customer id", customerId);
-
   const { data: customerData, isLoading: loadingCustomerData } =
     useGetCustomerDetailQuery(customerId);
 
@@ -59,7 +57,6 @@ const AddOrEditCustomer = () => {
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-    console.log("form data", formData);
   };
 
   const [addCustomer, addCustomerResponse] = useAddCustomerMutation();
@@ -68,7 +65,6 @@ const AddOrEditCustomer = () => {
     if (!customerId) {
       addCustomer({ data: formData, id: "", method: "POST" });
     } else {
-      console.log("edit form data", formData);
       addCustomer({ data: formData, id: formData.id, method: "PUT" });
     }
     dispatch(selectedCustomerId(null));

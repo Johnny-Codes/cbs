@@ -2,7 +2,6 @@ import { useGetAllCoinsQuery } from "./services/coins";
 
 const TestingStuff = () => {
   const { data, error, isLoading } = useGetAllCoinsQuery("");
-  console.log("get all coins", useGetAllCoinsQuery(""));
   return (
     <div>
       {error ? (

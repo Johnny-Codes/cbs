@@ -9,17 +9,14 @@ export default function CoinMenuAndList() {
   const [selectedCoinType, setSelectedCoinType] = useState();
   const isEdit = useSelector((state: RootState) => state.changeBoolean.isEdit);
   const baseUrl = "http://localhost:8000";
-  console.log("selected coin type", selectedCoinType);
 
   const handleSelectedCoinType = (e) => {
     setSelectedCoinType(e.target.getAttribute("data-url"));
   };
-  console.log("selected coin type", selectedCoinType);
 
   const [fetchUrl, setFetchUrl] = useState("");
   useEffect(() => {
     setFetchUrl(`${baseUrl}${selectedCoinType}`);
-    console.log("fetch url", fetchUrl);
   }, [selectedCoinType]);
 
   return (

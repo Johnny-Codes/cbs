@@ -19,7 +19,6 @@ export default function CoinList({ url }: CoinListType) {
 
   const [coinTypeList, setCoinTypeList] = useState();
 
-  console.log("coin type list", coinTypeList);
   useEffect(() => {
     setCoinTypeList(selectedCoinType);
   }, [url]);
