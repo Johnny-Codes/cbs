@@ -92,6 +92,7 @@ INSTALLED_APPS = [
     # 3rd Party
     "rest_framework",
     "corsheaders",
+    "django_extensions",
 ]
 
 CORS_ALLOWED_ORIGINS = [
@@ -198,3 +199,8 @@ CORS_ORIGIN_WHITELIST = [
 ]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+
+GRAPH_MODELS = {
+    "all_applications": True,
+    "group_models": True,
+}

@@ -162,3 +162,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+
+# my stuff
+notes.txt
+my_project.dot
+my_project_visualized.png 
