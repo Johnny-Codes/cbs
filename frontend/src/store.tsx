@@ -9,11 +9,15 @@ import selectedCoinSlice from "./coins/selectedCoinSlice";
 
 import customerSlice from "./customers/customerSlice";
 
+import salesCartSlice from "./salesinvoice/salesCartSlice";
+
 export const store = configureStore({
   reducer: {
     changeBoolean: addOrEditCoinSlice,
     selectedCoinId: selectedCoinSlice,
     selectedCustomerId: customerSlice,
+    addToCart: salesCartSlice,
+    itemsInCart: salesCartSlice,
     [coinApi.reducerPath]: coinApi.reducer,
     [customersApi.reducerPath]: customersApi.reducer,
   },

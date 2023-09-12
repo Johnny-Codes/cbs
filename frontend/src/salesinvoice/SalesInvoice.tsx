@@ -2,8 +2,15 @@ import { useState, useEffect } from "react";
 import { useGetAllCoinsQuery } from "../coins/services/coins";
 import FormFields from "../forms/FormFields";
 import SearchCoinsModal from "../coins/SearchCoinsModal";
+import { RootState } from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "./salesCartSlice";
 
 const SalesInvoice = () => {
+  const itemsInTheCart = useSelector(
+    (state: RootState) => state.itemsInCart.items
+  );
+  const dispatch = useDispatch();
   const { data: allCoinsData, isLoading: allCoinsDataLoading } =
     useGetAllCoinsQuery("");
   const [allCoins, setAllCoins] = useState({});
@@ -52,6 +59,11 @@ const SalesInvoice = () => {
           isOpen={isSearchCoinsOpen}
           onClose={closeSearchCoins}
         />
+      </div>
+      <div>
+        <button onClick={() => dispatch(addToCart("added to cart"))}>
+          add to cart
+        </button>
       </div>
     </div>
   );
