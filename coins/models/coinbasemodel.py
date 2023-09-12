@@ -100,3 +100,7 @@ class CoinBaseModel(
     class Meta:
         verbose_name_plural = "Coin Base Models"
         verbose_name = "Coin Base Model"
+
+    def update_quantity(self, method, qty):
+        if method == "add":
+            self.quantity += qty
