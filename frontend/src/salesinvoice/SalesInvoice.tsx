@@ -47,9 +47,7 @@ const SalesInvoice = () => {
         />
       </form>
       <div>
-        <button onClick={openSearchCoins} className="btn">
-          Open Modal
-        </button>
+        <button onClick={openSearchCoins}>Open Modal</button>
         <SearchCoinsModal
           isOpen={isSearchCoinsOpen}
           onClose={closeSearchCoins}

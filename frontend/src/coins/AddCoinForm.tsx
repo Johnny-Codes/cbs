@@ -221,15 +221,17 @@ const AddCoinForm = () => {
           onChange={handleFormData}
           value={formData.year}
         />
-        <FormFields
-          labelText="Year 2"
-          htmlFor="year2"
-          type="number"
-          name="year2"
-          onChange={handleFormData}
-          className="hidden"
-          value={formData.year2}
-        />
+        <div id="year2">
+          <FormFields
+            labelText="Year 2"
+            htmlFor="year 2"
+            type="number"
+            name="year 2"
+            className="bulk"
+            onChange={handleFormData}
+            value={formData.year2}
+          />
+        </div>
         <FormFields
           labelText="Description"
           htmlFor="description"
@@ -344,14 +346,12 @@ const AddCoinForm = () => {
               ))}
           </select>
         </div>
-        <div>
+        <div id="grade2" className="bulk hidden">
           <label htmlFor="grade2" className="bulk">
             Grade 2
           </label>
           <select
-            className="bulk hidden"
             onChange={handleFormData}
-            id="grade2"
             name="grade2"
             value={formData.grade2}
           >
