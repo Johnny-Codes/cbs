@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import EditButton from "../buttons/EditButton";
-import { useGetAllActiveCustomersQuery } from "./services/customers";
+import { useGetAllActiveCustomersQuery } from "./api/customers";
 import { selectedCustomerId } from "./customerSlice";
 import AddOrEditCustomer from "./AddOrEditCustomer";
 import Button from "../buttons/Button";
 import { useDispatch } from "react-redux";
 import DeleteButton from "../buttons/DeleteButton";
-import { useSoftDeleteCustomerMutation } from "./services/customers";
+import { useSoftDeleteCustomerMutation } from "./api/customers";
 import { useNavigate } from "react-router-dom";
 
 type customerType = {

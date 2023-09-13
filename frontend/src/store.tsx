@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/query";
 
 import { coinApi } from "./coins/services/coins";
-import { customersApi } from "./customers/services/customers";
+import { customersApi } from "./customers/api/customers";
+import { invoicesApi } from "./salesinvoice/api/invoicesApi";
 
 import addOrEditCoinSlice from "./coins/addOrEditCoinSlice";
 import selectedCoinSlice from "./coins/selectedCoinSlice";
@@ -20,9 +21,14 @@ export const store = configureStore({
     itemsInCart: salesCartSlice,
     [coinApi.reducerPath]: coinApi.reducer,
     [customersApi.reducerPath]: customersApi.reducer,
+    [invoicesApi.reducerPath]: invoicesApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(coinApi.middleware, customersApi.middleware),
+    getDefaultMiddleware().concat(
+      coinApi.middleware,
+      customersApi.middleware,
+      invoicesApi.middleware
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
