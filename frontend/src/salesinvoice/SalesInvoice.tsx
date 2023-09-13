@@ -4,12 +4,9 @@ import FormFields from "../forms/FormFields";
 import SearchCoinsModal from "../coins/SearchCoinsModal";
 import { RootState } from "../store";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "./salesCartSlice";
+import { addToCart } from "./stores/salesCartSlice";
 
 const SalesInvoice = () => {
-  const itemsInTheCart = useSelector(
-    (state: RootState) => state.itemsInCart.items
-  );
   const dispatch = useDispatch();
   const { data: allCoinsData, isLoading: allCoinsDataLoading } =
     useGetAllCoinsQuery("");
@@ -61,7 +58,9 @@ const SalesInvoice = () => {
         />
       </div>
       <div>
-        <button onClick={() => dispatch(addToCart("added to cart"))}>
+        <button
+          onClick={() => dispatch(addToCart({ sku: "sku1", quantity: 1 }))}
+        >
           add to cart
         </button>
       </div>

@@ -9,7 +9,7 @@ import selectedCoinSlice from "./coins/selectedCoinSlice";
 
 import customerSlice from "./customers/customerSlice";
 
-import salesCartSlice from "./salesinvoice/salesCartSlice";
+import salesCartSlice from "./salesinvoice/stores/salesCartSlice";
 
 export const store = configureStore({
   reducer: {
