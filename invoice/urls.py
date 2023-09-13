@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import sales_invoice
+from .views import SalesInvoiceSerializerView
 
 urlpatterns = [
-    path("sales/invoice/", sales_invoice, name="sales_invoice"),
+    path("sales/invoice/", SalesInvoiceSerializerView.as_view(), name="sales_invoice"),
 ]

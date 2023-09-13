@@ -1,17 +1,22 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 import json
+from invoice.serializers import SalesInvoiceSerializer
+
+from rest_framework.response import Response
+from rest_framework import mixins, generics
+from rest_framework import status
 
 
-@csrf_exempt
-def sales_invoice(request):
-    print(type(request.body))
-    body = request.body
-    print("body", body.decode("utf-8"))
-    print("type of body", type(body))
-    items = json.loads(body.decode())
-    print("items", items)
-    print("type of items", type(items))
-    for item in items:
-        print(item)
-    return JsonResponse({"status": "ok"})
+class SalesInvoiceSerializerView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView,
+):
+    serializer_class = SalesInvoiceSerializer
+
+    def post(self, request, *args, **kwargs):
+        body = request.body
+        items = json.loads(body.decode())
+        for item in items:
+            print(item)
+        return JsonResponse({"status": "ok"})
