@@ -3,12 +3,11 @@ import SalesInvoice from "./SalesInvoice";
 
 const SalesInvoicePage = () => {
   return (
-    <div>
-      <div>
+    <div className="grid grid-cols-12">
+      <div className="col-span-9">
         <SalesInvoice />
       </div>
-      <div>
-        <h1>Fuck</h1>
+      <div className="col-span-3">
         <SalesCart />
       </div>
     </div>
