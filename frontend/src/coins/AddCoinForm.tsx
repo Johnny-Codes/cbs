@@ -221,7 +221,7 @@ const AddCoinForm = () => {
           onChange={handleFormData}
           value={formData.year}
         />
-        <div id="year2">
+        <div id="year2" className="bulk hidden">
           <FormFields
             labelText="Year 2"
             htmlFor="year 2"

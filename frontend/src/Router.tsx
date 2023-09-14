@@ -4,7 +4,7 @@ import AddCoinForm from "./coins/AddCoinForm";
 import NavBar from "./nav/NavBar";
 import CustomersList from "./customers/CustomersList";
 import AddOrEditCustomer from "./customers/AddOrEditCustomer";
-import SalesInvoice from "./salesinvoice/SalesInvoice";
+import SalesInvoicePage from "./salesinvoice/SalesInvoicePage";
 function Router() {
   return (
     <BrowserRouter>
@@ -15,7 +15,7 @@ function Router() {
         <Route path="/add-coin" element={<AddCoinForm />} />
         <Route path="/customers/add" element={<AddOrEditCustomer />} />
         <Route path="/customers" element={<CustomersList />} />
-        <Route path="/" element={<SalesInvoice />} />
+        <Route path="/" element={<SalesInvoicePage />} />
       </Routes>
     </BrowserRouter>
   );

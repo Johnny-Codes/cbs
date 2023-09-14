@@ -3,7 +3,7 @@ import {
   useAddCustomerMutation,
   useGetCustomerDetailQuery,
   useSoftDeleteCustomerMutation,
-} from "./services/customers";
+} from "./api/customers";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 

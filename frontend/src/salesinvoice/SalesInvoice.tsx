@@ -1,15 +1,26 @@
 import { useState, useEffect } from "react";
 import { useGetAllCoinsQuery } from "../coins/services/coins";
 import FormFields from "../forms/FormFields";
+import FormTextarea from "../forms/FormTextarea";
 import SearchCoinsModal from "../coins/SearchCoinsModal";
+import { RootState } from "../store";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart } from "./stores/salesCartSlice";
+import { HiOutlineShoppingCart } from "react-icons/hi2";
+
+type SkuProps = {
+  sku: string;
+};
 
 const SalesInvoice = () => {
+  const dispatch = useDispatch();
   const { data: allCoinsData, isLoading: allCoinsDataLoading } =
     useGetAllCoinsQuery("");
   const [allCoins, setAllCoins] = useState({});
-  const [formData, setFormData] = useState({});
+  const [skuData, setSkuData] = useState<SkuProps>({
+    sku: "",
+  });
   const [selectedSku, setSelectedSku] = useState("");
-  const [isNewSku, setIsNewSku] = useState(false);
   const [isSearchCoinsOpen, setIsSearchCoinsOpen] = useState(false);
 
   const openSearchCoins = () => {
@@ -24,35 +35,39 @@ const SalesInvoice = () => {
       console.log("use effect");
       setAllCoins(allCoinsData);
     }
-  }, [allCoinsDataLoading]);
+  }, [allCoinsDataLoading, allCoinsData]);
 
   if (allCoinsDataLoading) return <h1>Loading</h1>;
 
-  const handleSkuChange = (e) => {
-    const inputSku = e.target.value;
-    setSelectedSku(inputSku);
-    setIsNewSku(!allCoins.some((coin) => coin.sku === inputSku));
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSkuData({ ...skuData, [name]: value });
   };
 
   return (
-    <div>
-      <form>
+    <div className="grid grid-cols-12">
+      <form className="col-span-10">
         <FormFields
           htmlFor="sku"
           type="text"
           name="sku"
           placeholder="SKU"
-          onChange={handleSkuChange}
-          value={selectedSku}
+          value={skuData.sku}
+          onChange={handleFormChange}
+        />
+        <HiOutlineShoppingCart
+          className="text-4xl hover:cursor-pointer justify-self-center hover:text-green-500 rounded"
+          onClick={() => dispatch(addToCart(skuData))}
         />
       </form>
-      <div>
+
+      {/* <div>
         <button onClick={openSearchCoins}>Open Modal</button>
         <SearchCoinsModal
           isOpen={isSearchCoinsOpen}
           onClose={closeSearchCoins}
         />
-      </div>
+      </div> */}
     </div>
   );
 };
