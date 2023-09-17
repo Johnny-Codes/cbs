@@ -10,14 +10,16 @@ export const invoicesApi = createApi({
   tagTypes: ["Invoice"],
   endpoints: (builder) => ({
     submitSalesCart: builder.mutation({
-      query: (data) => (
-        console.log("data", data),
-        {
-          url: "sales/invoice/",
-          method: "POST",
-          body: data,
-        }
-      ),
+      query: (data) => ({
+        url: "sales/invoice/",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getAllSkus: builder.query({
+      query: () => ({
+        url: "coins/skus/",
+      }),
     }),
   }),
 });

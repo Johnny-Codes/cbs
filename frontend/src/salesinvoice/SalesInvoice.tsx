@@ -44,6 +44,8 @@ const SalesInvoice = () => {
     setSkuData({ ...skuData, [name]: value });
   };
 
+  console.log(allCoins);
+
   return (
     <div className="grid grid-cols-12">
       <form className="col-span-10">
