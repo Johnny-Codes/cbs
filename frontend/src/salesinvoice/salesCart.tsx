@@ -13,6 +13,7 @@ const SalesCart = () => {
   const [submitCart, submitCartResponse] = useSubmitSalesCartMutation();
   const handleSubmitSalesCart = () => {
     console.log("submitting sales cart");
+    console.log("items in the cart", itemsInTheCart);
     submitCart(itemsInTheCart);
   };
 
