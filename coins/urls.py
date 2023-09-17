@@ -3,6 +3,7 @@ from coins.views.coinbasemodelview import (
     CoinBaseModelSerializerView,
     OneCoinBaseModelSerializerView,
     CoinTypeSerializerView,
+    GetAllSkusView,
 )
 from coins.views.voviews import (
     CoinFamilySerializerView,
@@ -64,5 +65,10 @@ urlpatterns = [
         "coins/cointypes/<int:coin_type>/",
         CoinTypeSerializerView.as_view(),
         name="coin_type_name",
+    ),
+    path(
+        "coins/skus/",
+        GetAllSkusView.as_view(),
+        name="get_all_skus",
     ),
 ]

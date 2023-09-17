@@ -1,4 +1,7 @@
-from coins.serializers.coinbasemodelserializer import CoinBaseModelSerializer
+from coins.serializers.coinbasemodelserializer import (
+    CoinBaseModelSerializer,
+    CoinSkusOnlySerializer,
+)
 from coins.models.coinbasemodel import CoinBaseModel
 
 from rest_framework.response import Response
@@ -79,3 +82,14 @@ class CoinTypeSerializerView(
 
         serializer = self.get_serializer(queryset, many=True)
         return Response(serializer.data)
+
+
+class GetAllSkusView(
+    mixins.ListModelMixin,
+    generics.GenericAPIView,
+):
+    queryset = CoinBaseModel.objects.all()
+    serializer_class = CoinSkusOnlySerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)

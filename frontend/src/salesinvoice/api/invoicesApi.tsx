@@ -19,6 +19,11 @@ export const invoicesApi = createApi({
         }
       ),
     }),
+    getAllSkus: builder.query({
+      query: () => ({
+        url: "coins/skus/",
+      }),
+    }),
   }),
 });
 

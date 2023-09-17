@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useGetAllCoinsQuery } from "../coins/services/coins";
 import FormFields from "../forms/FormFields";
 import FormTextarea from "../forms/FormTextarea";
@@ -10,6 +10,8 @@ import { HiOutlineShoppingCart } from "react-icons/hi2";
 
 type SkuProps = {
   sku: string;
+  quantity: number;
+  price: number;
 };
 
 const SalesInvoice = () => {
@@ -19,16 +21,10 @@ const SalesInvoice = () => {
   const [allCoins, setAllCoins] = useState({});
   const [skuData, setSkuData] = useState<SkuProps>({
     sku: "",
+    quantity: 0,
+    price: 0,
   });
-  const [selectedSku, setSelectedSku] = useState("");
-  const [isSearchCoinsOpen, setIsSearchCoinsOpen] = useState(false);
-
-  const openSearchCoins = () => {
-    setIsSearchCoinsOpen(true);
-  };
-  const closeSearchCoins = () => {
-    setIsSearchCoinsOpen(false);
-  };
+  const [filteredCoins, setFilteredCoins] = useState<string[]>([]);
 
   useEffect(() => {
     if (!allCoinsDataLoading) {
@@ -37,37 +33,87 @@ const SalesInvoice = () => {
     }
   }, [allCoinsDataLoading, allCoinsData]);
 
-  if (allCoinsDataLoading) return <h1>Loading</h1>;
-
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setSkuData({ ...skuData, [name]: value });
   };
 
+  const handleSearchSkus = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    // Assuming you have an array of SKUs in allCoinsData
+    const filteredSKUs = allCoinsData.filter((coin) =>
+      coin.sku.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredCoins(filteredSKUs.map((coin) => coin.sku));
+  };
+
+  const handleAddToCart = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("handle add to cart", skuData);
+    if (!skuData.sku || !skuData.quantity || !skuData.price) {
+      console.log("skus missing");
+    } else {
+      dispatch(addToCart(skuData));
+    }
+  };
+
   return (
     <div className="grid grid-cols-12">
-      <form className="col-span-10">
+      <div className="col-span-12">
         <FormFields
           htmlFor="sku"
           type="text"
           name="sku"
-          placeholder="SKU"
+          placeholder="Search SKUs"
           value={skuData.sku}
-          onChange={handleFormChange}
+          onChange={(e) => {
+            handleFormChange(e);
+            handleSearchSkus(e);
+          }}
         />
-        <HiOutlineShoppingCart
-          className="text-4xl hover:cursor-pointer justify-self-center hover:text-green-500 rounded"
-          onClick={() => dispatch(addToCart(skuData))}
-        />
-      </form>
-
-      {/* <div>
-        <button onClick={openSearchCoins}>Open Modal</button>
-        <SearchCoinsModal
-          isOpen={isSearchCoinsOpen}
-          onClose={closeSearchCoins}
-        />
-      </div> */}
+      </div>
+      <div className="col-span-12">
+        <form>
+          <select
+            name="selectedSku"
+            id="selectedSku"
+            required
+            onChange={(e) => {
+              const selectedSku = e.target.value;
+              setSkuData({ ...skuData, sku: selectedSku });
+            }}
+          >
+            <option value="">Select SKU</option>
+            {filteredCoins.map((sku) => (
+              <option key={sku} value={sku}>
+                {sku}
+              </option>
+            ))}
+          </select>
+          <FormFields
+            htmlFor="quantity"
+            type="number"
+            name="quantity"
+            placeholder="Quantity"
+            onChange={handleFormChange}
+            required
+          />
+          <FormFields
+            htmlFor="price"
+            type="number"
+            name="price"
+            placeholder="Price"
+            onChange={handleFormChange}
+            required
+          />
+          <div className="col-span-12 justify-self-center">
+            <HiOutlineShoppingCart
+              className="text-4xl hover:cursor-pointer justify-self-center hover:text-green-500 rounded"
+              onClick={(e) => handleAddToCart(e)}
+            />
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

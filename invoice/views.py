@@ -42,7 +42,13 @@ class SalesInvoiceSerializerView(
                 print("invoice in try statement", sales_invoice)
             except CoinBaseModel.DoesNotExist:
                 print("doesn't exist")
-                return JsonResponse({"status": "error"}, status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse(
+                    {"status": "error"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
         print("sales invoice", sales_invoice)
         sales_invoice.save()
-        return JsonResponse({"status": "success", "sales invoice": sales_invoice.id}, status=status.HTTP_200_OK)
+        return JsonResponse(
+            {"status": "success", "sales invoice": sales_invoice.id},
+            status=status.HTTP_200_OK,
+        )
