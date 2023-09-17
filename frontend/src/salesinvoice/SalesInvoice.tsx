@@ -1,10 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useGetAllCoinsQuery } from "../coins/services/coins";
 import FormFields from "../forms/FormFields";
-import FormTextarea from "../forms/FormTextarea";
-import SearchCoinsModal from "../coins/SearchCoinsModal";
-import { RootState } from "../store";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addToCart } from "./stores/salesCartSlice";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 
@@ -40,7 +37,6 @@ const SalesInvoice = () => {
 
   const handleSearchSkus = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    // Assuming you have an array of SKUs in allCoinsData
     const filteredSKUs = allCoinsData.filter((coin) =>
       coin.sku.toLowerCase().includes(value.toLowerCase())
     );
