@@ -50,6 +50,7 @@ const SalesInvoice = () => {
       console.log("skus missing");
     } else {
       dispatch(addToCart(skuData));
+      setSkuData({ sku: "", quantity: 0, price: 0 });
     }
   };
 
