@@ -4,7 +4,7 @@ import SalesInvoice from "./SalesInvoice";
 import SalesCustomer from "./SalesCustomer";
 
 const SalesInvoicePage = () => {
-  const [componentSelector, setComponentSelector] = useState();
+  const [componentSelector, setComponentSelector] = useState("SalesInvoice");
   return (
     <>
       <div className="grid grid-cols-12 m-4">

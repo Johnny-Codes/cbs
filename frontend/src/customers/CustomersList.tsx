@@ -48,6 +48,11 @@ const CustomersList = () => {
     deleteCustomer(id);
   };
 
+  const handleAddCustomerToInvoice = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(addCustomerId(e.target.value));
+  };
+
   return (
     <div>
       <table className="table-auto border-collapse w-full">
@@ -91,7 +96,7 @@ const CustomersList = () => {
                   <InvoiceButton
                     id={customer.id}
                     value={customer.id}
-                    onClick={() => dispatch(addCustomerId(1))}
+                    onClick={(e) => handleAddCustomerToInvoice(e)}
                   />
                 </td>
               </tr>

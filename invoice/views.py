@@ -27,13 +27,13 @@ class SalesInvoiceSerializerView(
         print("items", items)
         sales_invoice = SalesInvoice()
         sales_invoice.save()
-        customer = Customers.objects.get(id=1)
+        customer = items["customer"]
         sales_invoice.customer.add(customer)
-        # print("customer", customer)
+        print("customer", customer)
         print("sales invoice", sales_invoice.id)
         # sales_invoice.save()
         # print("sales invoice after first save", sales_invoice)
-        for item in items:
+        for item in items["skus"]:
             print("item", item)
             try:
                 sale_item = CoinBaseModel.objects.get(sku=item["sku"])
