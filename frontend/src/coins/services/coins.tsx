@@ -11,6 +11,7 @@ export const coinApi = createApi({
     }),
     getAllCoins: builder.query({
       query: () => `coins/`,
+      providesTags: ["Coins"],
     }),
     getCoinTypeForCoinList: builder.query({
       query: (url) => `${url}?is_deleted=false`,

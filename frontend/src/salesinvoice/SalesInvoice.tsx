@@ -75,6 +75,7 @@ const SalesInvoice = () => {
             name="selectedSku"
             id="selectedSku"
             required
+            value={skuData.sku}
             onChange={(e) => {
               const selectedSku = e.target.value;
               setSkuData({ ...skuData, sku: selectedSku });
@@ -94,6 +95,7 @@ const SalesInvoice = () => {
             placeholder="Quantity"
             onChange={handleFormChange}
             required
+            value={skuData.quantity}
           />
           <FormFields
             htmlFor="price"
@@ -102,6 +104,7 @@ const SalesInvoice = () => {
             placeholder="Price"
             onChange={handleFormChange}
             required
+            value={skuData.price}
           />
           <div className="col-span-12 justify-self-center">
             <HiOutlineShoppingCart
