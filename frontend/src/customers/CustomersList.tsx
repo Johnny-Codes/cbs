@@ -2,12 +2,12 @@ import React, { useState, useEffect } from "react";
 import EditButton from "../buttons/EditButton";
 import { useGetAllActiveCustomersQuery } from "./api/customers";
 import { selectedCustomerId } from "./customerSlice";
-import AddOrEditCustomer from "./AddOrEditCustomer";
-import Button from "../buttons/Button";
 import { useDispatch } from "react-redux";
 import DeleteButton from "../buttons/DeleteButton";
 import { useSoftDeleteCustomerMutation } from "./api/customers";
 import { useNavigate } from "react-router-dom";
+import InvoiceButton from "../buttons/InvoiceButton";
+import { addCustomerId } from "../salesinvoice/stores/salesCartSlice";
 
 type customerType = {
   id: number;
@@ -37,7 +37,7 @@ const CustomersList = () => {
 
   if (loadingCustomerData) return <h1>Loading...</h1>;
 
-  const handleEditCustomer = (e) => {
+  const handleEditCustomer = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(selectedCustomerId(e.target.value));
     navigate("/customers/add");
   };
@@ -46,6 +46,11 @@ const CustomersList = () => {
     e.preventDefault();
     const id = e.target.value;
     deleteCustomer(id);
+  };
+
+  const handleAddCustomerToInvoice = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(addCustomerId(e.target.value));
   };
 
   return (
@@ -87,6 +92,11 @@ const CustomersList = () => {
                     id={customer.id}
                     value={customer.id}
                     onClick={handleDelete}
+                  />
+                  <InvoiceButton
+                    id={customer.id}
+                    value={customer.id}
+                    onClick={(e) => handleAddCustomerToInvoice(e)}
                   />
                 </td>
               </tr>
