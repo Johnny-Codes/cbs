@@ -22,18 +22,10 @@ const SalesCustomer = () => {
   const handleSearchLastName = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     setSearchLastName(e.target.value);
-    console.log(
-      "filter help",
-      allCustomers.filter((customer) =>
-        customer.last_name.includes(e.target.value)
-      )
-    );
     const filtered = allCustomers.filter((customer) =>
       customer.last_name.toLowerCase().includes(e.target.value.toLowerCase())
     );
-    console.log(filtered);
     setFilteredCustomers(filtered);
-    console.log(e.target.value);
   };
 
   const handleAddCustomerToInvoice = (e: React.FormEvent<HTMLFormElement>) => {

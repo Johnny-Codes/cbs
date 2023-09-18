@@ -25,7 +25,6 @@ const SalesInvoice = () => {
 
   useEffect(() => {
     if (!allCoinsDataLoading) {
-      console.log("use effect");
       setAllCoins(allCoinsData);
     }
   }, [allCoinsDataLoading, allCoinsData]);
@@ -45,7 +44,6 @@ const SalesInvoice = () => {
 
   const handleAddToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("handle add to cart", skuData);
     if (!skuData.sku || !skuData.quantity || !skuData.price) {
       console.log("skus missing");
     } else {
@@ -75,6 +73,7 @@ const SalesInvoice = () => {
             name="selectedSku"
             id="selectedSku"
             required
+            value={skuData.sku}
             onChange={(e) => {
               const selectedSku = e.target.value;
               setSkuData({ ...skuData, sku: selectedSku });
@@ -94,6 +93,7 @@ const SalesInvoice = () => {
             placeholder="Quantity"
             onChange={handleFormChange}
             required
+            value={skuData.quantity}
           />
           <FormFields
             htmlFor="price"
@@ -102,6 +102,7 @@ const SalesInvoice = () => {
             placeholder="Price"
             onChange={handleFormChange}
             required
+            value={skuData.price}
           />
           <div className="col-span-12 justify-self-center">
             <HiOutlineShoppingCart
