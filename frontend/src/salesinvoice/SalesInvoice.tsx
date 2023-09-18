@@ -25,7 +25,6 @@ const SalesInvoice = () => {
 
   useEffect(() => {
     if (!allCoinsDataLoading) {
-      console.log("use effect");
       setAllCoins(allCoinsData);
     }
   }, [allCoinsDataLoading, allCoinsData]);
@@ -45,7 +44,6 @@ const SalesInvoice = () => {
 
   const handleAddToCart = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("handle add to cart", skuData);
     if (!skuData.sku || !skuData.quantity || !skuData.price) {
       console.log("skus missing");
     } else {
