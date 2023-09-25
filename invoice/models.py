@@ -9,7 +9,7 @@ class SalesInvoice(models.Model):
         related_name="sales",
     )
 
-    customer = models.OneToOneField(
+    customer = models.ForeignKey(
         Customers,
         related_name="sales",
         on_delete=models.CASCADE,

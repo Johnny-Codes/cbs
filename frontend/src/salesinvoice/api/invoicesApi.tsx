@@ -21,7 +21,13 @@ export const invoicesApi = createApi({
         url: "coins/skus/",
       }),
     }),
+    customerSalesHistory: builder.query({
+      query: (customerId) => ({
+        url: `sales/invoice/customer/${customerId}`,
+      }),
+    }),
   }),
 });
 
-export const { useSubmitSalesCartMutation } = invoicesApi;
+export const { useSubmitSalesCartMutation, useCustomerSalesHistoryQuery } =
+  invoicesApi;
