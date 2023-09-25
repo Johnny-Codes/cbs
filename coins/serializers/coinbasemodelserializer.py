@@ -1,4 +1,6 @@
 from coins.models.coinbasemodel import CoinBaseModel
+from coins.models.strike import Strike
+from coins.models.mints import SelectOneMint
 from coins.models.denominations import (
     CoinFamily,
     Denominations,
@@ -9,6 +11,7 @@ from coins.serializers.voserializers import (
     CoinStrikeSerializer,
     DenominationsSerializer,
     CoinTypeNameSerializer,
+    SelectMintSerializer,
 )
 from rest_framework import serializers
 
@@ -40,6 +43,23 @@ class CoinBaseModelSerializer(serializers.ModelSerializer):
             except CoinFamily.DoesNotExist:
                 data["family_of_coin"] = None
 
+        coin_strike_data = data.get("strike")
+        coin_strike = Strike.objects.filter(id=coin_strike_data)
+        data["strike"] = CoinStrikeSerializer(coin_strike, many=True).data
+
+        coin_mint_data = data.get("mint")
+        mint_list = []
+        for mint in coin_mint_data:
+            coin_mint = SelectOneMint.objects.filter(id=mint)
+            mint_list.append(SelectMintSerializer(coin_mint, many=True).data)
+        # mint_list = []
+        # print("coin mint data", coin_mint_data)
+        # for mint in coin_mint_data:
+        #     print("mint", mint)
+        #     coin_mint = SelectOneMint.objects.get(id=mint)
+        #     print("coin mint", coin_mint)
+        #     mint_list.append(SelectMintSerializer(coin_mint, many=True)).data
+        data["mint"] = mint_list
         return data
 
 
