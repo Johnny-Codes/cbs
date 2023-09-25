@@ -17,3 +17,8 @@ body {
 .hidden {
   display: none;
 }
+
+td,
+th {
+  padding: 4px;
+}

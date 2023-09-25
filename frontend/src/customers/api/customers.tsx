@@ -40,6 +40,7 @@ export const customersApi = createApi({
         }
         return "";
       },
+      providesTags: ["Customers"],
     }),
     softDeleteCustomer: builder.mutation({
       query: (id) => ({

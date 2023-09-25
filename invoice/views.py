@@ -52,3 +52,18 @@ class SalesInvoiceSerializerView(
             {"status": "success", "sales invoice": sales_invoice.id},
             status=status.HTTP_200_OK,
         )
+
+
+class SalesInvoiceForCustomerView(
+    mixins.ListModelMixin,
+    generics.GenericAPIView,
+):
+    queryset = SalesInvoice.objects.all()
+    serializer_class = SalesInvoiceSerializer
+    lookup_url_kwarg = "customer_id"
+
+    def get(self, request, *args, **kwargs):
+        customer = self.kwargs.get(self.lookup_url_kwarg)
+        queryset = self.get_queryset().filter(customer_id=customer)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)

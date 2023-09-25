@@ -53,6 +53,12 @@ const CustomersList = () => {
     dispatch(addCustomerId(e.target.value));
   };
 
+  const handleCustomerDetails = (e) => {
+    e.preventDefault();
+    dispatch(selectedCustomerId(e.target.value));
+    navigate(`/customers/${e.target.value}/details`);
+  };
+
   return (
     <div>
       <table className="table-auto border-collapse w-full">
@@ -98,6 +104,13 @@ const CustomersList = () => {
                     value={customer.id}
                     onClick={(e) => handleAddCustomerToInvoice(e)}
                   />
+                  <button
+                    id={customer.id}
+                    value={customer.id}
+                    onClick={handleCustomerDetails}
+                  >
+                    Details
+                  </button>
                 </td>
               </tr>
             ))}

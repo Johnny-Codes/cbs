@@ -6,7 +6,7 @@ export interface CustomerState {
 }
 
 const initialState: CustomerState = {
-  id: null,
+  id: 1,
 };
 
 export const customerSlice = createSlice({
