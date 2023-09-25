@@ -22,6 +22,7 @@ class CoinBaseModelSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)
         coin_family_id = data.get("family_of_coin")
         # not sure if I like this vs just putting it where it already exists.
+        # maybe just take 'denomination_of_coin' and 'coin_type' off fields
         if coin_family_id is not None:
             try:
                 coin_family = CoinFamily.objects.get(pk=coin_family_id)
