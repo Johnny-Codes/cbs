@@ -20,6 +20,7 @@ function Router() {
           path="/customers/:customerId/details"
           element={<CustomerSalesHistory />}
         />
+        <Route path="/" element={<SalesInvoicePage />} />
       </Routes>
     </BrowserRouter>
   );
