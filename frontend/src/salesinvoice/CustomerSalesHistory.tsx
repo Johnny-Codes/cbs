@@ -17,22 +17,24 @@ const CustomerSalesHistory = () => {
     useGetCustomerDetailQuery(customerId);
   const [customerSalesHistory, setCustomerSalesHistory] = useState([]);
   const [customerDetailData, setCustomerDetailData] = useState({});
+
   useEffect(() => {
     setCustomerSalesHistory(customerSalesHistoryData);
     setCustomerDetailData(customerDetail);
   }, [customerSalesHistoryData, customerDetail]);
 
-  if (customerSalesHistoryDataLoading) return <h1>Loading...</h1>;
-  if (customerDetailLoading) return <h1>Loading...</h1>;
-
-  console.log("saleshistorydata", customerSalesHistoryData);
-  console.log("length", customerSalesHistoryData[0]?.sales_item?.length);
-  console.log("customer detail", customerDetailData);
+  if (
+    !customerId ||
+    !customerDetail ||
+    customerSalesHistoryDataLoading ||
+    customerDetailLoading
+  )
+    return <h1>Loading...</h1>;
 
   return (
     <>
       <div>
-        {customerDetailData.first_name} {customerDetailData.last_name}
+        {customerDetailData?.first_name} {customerDetailData?.last_name}
       </div>
       <div>
         <table className="table-auto">

@@ -53,9 +53,9 @@ const CustomersList = () => {
     dispatch(addCustomerId(e.target.value));
   };
 
-  const handleCustomerDetails = (e: MouseEventHandler<HTMLButtonElement>) => {
+  const handleCustomerDetails = (e) => {
     e.preventDefault();
-    // dispatch(selectedCustomerId(e.target.value));
+    dispatch(selectedCustomerId(e.target.value));
     navigate(`/customers/${e.target.value}/details`);
   };
 
