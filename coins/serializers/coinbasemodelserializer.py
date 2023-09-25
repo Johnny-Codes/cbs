@@ -1,6 +1,7 @@
 from coins.models.coinbasemodel import CoinBaseModel
 from coins.models.strike import Strike
 from coins.models.mints import SelectOneMint
+from coins.models.grading import GradingServices
 from coins.models.denominations import (
     CoinFamily,
     Denominations,
@@ -12,6 +13,7 @@ from coins.serializers.voserializers import (
     DenominationsSerializer,
     CoinTypeNameSerializer,
     SelectMintSerializer,
+    GradingServicesSerializer,
 )
 from rest_framework import serializers
 
@@ -21,6 +23,7 @@ class CoinBaseModelSerializer(serializers.ModelSerializer):
         model = CoinBaseModel
         fields = "__all__"
 
+    # need to add more error handling probably
     def to_representation(self, instance):
         data = super().to_representation(instance)
         coin_family_id = data.get("family_of_coin")
@@ -52,14 +55,15 @@ class CoinBaseModelSerializer(serializers.ModelSerializer):
         for mint in coin_mint_data:
             coin_mint = SelectOneMint.objects.filter(id=mint)
             mint_list.append(SelectMintSerializer(coin_mint, many=True).data)
-        # mint_list = []
-        # print("coin mint data", coin_mint_data)
-        # for mint in coin_mint_data:
-        #     print("mint", mint)
-        #     coin_mint = SelectOneMint.objects.get(id=mint)
-        #     print("coin mint", coin_mint)
-        #     mint_list.append(SelectMintSerializer(coin_mint, many=True)).data
         data["mint"] = mint_list
+
+        coin_grading = data.get("grading")
+        coin_grading_list = []
+        for cg in coin_grading:
+            coin_grade = GradingServices.objects.filter(id=cg)
+            coin_grading_list.append(GradingServicesSerializer(coin_grade, many=True).data)
+        data["grading"] = coin_grading_list
+
         return data
 
 
