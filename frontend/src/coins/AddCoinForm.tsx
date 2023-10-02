@@ -129,6 +129,7 @@ const AddCoinForm = () => {
       newValue = updatedGrading;
     }
     setFormData({ ...formData, [name]: newValue });
+    console.log(formData);
   };
 
   const navigate = useNavigate();
@@ -137,7 +138,7 @@ const AddCoinForm = () => {
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!selId) {
-      addCoin({ data: formData, id: "", method: "POST" });
+      addCoin({ data: formData, id: null, method: "POST" });
       dispatch(setListMode());
       dispatch(selectedCoinId(undefined));
       navigate("/inventory");

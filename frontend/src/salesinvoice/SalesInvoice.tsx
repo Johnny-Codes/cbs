@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
-import { useGetAllCoinsQuery } from "../coins/services/coins";
+import {
+  useGetAllActiveCoinsQuery,
+  useGetAllCoinsQuery,
+} from "../coins/services/coins";
 import FormFields from "../forms/FormFields";
 import { useDispatch } from "react-redux";
 import { addToCart } from "./stores/salesCartSlice";
@@ -14,7 +17,7 @@ type SkuProps = {
 const SalesInvoice = () => {
   const dispatch = useDispatch();
   const { data: allCoinsData, isLoading: allCoinsDataLoading } =
-    useGetAllCoinsQuery("");
+    useGetAllActiveCoinsQuery("false");
   const [allCoins, setAllCoins] = useState({});
   const [skuData, setSkuData] = useState<SkuProps>({
     sku: "",
