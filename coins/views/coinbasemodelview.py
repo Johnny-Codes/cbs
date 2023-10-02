@@ -8,6 +8,8 @@ from rest_framework.response import Response
 from rest_framework import mixins, generics
 from rest_framework import status
 
+import json
+
 
 class CoinBaseModelSerializerView(
     mixins.ListModelMixin,
@@ -50,13 +52,18 @@ class OneCoinBaseModelSerializerView(
         if "toggle_soft_delete" in request.data:
             coin_instance.soft_delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+        print("request data", request.data)
+        print("type of data", type(request.data))
 
         serializer = self.get_serializer(
             coin_instance,
             data=request.data,
             partial=True,
         )
+
+        # Call .is_valid() before accessing serializer.data
         if serializer.is_valid():
+            print("is valid", serializer)
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

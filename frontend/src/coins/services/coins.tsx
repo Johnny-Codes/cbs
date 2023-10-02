@@ -51,10 +51,13 @@ export const coinApi = createApi({
     }),
     addCoinToInventory: builder.mutation({
       query: ({ data, id, method }) => {
-        let url = `coins/`;
-        if (id !== "") {
+        console.log("submited id", id);
+        let url = `http://localhost:8000/api/coins/`;
+        if (id) {
           url = `coins/${id}/`;
         }
+        console.log("submit url", url);
+        console.log("data submitted", data);
 
         return {
           url: url,
