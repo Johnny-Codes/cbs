@@ -23,7 +23,7 @@ export const customersApi = createApi({
         if (id !== "") {
           url = `customers/${id}/`;
         }
-
+        console.log("submit url", url);
         return {
           url: url,
           method: method,
