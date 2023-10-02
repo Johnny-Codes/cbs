@@ -1,6 +1,4 @@
 from customers.models import Customers
-from invoice.models import SalesInvoice
-from invoice.serializers import SalesInvoiceSerializer
 from rest_framework import serializers
 
 
