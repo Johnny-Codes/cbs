@@ -24,29 +24,25 @@ class SalesInvoiceSerializerView(
     def post(self, request, *args, **kwargs):
         body = request.body
         items = json.loads(body.decode())
-        print("items", items)
         sales_invoice = SalesInvoice()
-        sales_invoice.save()
         customer = items["customer"]
-        sales_invoice.customer.add(customer)
-        print("customer", customer)
-        print("sales invoice", sales_invoice.id)
-        # sales_invoice.save()
-        # print("sales invoice after first save", sales_invoice)
+        sales_invoice.customer_id = customer
+        sales_invoice.save()
+        if items["notes"] == "" or items["notes"] is None:
+            items["notes"] = None
+        else:
+            sales_invoice.notes = items["notes"]
+            sales_invoice.save()
         for item in items["skus"]:
             print("item", item)
             try:
                 sale_item = CoinBaseModel.objects.get(sku=item["sku"])
-                print("sale item", sale_item)
                 sales_invoice.sales_item.add(sale_item)
-                print("invoice in try statement", sales_invoice)
             except CoinBaseModel.DoesNotExist:
-                print("doesn't exist")
                 return JsonResponse(
                     {"status": "error"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-        print("sales invoice", sales_invoice)
         sales_invoice.save()
         return JsonResponse(
             {"status": "success", "sales invoice": sales_invoice.id},

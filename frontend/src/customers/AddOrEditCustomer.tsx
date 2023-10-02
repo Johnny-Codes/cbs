@@ -60,15 +60,62 @@ const AddOrEditCustomer = () => {
   };
 
   const [addCustomer, addCustomerResponse] = useAddCustomerMutation();
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   if (!customerId) {
+  //     try {
+  //       addCustomer({ data: formData, id: "", method: "POST" });
+  //       if (addCustomer.isError) {
+  //         console.log("error", addCustomer);
+  //       }
+  //     } catch (error) {
+  //       console.log("error", error);
+  //     }
+  //   } else {
+  //     addCustomer({ data: formData, id: formData.id, method: "PUT" });
+  //   }
+  //   dispatch(selectedCustomerId(null));
+  //   navigate("/customers");
+  // };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!customerId) {
-      addCustomer({ data: formData, id: "", method: "POST" });
-    } else {
-      addCustomer({ data: formData, id: formData.id, method: "PUT" });
+
+    try {
+      if (!customerId) {
+        const response = await addCustomer({
+          data: formData,
+          id: "",
+          method: "POST",
+        });
+
+        if (addCustomer.fulfilled.match(response)) {
+          // Mutation was successful
+          // You can access the result data as response.payload
+          console.log("Customer added successfully", response.payload);
+        } else {
+          // Mutation failed, handle the error
+          console.error("Error adding customer:", response.error);
+        }
+      } else {
+        const response = await addCustomer({
+          data: formData,
+          id: formData.id,
+          method: "PUT",
+        });
+
+        if (addCustomer.fulfilled.match(response)) {
+          // Mutation was successful
+          // You can access the result data as response.payload
+          console.log("Customer updated successfully", response.payload);
+        } else {
+          // Mutation failed, handle the error
+          console.error("Error updating customer:", response.error);
+        }
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
     }
-    dispatch(selectedCustomerId(null));
-    navigate("/customers");
   };
 
   const [deleteCustomer, deleteCustomerResponse] =

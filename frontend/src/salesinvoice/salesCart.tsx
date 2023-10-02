@@ -7,14 +7,14 @@ import { useEffect } from "react";
 import { useGetCustomerDetailQuery } from "../customers/api/customers";
 const SalesCart = () => {
   const itemsInTheCart = useSelector((state: RootState) => state.itemsInCart);
-
+  const { data: customerData, isLoading: customerDataLoading } =
+    useGetCustomerDetailQuery(itemsInTheCart.customer);
   const dispatch = useDispatch();
   const [submitCart, submitCartResponse] = useSubmitSalesCartMutation();
+
   const handleSubmitSalesCart = () => {
     submitCart(itemsInTheCart);
   };
-  const { data: customerData, isLoading: customerDataLoading } =
-    useGetCustomerDetailQuery(itemsInTheCart.customer);
 
   useEffect(() => {
     if (submitCartResponse.isSuccess) {
