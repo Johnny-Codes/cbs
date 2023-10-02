@@ -30,7 +30,6 @@ const SalesCustomer = () => {
 
   const handleAddCustomerToInvoice = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("add customer to invoice", e.target.value);
     dispatch(addCustomerId(e.target.value));
   };
 
