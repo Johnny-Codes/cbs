@@ -138,6 +138,8 @@ button {
   padding: 0.5rem 2rem;
   border-radius: 1rem;
   font-weight: bolder;
+  margin-top: 1rem;
+  cursor: pointer;
 }
 
 .card-header {
@@ -292,4 +294,28 @@ li {
 
 .footer a {
   color: white;
+}
+
+cbs-subscriptions {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+}
+
+.sub-card {
+  padding: 2rem;
+  border-radius: 1rem;
+  max-width: 400px;
+  background-color: hsla(0, 0%, 100%, 0.6);
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: var(--bblack);
+  flex-grow: 1;
+  min-height: 300px;
+  max-height: 305px;
+  justify-content: space-between;
 }

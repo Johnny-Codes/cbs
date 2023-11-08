@@ -14,7 +14,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>The Coin Box Subscription</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#5bbad5">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="./styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,14 +53,57 @@
           <h1>The Coin Box Subscription</h1>
           <h2>A box of coins delivered straight to your door every month!</h2>
           <hr />
-          <h2>COMING SOON <i class="fa-regular fa-calendar-days"></i></h2>
+          <!-- <h2>COMING SOON <i class="fa-regular fa-calendar-days"></i></h2> -->
           <p>Embark on a Numismatic Journey with your Coin Box Sub!</p>
-          <h3>Sign up below to get notified when we launch</h3>
-          <form method="post" name="contact" netlify netlify-honeypot="hide-it">
-            <p class="hide-it"><label>Empty</label><input name="hide-field"></p>
-            <p><label>Email </label><input type="email" name="email">
-            <button type="submit">Sign Up</button></p>
-          </form>
+          <h3>Choose from any of our Great Subscriptions Below</h3>
+          <cbs-subscriptions>
+            <div class="sub-card">
+              <h2>Basic Tier</h2>
+              <hr />
+              <div><h3 style="text-decoration: underline">$50 Monthly Subscription</h3>
+              <p></p>
+              <ol>
+                <li>Guaranteed one Certified Coin</li>
+                <li>90% Silver</li>
+                <li>U.S. Coins</li>
+                <li>... and More!</li>
+              </ol></div>
+              <div>
+              <a href="https://buy.stripe.com/cN2g2B1iq0Bi6QMfZ0" target="_blank"><button>Subscribe Now</button></a>
+            </div></div>
+            <div class="sub-card">
+              <h2>Premium Tier</h2>
+              <hr />
+              <div>
+              <h3 style="text-decoration: underline">$100 Monthly Subscription</h3>
+              <p></p>
+              <ol>
+                <li>Everything in Basic Tier</li>
+                <li>At Least 1 oz .999 Fine Silver</li>
+              </ol>
+              </div>
+              <div>
+              <a href="https://buy.stripe.com/14k8A94uC3Nudfa4gh" target="_blank"><button>Subscribe Now</button></a>
+            </div></div>
+            <div class="sub-card">
+              <h2 style="text-decoration: underline">Deluxe Tier</h2>
+              <hr />
+              <div>
+              <h3>$200 Monthly Subscription</h3>
+              <p></p>
+              <ol>
+                <li>Everything in Premium Tier</li>
+                <li>Uncirculated Silver Dollar</li>
+              </ol>
+            </div>
+              <div>
+              <a href="https://buy.stripe.com/4gw5nXd186ZGb72aEH" target="_blank"><button>Subscribe Now</button></a>
+            </div>
+            </div>
+          </cbs-subscriptions> 
+          <div>
+            <a href="https://billing.stripe.com/p/login/3cscPK5dT3jw8AofYY" target="_blank"><button>Manage Subscription</button></a>
+          </div>
         </div>
       </div>
       
@@ -201,6 +251,18 @@
                 launch by August 2023. However, rest assured that we won't keep you
                 waiting beyond November 2023. Sign up now to stay informed and be the
                 first to know about our official launch!
+              </p>
+            </li>
+            <li>
+              <span class="faq-q">How can I contact you?</span>
+              <p>
+                You can reach us at info@coinboxsub.com
+              </p>
+            </li>
+            <li>
+              <span class="faq-q">What payment methods do you accept?</span>
+              <p>At Coin Box Sub, we strive to make your subscription experience as convenient as possible. To provide you with a seamless payment process, we accept a wide range of payment methods through our trusted partner, Stripe. This ensures that your transactions are secure and hassle-free.</p><p>
+                To manage your payment methods and account details, simply click the "Manage Account" button at the top of our website. This will take you to your Stripe account, where you can easily update your payment information, view transaction history, and ensure a seamless billing experience.
               </p>
             </li>
           </ul>
