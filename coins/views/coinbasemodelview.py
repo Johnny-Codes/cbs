@@ -8,8 +8,6 @@ from rest_framework.response import Response
 from rest_framework import mixins, generics
 from rest_framework import status
 
-import json
-
 
 class CoinBaseModelSerializerView(
     mixins.ListModelMixin,

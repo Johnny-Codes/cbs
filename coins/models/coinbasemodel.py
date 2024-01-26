@@ -92,7 +92,7 @@ class CoinBaseModel(
         Images,
         blank=True,
     )
-    strike = models.ForeignKey(Strike, on_delete=models.CASCADE)
+    strike = models.ForeignKey(Strike, on_delete=models.CASCADE,)
 
     def __str__(self):
         return f"{self.year} {self.coin_type} {self.strike} {self.grade}"
