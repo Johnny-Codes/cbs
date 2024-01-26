@@ -3,7 +3,7 @@ volumes:
     external: true
 services:
   db:
-    image: postgres
+    image: postgres:15-bullseye
     ports:
       - "15432:5432"
     volumes:
@@ -35,8 +35,6 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app
-    # depends_on:
-    #   - db
+      - ../cbsfe:/app
 
   ## dev

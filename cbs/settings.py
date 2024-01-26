@@ -32,7 +32,6 @@ if debug_env == "development":
         "http://localhost",
         "http://localhost:3000",
         "localhost",
-        "*",
     ]
     DATABASES = {
         "default": {
