@@ -23,12 +23,10 @@ class CoinBaseModelSerializer(serializers.ModelSerializer):
         model = CoinBaseModel
         fields = "__all__"
 
-    # need to add more error handling probably
+    # need to add more error handling
     def to_representation(self, instance):
         data = super().to_representation(instance)
         coin_family_id = data.get("family_of_coin")
-        # not sure if I like this vs just putting it where it already exists.
-        # maybe just take 'denomination_of_coin' and 'coin_type' off fields
         if coin_family_id is not None:
             try:
                 coin_family = CoinFamily.objects.get(pk=coin_family_id)
@@ -36,13 +34,15 @@ class CoinBaseModelSerializer(serializers.ModelSerializer):
 
                 denom_data = data.get("denomination_of_coin")
                 denominations = Denominations.objects.filter(pk=denom_data)
-                data["family_of_coin"]["denominations"] = DenominationsSerializer(denominations, many=True).data
+                data["family_of_coin"]["denominations"] = DenominationsSerializer(
+                    denominations, many=True
+                ).data
 
                 coin_type_data = data.get("coin_type")
                 coin_type_names = CoinTypeName.objects.filter(id=coin_type_data)
-                data["family_of_coin"]["denominations"][0]["coin_type_name"] = CoinTypeNameSerializer(
-                    coin_type_names, many=True
-                ).data
+                data["family_of_coin"]["denominations"][0]["coin_type_name"] = (
+                    CoinTypeNameSerializer(coin_type_names, many=True).data
+                )
             except CoinFamily.DoesNotExist:
                 data["family_of_coin"] = None
 
@@ -61,7 +61,9 @@ class CoinBaseModelSerializer(serializers.ModelSerializer):
         coin_grading_list = []
         for cg in coin_grading:
             coin_grade = GradingServices.objects.filter(id=cg)
-            coin_grading_list.append(GradingServicesSerializer(coin_grade, many=True).data)
+            coin_grading_list.append(
+                GradingServicesSerializer(coin_grade, many=True).data
+            )
         data["grading"] = coin_grading_list
 
         return data
