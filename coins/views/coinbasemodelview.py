@@ -1,3 +1,6 @@
+import os
+import json
+import requests as r
 from coins.serializers.coinbasemodelserializer import (
     CoinBaseModelSerializer,
     CoinSkusOnlySerializer,
@@ -7,6 +10,7 @@ from coins.models.coinbasemodel import CoinBaseModel
 from rest_framework.response import Response
 from rest_framework import mixins, generics
 from rest_framework import status
+from django.http import JsonResponse
 
 
 class CoinBaseModelSerializerView(
@@ -98,3 +102,37 @@ class GetAllSkusView(
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
+
+
+def pcgs_coin_data(request, *args, **kwargs):
+    pcgs_api_key = os.environ.get("PCGS_API_KEY")
+    if isinstance(request, dict):
+        pcgs_no = request.get("pcgs_no")
+    else:
+        pcgs_no = json.loads(request.body).get("pcgs_no")
+    print("pcgs no", pcgs_no)
+    if pcgs_no is None:
+        return None
+    print("pcgs no", pcgs_no)
+    headers = {"authorization": f"bearer {pcgs_api_key}"}
+    base_url = (
+        f"https://api.pcgs.com/publicapi/coindetail/GetCoinFactsByCertNo/{pcgs_no}"
+    )
+    coin_data = r.get(base_url, headers=headers).json()
+    print(coin_data)
+    """
+    Import info from response:
+    PCGSNo - str
+    CertNo - certification number str
+    Name - year-mm denon - str
+    Year - int
+    Denomination - str
+    MintMark - str
+    MintLocation - str
+    Grade - str - need to get the numeric grade and if +
+    PriceGuideValue - float
+    CoinFactsNotes - str - add to description?
+
+    Do I want to format this here or on the frontend? Probably here
+    """
+    return JsonResponse(coin_data)

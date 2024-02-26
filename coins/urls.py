@@ -4,6 +4,7 @@ from coins.views.coinbasemodelview import (
     OneCoinBaseModelSerializerView,
     CoinTypeSerializerView,
     GetAllSkusView,
+    pcgs_coin_data,
 )
 from coins.views.voviews import (
     CoinFamilySerializerView,
@@ -71,4 +72,5 @@ urlpatterns = [
         GetAllSkusView.as_view(),
         name="get_all_skus",
     ),
+    path("coins/pcgs_coin_data", pcgs_coin_data, name="pcgs_coin_data"),
 ]
