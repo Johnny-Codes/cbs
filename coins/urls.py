@@ -72,5 +72,9 @@ urlpatterns = [
         GetAllSkusView.as_view(),
         name="get_all_skus",
     ),
-    path("coins/pcgs_coin_data", pcgs_coin_data, name="pcgs_coin_data"),
+    path(
+        "coins/pcgs_coin_data/",
+        pcgs_coin_data,
+        name="pcgs_coin_data",
+    ),
 ]
