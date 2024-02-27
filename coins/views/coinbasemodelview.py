@@ -60,8 +60,6 @@ class OneCoinBaseModelSerializerView(
         if "toggle_soft_delete" in request.data:
             coin_instance.soft_delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        print("request data", request.data)
-        print("type of data", type(request.data))
 
         serializer = self.get_serializer(
             coin_instance,
@@ -69,9 +67,7 @@ class OneCoinBaseModelSerializerView(
             partial=True,
         )
 
-        # Call .is_valid() before accessing serializer.data
         if serializer.is_valid():
-            print("is valid", serializer)
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -123,7 +119,6 @@ def pcgs_coin_data(request, *args, **kwargs):
         pcgs_no = json.loads(request.body).get("pcgs_no")
     if pcgs_no is None:
         return None
-    print("pcgs no", pcgs_no)
     # For PCGS number entered manually:
     if len(pcgs_no) <= 8:
         url = (
@@ -139,7 +134,20 @@ def pcgs_coin_data(request, *args, **kwargs):
         grading_service = "NGC"
         scan_url = f"https://api.pcgs.com/publicapi/coindetail/GetCoinFactsByBarcode?barcode={pcgs_no}&gradingService={grading_service}"
         coin_data = r.get(scan_url, headers=headers).json()
-    print("coin_data", coin_data)
+
+    """
+    Import info from response:
+    PCGSNo - str
+    CertNo - certification number str
+    Name - year-mm denon - str
+    Year - int
+    Denomination - str
+    MintMark - str
+    MintLocation - str
+    Grade - str - need to get the numeric grade and if +
+    PriceGuideValue - float
+    CoinFactsNotes - str - add to description?
+    """
 
     result["pcgs_number"] = int(coin_data["PCGSNo"])
     if coin_data["CertNo"] != "":
@@ -168,7 +176,8 @@ def pcgs_coin_data(request, *args, **kwargs):
         grade_id = CoinGrades.objects.get(grade=grade).id
         result["grade"] = grade_id
     else:
-        print("No match found.")
+        result["strike"] = None
+        result["grade"] = None
     # Family
     metal = coin_data["MetalContent"]
     if "Gold" in metal:
@@ -188,33 +197,14 @@ def pcgs_coin_data(request, *args, **kwargs):
     ).id
     # Coin Type
     try:
-        coin_type = " ".join(coin_data["SeriesName"].split(" ")[:2])
+        coin_type = coin_data["SeriesName"][0]
         coin_types_db = CoinTypeName.objects.all()
         for ct in coin_types_db:
-            print("---- ct", ct.coin_type, ct.denominations, "coin_type", coin_type)
             if (
                 coin_type in ct.coin_type
                 and ct.denominations.id == result["denomination"]
             ):
-                print("it should be here")
                 result["coin_type"] = ct.id
     except:
         pass
-    print("result", result)
-
-    """
-    Import info from response:
-    PCGSNo - str
-    CertNo - certification number str
-    Name - year-mm denon - str
-    Year - int
-    Denomination - str
-    MintMark - str
-    MintLocation - str
-    Grade - str - need to get the numeric grade and if +
-    PriceGuideValue - float
-    CoinFactsNotes - str - add to description?
-
-    Do I want to format this here or on the frontend? Probably here
-    """
     return JsonResponse(result)
