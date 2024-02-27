@@ -173,7 +173,6 @@ def pcgs_coin_data(request, *args, **kwargs):
             grade = f"{grade}+"
         strike_id = Strike.objects.get(strike=strike).id
         result["strike"] = strike_id
-        print("grade", grade)
         grade_id = CoinGrades.objects.get(grade=grade).id
         result["grade"] = grade_id
     else:
