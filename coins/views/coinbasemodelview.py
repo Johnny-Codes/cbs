@@ -162,7 +162,7 @@ def pcgs_coin_data(request, *args, **kwargs):
         if mint in m.coin_mint:
             result["mint"] = m.id
     # Strike and Grade
-    regex_pattern = r"^([A-Za-z]+)(\d+)([A-Za-z]+)?$"
+    regex_pattern = r"^([A-Za-z]+)(\d+)([A-Za-z+]+)?$"
     strike_and_grade = coin_data["Grade"]
     matches = re.match(regex_pattern, strike_and_grade)
     if matches:
@@ -173,6 +173,7 @@ def pcgs_coin_data(request, *args, **kwargs):
             grade = f"{grade}+"
         strike_id = Strike.objects.get(strike=strike).id
         result["strike"] = strike_id
+        print("grade", grade)
         grade_id = CoinGrades.objects.get(grade=grade).id
         result["grade"] = grade_id
     else:

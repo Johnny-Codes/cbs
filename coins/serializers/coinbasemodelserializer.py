@@ -23,6 +23,11 @@ class CoinBaseModelSerializer(serializers.ModelSerializer):
         model = CoinBaseModel
         fields = "__all__"
 
+    def validate_sku(self, value):
+        if CoinBaseModel.objects.filter(sku=value).exists():
+            raise serializers.ValidationError("SKU already exists")
+        return value
+
     # need to add more error handling
     def to_representation(self, instance):
         data = super().to_representation(instance)
