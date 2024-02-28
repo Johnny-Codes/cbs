@@ -71,7 +71,6 @@ class OneCoinBaseModelSerializerView(
         )
 
         if serializer.is_valid():
-            print("Serializer is valid")
             serializer.save()
             return Response(serializer.data)
         else:
