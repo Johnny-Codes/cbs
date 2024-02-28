@@ -27,7 +27,7 @@ class ImageSerializerView(
         return Response({"status": "success"}, status=200)
 
 
-class CoinImageView(generics.RetrieveAPIView):
+class CoinImageView(generics.RetrieveDestroyAPIView):
     queryset = Images.objects.all()
     serializer_class = ImageSerializer
     lookup_field = "id"
