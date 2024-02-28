@@ -34,7 +34,6 @@ class SalesInvoiceSerializerView(
             sales_invoice.notes = items["notes"]
             sales_invoice.save()
         for item in items["skus"]:
-            print("item", item)
             try:
                 sale_item = CoinBaseModel.objects.get(sku=item["sku"])
                 sales_invoice.sales_item.add(sale_item)

@@ -39,7 +39,6 @@ class CoinBaseModelSerializerView(
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        print(request.data)
         return self.create(request, *args, **kwargs)
 
 
@@ -61,8 +60,8 @@ class OneCoinBaseModelSerializerView(
         if "toggle_soft_delete" in request.data:
             coin_instance.soft_delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        print(coin_instance)
-        print(request.data)
+        # remove sku from data because it was invalidating serializer
+        # got to be a better way than this though
         del request.data["sku"]
 
         serializer = self.get_serializer(
