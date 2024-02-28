@@ -177,8 +177,11 @@ def pcgs_coin_data(request, *args, **kwargs):
         extra = matches.group(3)  # "FB"
         if extra == "+":
             grade = f"{grade}+"
-        strike_id = Strike.objects.get(strike=strike).id
-        result["strike"] = strike_id
+        try:
+            strike_id = Strike.objects.get(strike=strike).id
+            result["strike"] = strike_id
+        except Strike.DoesNotExist:
+            result["strike"] = Strike.objects.get(strike="MS").id
         grade_id = CoinGrades.objects.get(grade=grade).id
         result["grade"] = grade_id
     else:

@@ -2,6 +2,7 @@ from rest_framework import mixins, generics
 from rest_framework.response import Response
 from .serializers import ImageSerializer
 from .models import Images
+from coins.models.coinbasemodel import CoinBaseModel
 
 
 class ImageSerializerView(
@@ -16,7 +17,17 @@ class ImageSerializerView(
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data)
+        coin_id = request.data.get("coin_id")
+        coin = CoinBaseModel.objects.get(id=coin_id)
+        for key, image in request.data.items():
+            if "images" in key:
+                image_instance = Images.objects.create(image=image)
+                coin.images.add(image_instance)
+        coin.save()
+        return Response({"status": "success"}, status=200)
+
+
+class CoinImageView(generics.RetrieveAPIView):
+    queryset = Images.objects.all()
+    serializer_class = ImageSerializer
+    lookup_field = "id"
