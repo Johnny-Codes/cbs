@@ -25,7 +25,7 @@ class CoinBaseModelSerializer(serializers.ModelSerializer):
 
     def validate_sku(self, value):
         if CoinBaseModel.objects.filter(sku=value).exists():
-            raise serializers.ValidationError("SKU already exists")
+            raise serializers.ValidationError()
         return value
 
     # need to add more error handling
