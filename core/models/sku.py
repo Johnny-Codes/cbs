@@ -1,8 +1,7 @@
 from django.db import models
-from .softdelete import SoftDeleteModel
 
 
-class SKU(SoftDeleteModel, models.Model):
+class SKU(models.Model):
     sku = models.CharField(
         max_length=12,
         unique=True,

@@ -77,6 +77,7 @@ class SelectMintAdmin(admin.ModelAdmin):
 @admin.register(CoinBaseModel)
 class CoinBaseModel(admin.ModelAdmin):
     list_display = (
+        "id",
         "__str__",
         "quantity",
     )

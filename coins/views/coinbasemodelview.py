@@ -1,14 +1,19 @@
 import os
 import json
+import uuid
 import requests as r
 import re
+from PIL import Image
+from io import BytesIO
+from django.core.files.base import ContentFile
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from coins.serializers.coinbasemodelserializer import (
     CoinBaseModelSerializer,
     CoinSkusOnlySerializer,
 )
 from coins.models.coinbasemodel import CoinBaseModel
-
+from images.models import Images
 from rest_framework.response import Response
 from rest_framework import mixins, generics
 from rest_framework import status
@@ -57,9 +62,12 @@ class OneCoinBaseModelSerializerView(
 
     def put(self, request, *args, **kwargs):
         coin_instance = self.get_object()
+        print("coin instance", coin_instance)
+        print("coin instance is deleted", coin_instance.is_deleted)
         if "toggle_soft_delete" in request.data:
             coin_instance.soft_delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+
         # remove sku from data because it was invalidating serializer
         # got to be a better way than this though
         del request.data["sku"]
@@ -94,6 +102,8 @@ class CoinTypeSerializerView(
                 coin_type=coin_types,
                 is_deleted=False,
             )
+            for q in queryset:
+                print(q.is_deleted)
         else:
             queryset = self.queryset.all()
 
@@ -217,3 +227,30 @@ def pcgs_coin_data(request, *args, **kwargs):
     except:
         pass
     return JsonResponse(result)
+
+
+def get_true_view_images(request, id):
+    pcgs_api_key = os.environ.get("PCGS_API_KEY")
+    coin = CoinBaseModel.objects.get(id=id)
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {pcgs_api_key}",
+    }
+    url = f"https://api.pcgs.com/publicapi/coindetail/GetCoinFactsByCertNo/{coin.sku}"
+    coin_data = r.get(url, headers=headers).json()
+    print(coin_data)
+    if coin_data["Images"]:
+        images = coin_data["Images"]
+        for image in images:
+            response = r.get(image["Fullsize"])
+            img = Image.open(BytesIO(response.content))
+            img_io = BytesIO()
+            img.save(img_io, format="JPEG")
+            new_image = Images()
+            new_image.image.save(
+                f"{uuid.uuid4().hex}.jpg", ContentFile(img_io.getvalue()), save=False
+            )
+            new_image.save()
+            coin.images.add(new_image)
+            print(f"added image {image['Fullsize']}")
+    return HttpResponse(status=204)
