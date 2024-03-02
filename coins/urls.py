@@ -79,7 +79,7 @@ urlpatterns = [
         name="pcgs_coin_data",
     ),
     path(
-        "coins/<int:id>/true_view",
+        "coins/<int:id>/true_view/",
         get_true_view_images,
         name="true_view",
     ),

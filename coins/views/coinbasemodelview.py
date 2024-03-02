@@ -239,18 +239,25 @@ def get_true_view_images(request, id):
     url = f"https://api.pcgs.com/publicapi/coindetail/GetCoinFactsByCertNo/{coin.sku}"
     coin_data = r.get(url, headers=headers).json()
     print(coin_data)
-    if coin_data["Images"]:
-        images = coin_data["Images"]
-        for image in images:
-            response = r.get(image["Fullsize"])
-            img = Image.open(BytesIO(response.content))
-            img_io = BytesIO()
-            img.save(img_io, format="JPEG")
-            new_image = Images()
-            new_image.image.save(
-                f"{uuid.uuid4().hex}.jpg", ContentFile(img_io.getvalue()), save=False
+    try:
+        if coin_data["Images"]:
+            images = coin_data["Images"]
+            for image in images:
+                response = r.get(image["Fullsize"])
+                img = Image.open(BytesIO(response.content))
+                img_io = BytesIO()
+                img.save(img_io, format="JPEG")
+                new_image = Images()
+                new_image.image.save(
+                    f"{uuid.uuid4().hex}.jpg",
+                    ContentFile(img_io.getvalue()),
+                    save=False,
+                )
+                new_image.save()
+                coin.images.add(new_image)
+            return JsonResponse(
+                {"message": "Successfully added PCGS True View Images."}
             )
-            new_image.save()
-            coin.images.add(new_image)
-            print(f"added image {image['Fullsize']}")
-    return HttpResponse(status=204)
+    except Exception as e:
+        return JsonResponse({"message": str(e)})
+    return JsonResponse({"message": "No images found."})
