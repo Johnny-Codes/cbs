@@ -26,6 +26,7 @@ services:
       - DEBUG_ENV=development
       - DEV_SECRET_KEY=${DEV_SECRET_KEY}
       - PCGS_API_KEY=${PCGS_API_KEY}
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
     depends_on:
       - db
 

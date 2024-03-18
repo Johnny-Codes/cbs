@@ -22,6 +22,10 @@ from coins.models.grading import CoinGrades, GradingServices
 from coins.models.strike import Strike
 from coins.models.mints import SelectOneMint
 from coins.models.denominations import CoinFamily, Denominations, CoinTypeName
+from coins.openai_calls import (
+    get_product_description_from_text,
+    get_product_description_from_photos,
+)
 
 
 class CoinBaseModelSerializerView(
@@ -70,8 +74,12 @@ class OneCoinBaseModelSerializerView(
 
         # remove sku from data because it was invalidating serializer
         # got to be a better way than this though
-        del request.data["sku"]
-
+        try:
+            del request.data["sku"]
+        except KeyError:
+            pass
+        print("request", request)
+        print("request.data", request.data)
         serializer = self.get_serializer(
             coin_instance,
             data=request.data,
@@ -261,3 +269,19 @@ def get_true_view_images(request, id):
     except Exception as e:
         return JsonResponse({"message": str(e)})
     return JsonResponse({"message": "No images found."})
+
+
+def get_product_desc_from_text(request, id):
+    coin = CoinBaseModel.objects.get(id=id)
+    description = get_product_description_from_text(coin.title)
+    print("description", description)
+    return JsonResponse({"description": description}, safe=False)
+
+
+def get_product_desc_from_pictures(request, id):
+    coin = CoinBaseModel.objects.get(id=id)
+    img_urls = []
+    for image in coin.images.all():
+        img_urls.append(image.image.url)
+    description = get_product_description_from_photos(img_urls)
+    return JsonResponse({"description": description})

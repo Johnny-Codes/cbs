@@ -6,6 +6,8 @@ from coins.views.coinbasemodelview import (
     GetAllSkusView,
     pcgs_coin_data,
     get_true_view_images,
+    get_product_desc_from_text,
+    get_product_desc_from_pictures,
 )
 from coins.views.voviews import (
     CoinFamilySerializerView,
@@ -27,6 +29,14 @@ urlpatterns = [
         "coins/<int:id>/",
         OneCoinBaseModelSerializerView.as_view(),
         name="one_coin_base_model",
+    ),
+    path(
+        "coins/<int:id>/textdesc",
+        get_product_desc_from_text,
+    ),
+    path(
+        "coins/<int:id>/picdesc",
+        get_product_desc_from_pictures,
     ),
     path(
         "coins/family/",
