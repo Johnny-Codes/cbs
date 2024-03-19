@@ -34,10 +34,38 @@ class CoinBaseModelSerializerView(
     mixins.CreateModelMixin,
     generics.GenericAPIView,
 ):
+    """
+    A view for handling the retrieval and creation of CoinBaseModel instances.
+
+    This view supports listing all CoinBaseModel instances and creating new ones.
+    It also supports filtering the queryset based on the `is_deleted` field.
+
+    Attributes:
+        queryset: The initial queryset that this view will use to list or filter instances.
+        serializer_class: The serializer class this view will use to validate and convert data.
+
+    Methods:
+        get: Handles GET requests. Supports filtering the queryset based on the `is_deleted` field.
+        post: Handles POST requests. Supports creating new CoinBaseModel instances.
+    """
+
     queryset = CoinBaseModel.objects.all()
     serializer_class = CoinBaseModelSerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Handle GET requests.
+
+        If the `is_deleted` query parameter is provided, filter the queryset based on its value.
+
+        Args:
+            request: The request instance.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A list of CoinBaseModel instances.
+        """
         is_deleted_param = request.query_params.get("is_deleted", None)
 
         if is_deleted_param is not None:
@@ -49,6 +77,19 @@ class CoinBaseModelSerializerView(
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        """
+        Handle POST requests.
+
+        Create a new CoinBaseModel instance.
+
+        Args:
+            request: The request instance.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            The created CoinBaseModel instance.
+        """
         return self.create(request, *args, **kwargs)
 
 
@@ -56,31 +97,71 @@ class OneCoinBaseModelSerializerView(
     mixins.UpdateModelMixin,
     generics.GenericAPIView,
 ):
+    """
+    A view for handling the retrieval and update of a single CoinBaseModel instance.
+
+    This view supports retrieving a CoinBaseModel instance by its ID and updating its fields.
+    It also supports a custom "soft delete" operation, which can be triggered by including
+    "toggle_soft_delete" in the request data.
+
+    Attributes:
+        queryset: The initial queryset that this view will use to retrieve instances.
+        serializer_class: The serializer class this view will use to validate and convert data.
+        lookup_field: The model field to use for looking up an instance.
+
+    Methods:
+        get: Handles GET requests. Returns the CoinBaseModel instance with the given ID.
+        put: Handles PUT requests. Updates the CoinBaseModel instance with the given ID.
+    """
+
     queryset = CoinBaseModel.objects.all()
     serializer_class = CoinBaseModelSerializer
     lookup_field = "id"
 
     def get(self, request, *args, **kwargs):
+        """
+        Handle GET requests.
+
+        Retrieve the CoinBaseModel instance with the given ID.
+
+        Args:
+            request: The request instance.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            The retrieved CoinBaseModel instance.
+        """
         coin_instance = self.get_object()
         serializer = self.get_serializer(coin_instance)
         return Response(serializer.data)
 
     def put(self, request, *args, **kwargs):
+        """
+        Handle PUT requests.
+
+        If "toggle_soft_delete" is included in the request data, perform a "soft delete"
+        operation on the CoinBaseModel instance with the given ID. Otherwise, update its fields.
+
+        Args:
+            request: The request instance.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            The updated CoinBaseModel instance, or a 204 No Content response if a "soft delete"
+            operation was performed.
+        """
         coin_instance = self.get_object()
-        print("coin instance", coin_instance)
-        print("coin instance is deleted", coin_instance.is_deleted)
         if "toggle_soft_delete" in request.data:
             coin_instance.soft_delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-        # remove sku from data because it was invalidating serializer
-        # got to be a better way than this though
         try:
             del request.data["sku"]
         except KeyError:
             pass
-        print("request", request)
-        print("request.data", request.data)
+
         serializer = self.get_serializer(
             coin_instance,
             data=request.data,
@@ -90,8 +171,6 @@ class OneCoinBaseModelSerializerView(
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
-        else:
-            print("Serializer errors:", serializer.errors)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -100,19 +179,47 @@ class CoinTypeSerializerView(
     mixins.ListModelMixin,
     generics.GenericAPIView,
 ):
+    """
+    A view for handling the retrieval of CoinBaseModel instances based on coin type.
+
+    This view supports listing all CoinBaseModel instances of a specific coin type.
+    It also supports filtering the queryset based on the `is_deleted` field.
+
+    Attributes:
+        queryset: The initial queryset that this view will use to list or filter instances.
+        serializer_class: The serializer class this view will use to validate and convert data.
+        lookup_field: The model field to use for looking up an instance.
+
+    Methods:
+        get: Handles GET requests. Returns the CoinBaseModel instances of the given coin type.
+    """
+
     queryset = CoinBaseModel.objects.all()
     serializer_class = CoinBaseModelSerializer
     lookup_field = "coin_type"
 
     def get(self, request, *args, **kwargs):
+        """
+        Handle GET requests.
+
+        If the `coin_type` argument is provided, filter the queryset based on
+        its value and the `is_deleted` field.
+        Otherwise, return all CoinBaseModel instances.
+
+        Args:
+            request: The request instance.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A list of CoinBaseModel instances.
+        """
         coin_types = kwargs.get("coin_type")
         if coin_types is not None:
             queryset = self.queryset.filter(
                 coin_type=coin_types,
                 is_deleted=False,
             )
-            for q in queryset:
-                print(q.is_deleted)
         else:
             queryset = self.queryset.all()
 
@@ -124,10 +231,36 @@ class GetAllSkusView(
     mixins.ListModelMixin,
     generics.GenericAPIView,
 ):
+    """
+    A view for handling the retrieval of all SKUs from CoinBaseModel instances.
+
+    This view supports listing all SKUs from CoinBaseModel instances.
+
+    Attributes:
+        queryset: The initial queryset that this view will use to list instances.
+        serializer_class: The serializer class this view will use to convert data.
+
+    Methods:
+        get: Handles GET requests. Returns all SKUs from CoinBaseModel instances.
+    """
+
     queryset = CoinBaseModel.objects.all()
     serializer_class = CoinSkusOnlySerializer
 
     def get(self, request, *args, **kwargs):
+        """
+        Handle GET requests.
+
+        Retrieve all SKUs from CoinBaseModel instances.
+
+        Args:
+            request: The request instance.
+            *args: Additional positional arguments.
+            **kwargs: Additional keyword arguments.
+
+        Returns:
+            A list of SKUs from CoinBaseModel instances.
+        """
         return self.list(request, *args, **kwargs)
 
 
