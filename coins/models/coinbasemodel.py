@@ -104,3 +104,7 @@ class CoinBaseModel(
     def update_quantity(self, method, qty):
         if method == "add":
             self.quantity += qty
+		elif method == "subtract":
+			self.quantity -= qty
+		else:
+			pass
