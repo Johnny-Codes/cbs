@@ -112,5 +112,4 @@ class CoinFamilyAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "type",
-		"coin_family",
     )

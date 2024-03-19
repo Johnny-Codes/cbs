@@ -1,5 +1,5 @@
 from django.contrib import admin
-from accounts.models import User, Business
+from accounts.models import User, Business, StripeCustomer
 
 # Register your models here.
 
@@ -14,3 +14,11 @@ class UserAdmin(admin.ModelAdmin):
         "last_name",
         "email",
     )
+
+@admin.register(StripeCustomer)
+class StripeCustomerAdmin(admin.ModelAdmin):
+	list_display = (
+		"id",
+		"user",
+		"stripe_id",
+	)
