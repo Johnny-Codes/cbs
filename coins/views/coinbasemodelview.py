@@ -1,4 +1,5 @@
 import os
+import base64
 import json
 import uuid
 import requests as r
@@ -158,7 +159,6 @@ def pcgs_coin_data(request, *args, **kwargs):
         grading_service = "NGC"
         scan_url = f"https://api.pcgs.com/publicapi/coindetail/GetCoinFactsByBarcode?barcode={pcgs_no}&gradingService={grading_service}"
         coin_data = r.get(scan_url, headers=headers).json()
-
     """
     Import info from response:
     PCGSNo - str
@@ -172,7 +172,6 @@ def pcgs_coin_data(request, *args, **kwargs):
     PriceGuideValue - float
     CoinFactsNotes - str - add to description?
     """
-
     result["pcgs_number"] = int(coin_data["PCGSNo"])
     if coin_data["CertNo"] != "":
         result["sku"] = coin_data["CertNo"]
@@ -246,7 +245,6 @@ def get_true_view_images(request, id):
     }
     url = f"https://api.pcgs.com/publicapi/coindetail/GetCoinFactsByCertNo/{coin.sku}"
     coin_data = r.get(url, headers=headers).json()
-    print(coin_data)
     try:
         if coin_data["Images"]:
             images = coin_data["Images"]
@@ -280,8 +278,17 @@ def get_product_desc_from_text(request, id):
 
 def get_product_desc_from_pictures(request, id):
     coin = CoinBaseModel.objects.get(id=id)
+
+    def encode_image(image_path):
+        with open(image_path, "rb") as image_file:
+            return base64.b64encode(image_file.read()).decode("utf-8")
+
     img_urls = []
     for image in coin.images.all():
-        img_urls.append(image.image.url)
+        img_urls.append(encode_image(image.image.path))
     description = get_product_description_from_photos(img_urls)
     return JsonResponse({"description": description})
+    # for image in coin.images.all():
+    #     img_urls.append(f"http://localhost:8000{image.image.url}")
+    # description = get_product_description_from_photos(img_urls)
+    # return JsonResponse({"description": description})

@@ -1,6 +1,7 @@
 import os
 from openai import OpenAI
 from typing import List
+import json
 
 models = {"3.5-turbo": "gpt-3.5-turbo"}
 
@@ -42,6 +43,7 @@ def get_product_description_from_photos(files: List[str]):
     """
     files: List of urls to images of coins
     """
+    print("getting shit")
     client = set_openai_client()
     content = [
         {
@@ -50,15 +52,21 @@ def get_product_description_from_photos(files: List[str]):
         }
     ]
 
+    # for file in files:
+    #     print("file", file)
+    #     content.append(
+    #         {
+    #             "type": "image_url",
+    #             "image_url": file,
+    #         }
+    #     )
     for file in files:
-        print("file", file)
         content.append(
             {
                 "type": "image_url",
-                "image_url": file,
+                "image_url": f"data:image/jpeg;base64,{file}",
             }
         )
-    print("content", content)
     response = client.chat.completions.create(
         model="gpt-4-vision-preview",
         messages=[
@@ -67,6 +75,9 @@ def get_product_description_from_photos(files: List[str]):
                 "content": content,
             }
         ],
-        max_tokens=600,
+        max_tokens=1000,
     )
-    print(response.choices[0])
+    response_json = response.choices[0].message.__dict__
+    print("response json", response_json, type(response_json))
+    content = response_json["content"]
+    return content
