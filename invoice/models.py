@@ -1,6 +1,6 @@
 from django.db import models
 from coins.models.coinbasemodel import CoinBaseModel
-from customers.models import Customers
+from customers.models import Customer
 
 
 class SalesInvoice(models.Model):
@@ -10,7 +10,7 @@ class SalesInvoice(models.Model):
     )
 
     customer = models.ForeignKey(
-        Customers,
+        Customer,
         related_name="sales",
         on_delete=models.CASCADE,
     )

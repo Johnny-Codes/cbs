@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from customers.models import Customers
+from customers.models import Customer
 from customers.serializers import CustomersSerializer
 
 from rest_framework.response import Response
@@ -12,7 +12,7 @@ class CustomersSerializerView(
     mixins.CreateModelMixin,
     generics.GenericAPIView,
 ):
-    queryset = Customers.objects.all().order_by("last_name")
+    queryset = Customer.objects.all().order_by("last_name")
     serializer_class = CustomersSerializer
 
     def get(self, request, *args, **kwargs):
@@ -34,7 +34,7 @@ class OneCustomerSerializerView(
     mixins.UpdateModelMixin,
     generics.GenericAPIView,
 ):
-    queryset = Customers.objects.all()
+    queryset = Customer.objects.all()
     serializer_class = CustomersSerializer
     lookup_field = "id"
 

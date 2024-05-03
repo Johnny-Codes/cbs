@@ -3,7 +3,7 @@ import json
 from invoice.serializers import SalesInvoiceSerializer
 from invoice.models import SalesInvoice
 from accounts.models import User
-from customers.models import Customers
+from customers.models import Customer
 from coins.models.coinbasemodel import CoinBaseModel
 from rest_framework.response import Response
 from rest_framework import mixins, generics
