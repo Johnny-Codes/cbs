@@ -1,8 +1,11 @@
 from customers.models import Customer
 from rest_framework import serializers
+from accounts.serializers import BusinessSerializer
 
 
 class CustomersSerializer(serializers.ModelSerializer):
+    business = BusinessSerializer(read_only=True)
+
     class Meta:
         model = Customer
         fields = (

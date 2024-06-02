@@ -27,6 +27,7 @@ class CustomersSerializerView(
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        print("post request data: ", request.data)
         return self.create(request, *args, **kwargs)
 
 
