@@ -1,6 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from customers.models import Customer
 from customers.serializers import CustomersSerializer
+from accounts.models import Business
 
 from rest_framework.response import Response
 from rest_framework import mixins, generics
@@ -27,8 +28,14 @@ class CustomersSerializerView(
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        print("post request data: ", request.data)
-        return self.create(request, *args, **kwargs)
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(
+                serializer.data, status=status.HTTP_201_CREATED, headers=headers
+            )
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class OneCustomerSerializerView(

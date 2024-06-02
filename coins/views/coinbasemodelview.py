@@ -6,6 +6,7 @@ import requests as r
 import re
 from PIL import Image
 from io import BytesIO
+from rest_framework.generics import ListAPIView
 from django.core.files.base import ContentFile
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -405,7 +406,6 @@ def get_true_view_images(request, id):
 def get_product_desc_from_text(request, id):
     coin = CoinBaseModel.objects.get(id=id)
     description = get_product_description_from_text(coin.title)
-    print("description", description)
     return JsonResponse({"description": description}, safe=False)
 
 
@@ -425,3 +425,27 @@ def get_product_desc_from_pictures(request, id):
     #     img_urls.append(f"http://localhost:8000{image.image.url}")
     # description = get_product_description_from_photos(img_urls)
     # return JsonResponse({"description": description})
+
+
+class GetCoinInfoBySku(ListAPIView):
+    """
+    API view to retrieve list of CoinBaseModel instances filtered by SKU.
+
+    Inherits from Django Rest Framework's ListAPIView.
+
+    Attributes:
+    serializer_class: Specifies the serializer to use for the view.
+    """
+
+    serializer_class = CoinBaseModelSerializer
+
+    def get_queryset(self):
+        """
+        Overrides the get_queryset method to filter CoinBaseModel instances by SKU.
+
+        Returns:
+        A queryset of CoinBaseModel instances that match the provided SKU.
+        """
+
+        sku = self.kwargs["sku"]
+        return CoinBaseModel.objects.filter(sku=sku)

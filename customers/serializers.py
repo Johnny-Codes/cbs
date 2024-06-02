@@ -1,10 +1,14 @@
 from customers.models import Customer
 from rest_framework import serializers
 from accounts.serializers import BusinessSerializer
+from accounts.models import Business
 
 
 class CustomersSerializer(serializers.ModelSerializer):
-    business = BusinessSerializer(read_only=True)
+    business_id = serializers.PrimaryKeyRelatedField(
+        source="business", queryset=Business.objects.all()
+    )
+    business_name = serializers.StringRelatedField(source="business")
 
     class Meta:
         model = Customer
@@ -14,7 +18,8 @@ class CustomersSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "email",
-            "business",
+            "business_id",
+            "business_name",
             "address_1",
             "address_2",
             "city",

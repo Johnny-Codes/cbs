@@ -8,6 +8,7 @@ from coins.views.coinbasemodelview import (
     get_true_view_images,
     get_product_desc_from_text,
     get_product_desc_from_pictures,
+    GetCoinInfoBySku,
 )
 from coins.views.voviews import (
     CoinFamilySerializerView,
@@ -92,5 +93,10 @@ urlpatterns = [
         "coins/<int:id>/true_view/",
         get_true_view_images,
         name="true_view",
+    ),
+    path(
+        "coins/skus/<str:sku>/",
+        GetCoinInfoBySku.as_view(),
+        name="get_coin_by_sku",
     ),
 ]

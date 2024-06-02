@@ -8,7 +8,6 @@ class SoftDeleteModel(models.Model):
         try:
             self.is_deleted = True
             self.save()
-            print("soft delete successful")
         except Exception as e:
             print("soft delete failed", e)
 
