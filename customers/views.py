@@ -28,6 +28,7 @@ class CustomersSerializerView(
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        print(request.data)
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer)
@@ -35,7 +36,12 @@ class CustomersSerializerView(
             return Response(
                 serializer.data, status=status.HTTP_201_CREATED, headers=headers
             )
+        print(serializer.errors)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def perform_create(self, serializer):
+        customer = serializer.save()
+        customer.create_stripe_customer()
 
 
 class OneCustomerSerializerView(

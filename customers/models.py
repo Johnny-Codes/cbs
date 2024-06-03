@@ -1,6 +1,15 @@
+import os
 from django.db import models
 from accounts.models import User
 from core.models import SoftDeleteModel
+import stripe
+import requests as r
+
+debug_env = os.getenv("DEBUG_ENV")
+if debug_env == "development":
+    stripe.api_key = os.environ.get("STRIPE_TEST_KEY")
+else:
+    stripe.api_key = os.environ.get("STRIPE_LIVE_KEY")
 
 
 class Customer(
@@ -37,6 +46,21 @@ class Customer(
         blank=True,
         null=True,
     )
+
+    stripe_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    def create_stripe_customer(self):
+        response = stripe.Customer.create(
+            name=f"{self.first_name} {self.last_name}",
+            email=self.email,
+        )
+        self.stripe_id = response["id"]
+        self.save()
+        return response
 
     def __str__(self):
         return self.username

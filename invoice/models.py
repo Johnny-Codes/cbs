@@ -16,7 +16,7 @@ class SalesInvoice(models.Model):
     )
 
     invoice_date = models.DateTimeField(auto_now_add=True)
-
+    sales_json = models.JSONField()
     notes = models.TextField(
         blank=True,
         null=True,

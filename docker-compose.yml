@@ -27,6 +27,7 @@ services:
       - DEV_SECRET_KEY=${DEV_SECRET_KEY}
       - PCGS_API_KEY=${PCGS_API_KEY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - STRIPE_TEST_KEY=${STRIPE_TEST_KEY}
     env_file:
       - .env
     depends_on:

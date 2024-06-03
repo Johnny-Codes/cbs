@@ -6,7 +6,10 @@ from accounts.models import Business
 
 class CustomersSerializer(serializers.ModelSerializer):
     business_id = serializers.PrimaryKeyRelatedField(
-        source="business", queryset=Business.objects.all()
+        source="business",
+        queryset=Business.objects.all(),
+        required=False,
+        allow_null=True,
     )
     business_name = serializers.StringRelatedField(source="business")
 
