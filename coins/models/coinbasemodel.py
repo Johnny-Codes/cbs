@@ -1,4 +1,5 @@
 from django.db import models
+import stripe
 from core.models.createdupdated import CreatedUpdated
 from core.models.isbulk import IsBulk
 from core.models.sku import SKU
@@ -17,6 +18,7 @@ from coins.models.grading import (
     GradingServices,
     CoinGrades,
 )
+from customers.models import Customer
 
 
 class CoinBaseModel(
@@ -96,6 +98,35 @@ class CoinBaseModel(
         Strike,
         on_delete=models.CASCADE,
     )
+    stripe_product_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    stripe_price_id = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True,
+    )
+
+    def create_stripe_product(self):
+        response = stripe.Product.create(
+            name=self.title,
+        )
+        self.stripe_product_id = response["id"]
+        self.save()
+        return response
+
+    def create_stripe_price(self, sales_price):
+        response = stripe.Price.create(
+            unit_amount=round(sales_price * 100),
+            currency="usd",
+            product=self.stripe_product_id,
+        )
+        self.stripe_price_id = response["id"]
+        self.save()
+        return response
 
     def __str__(self):
         return f"{self.year} {self.coin_type} {self.strike} {self.grade}"

@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import stripe
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +44,7 @@ if debug_env == "development":
             "PORT": 5432,
         }
     }
+    stripe.api_key = os.environ.get("STRIPE_TEST_KEY")
 
 else:
     DEBUG = False
@@ -67,6 +69,7 @@ else:
             "PORT": 5432,
         }
     }
+    stripe.api_key = os.environ.get("STRIPE_LIVE_KEY")
 
 
 # Application definition

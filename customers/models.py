@@ -1,15 +1,10 @@
-import os
 from django.db import models
 from accounts.models import User
 from core.models import SoftDeleteModel
-import stripe
-import requests as r
 
-debug_env = os.getenv("DEBUG_ENV")
-if debug_env == "development":
-    stripe.api_key = os.environ.get("STRIPE_TEST_KEY")
-else:
-    stripe.api_key = os.environ.get("STRIPE_LIVE_KEY")
+import stripe
+
+# import requests as r
 
 
 class Customer(

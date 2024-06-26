@@ -47,6 +47,7 @@ class SalesInvoiceSerializerView(
 
         sales_invoice.sales_item.add(*sale_items)
         sales_invoice.save()
+        sales_invoice.create_stripe_invoice()
 
         return JsonResponse(
             {"status": "success", "sales invoice": sales_invoice.id},
