@@ -306,7 +306,11 @@ def pcgs_coin_data(request, *args, **kwargs):
     PriceGuideValue - float
     CoinFactsNotes - str - add to description?
     """
-    result["pcgs_number"] = int(coin_data["PCGSNo"])
+    print("coin data", coin_data)
+    try:
+        result["pcgs_number"] = int(coin_data["PCGSNo"])
+    except KeyError:
+        pass
     if coin_data["CertNo"] != "":
         result["sku"] = coin_data["CertNo"]
     result["title"] = coin_data["Name"]
